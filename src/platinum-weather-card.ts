@@ -128,20 +128,8 @@ export class PlatinumWeatherCard extends LitElement {
   //  Change bramkragtent config check for "forecast" to "weather_entity"
   //  weather_entity is a new config. It is THE weather entity used to get forecast data
   _needForecastSubscription() {
-    if (
-      this._config &&
-    //this._config.forecast !== false &&
-      this._config.weather_entity &&
-      this._config.forecast_type &&
-      this._config.forecast_type !== "legacy"
-    ) {
-    //console.info(`_needForecastSubscription T`);
-    } else {
-    //console.info(`_needForecastSubscription F`);
-    }
     return (
       this._config &&
-    //this._config.forecast !== false &&
       this._config.weather_entity &&
       this._config.forecast_type &&
       this._config.forecast_type !== "legacy"
@@ -418,8 +406,8 @@ export class PlatinumWeatherCard extends LitElement {
       //tjl add warning if new method for getting forecast is used and forecast_type not 'daily'
       if (this._config.weather_entity !== undefined ) {
         if ( this._config.forecast_type !== undefined ) {
-          if ( this._config.forecast_type !== 'daily') {
-            this._error.push(`'forecast_type can only be set to daily`);
+          if ( !['daily','hourly','twice_daily'].includes(this._config.forecast_type)) {
+            this._error.push(`'forecast_type must be daily, hourly, or twice_daily`);
           }
         } else {  
             this._error.push(`'forecast_type needs to be configured.`);
@@ -1183,9 +1171,9 @@ export class PlatinumWeatherCard extends LitElement {
 
       //Get low temp from night forecast
       if (propKey === 'templow') {
-        return nightForecast['temperature'] !== undefined ? String(nightForecast['temperature']) : undefined;
+        return nightForecast && nightForecast['temperature'] !== undefined ? String(nightForecast['temperature']) : undefined;
       }
-      return dayForecast[propKey] !== undefined ? String(dayForecast[propKey]) : undefined;
+      return dayForecast && dayForecast[propKey] !== undefined ? String(dayForecast[propKey]) : undefined;
     }
 
     return undefined;
@@ -1522,7 +1510,7 @@ export class PlatinumWeatherCard extends LitElement {
 
   get slotPossibleTomorrow(): TemplateResult {
     //tjl use new forecast subscribe method below
-    const forecast_pos = this.forecast1 !== undefined ? this.forecast1[1].precipitation : undefined;
+    const forecast_pos = this.forecast1 !== undefined && this.forecast1.length > 1 ? this.forecast1[1].precipitation : undefined;
   //console.info(`Pos Tommorrow: ${forecast_pos}`);
 
     const pos = this._config.entity_possible_tomorrow && this.hass.states[this._config.entity_possible_tomorrow] !== undefined
@@ -1811,11 +1799,11 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotWind(): TemplateResult {
-    const beaufort = this._config.entity_wind_speed && this._config.option_show_beaufort ? html`<div class="slot-text"></div>BFT: ${this.currentBeaufort} -&nbsp;</div>` : "";
+    const beaufort = this._config.entity_wind_speed && this._config.option_show_beaufort ? html`<div class="slot-text">BFT: ${this.currentBeaufort} -&nbsp;</div>` : "";
     const bearing = this._config.entity_wind_bearing ? html`<div class="slot-text">${this.currentWindBearing}&nbsp;</div>` : "";
     const units = html`<div class="slot-text unit">${this.getUOM('length')}/h</div>`;
     const speed = this._config.entity_wind_speed ? html`<div class="slot-text">${this.currentWindSpeed}</div>${units}&nbsp;` : "";
-    const gust = this._config.entity_wind_gust ? html`<div class="slot-text">(Gust ${this.currentWindGust}</div>${units})` : "";
+    const gust = this._config.entity_wind_gust ? html`<div class="slot-text">(${this.localeTextGust} ${this.currentWindGust}</div>${units})` : "";
     return html`
       <li>
         <div class="slot">
@@ -1829,11 +1817,11 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotWindKt(): TemplateResult {
-    const beaufort = this._config.entity_wind_speed_kt && this._config.option_show_beaufort ? html`<div class="slot-text"></div>BFT: ${this.currentBeaufortKt} -&nbsp;</div>` : "";
+    const beaufort = this._config.entity_wind_speed_kt && this._config.option_show_beaufort ? html`<div class="slot-text">BFT: ${this.currentBeaufortKt} -&nbsp;</div>` : "";
     const bearing = this._config.entity_wind_bearing ? html`<div class="slot-text">${this.currentWindBearing}&nbsp;</div>` : "";
     const units = html`<div class="slot-text unit">Kt</div>`;
     const speed = this._config.entity_wind_speed_kt ? html`<div class="slot-text">${this.currentWindSpeedKt}</div>${units}&nbsp;` : "";
-    const gust = this._config.entity_wind_gust_kt ? html`<div class="slot-text">(Gust ${this.currentWindGustKt}</div>${units})` : "";
+    const gust = this._config.entity_wind_gust_kt ? html`<div class="slot-text">(${this.localeTextGust} ${this.currentWindGustKt}</div>${units})` : "";
     return html`
       <li>
         <div class="slot">
@@ -1851,11 +1839,12 @@ export class PlatinumWeatherCard extends LitElement {
     const units = vis !== "---" ? this.getUOM('length') : "";
     return html`
       <li>
-        <div class="slot-icon">
-          <ha-icon icon="mdi:weather-fog"></ha-icon>
-        </div>
-        <div class="slot-text visibility-text">${vis}</div>
-        <div class="slot-text unit"> ${units}
+        <div class="slot">
+          <div class="slot-icon">
+            <ha-icon icon="mdi:weather-fog"></ha-icon>
+          </div>
+          <div class="slot-text visibility-text">${vis}</div>
+          <div class="slot-text unit">${units}</div>
         </div>
       </li>
     `;
@@ -2593,6 +2582,22 @@ export class PlatinumWeatherCard extends LitElement {
       case 'ua': return "Вогонь";
       case 'bg': return "Пожар";
       default: return "Fire";
+    }
+  }
+
+  get localeTextGust(): string {
+    switch (this.locale) {
+      case 'it': return "Raffica";
+      case 'fr': return "Rafale";
+      case 'de': return "Böe";
+      case 'nl': return "Windstoot";
+      case 'pl': return "Poryw";
+      case 'he': return "בלת";
+      case 'da': return "Vindstød";
+      case 'ru': return "Порыв";
+      case 'ua': return "Поривистий";
+      case 'bg': return "Пориви";
+      default: return "Gust";
     }
   }
 
