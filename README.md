@@ -1,14 +1,28 @@
-# Platinum Weather Card 
+# Platinum Weather Card
 
-A highly configurable weather card with a graphical configuration.  Based on original Platinum Weather Card by [@makin-things](https://www.github.com/makin-things)
+A highly configurable weather card with a graphical configuration. Based on original Platinum Weather Card by [@makin-things](https://www.github.com/makin-things), extended by [@tommyjlong](https://github.com/tommyjlong), maintained here by [@rudizl](https://github.com/rudizl).
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 [![GitHub Release][releases-shield]][releases]
 [![License][license-shield]](LICENSE.md)
-![Maintenance](https://img.shields.io/badge/MAINTAINED-NO-red?style=for-the-badge)
+![Maintenance](https://img.shields.io/badge/MAINTAINED-YES-green?style=for-the-badge)
 
-# Need Help?
-This is not a supported repo.  This was forked from the original [Platinum Weather Card](https://github.com/Makin-Things/platinum-weather-card/tree/master) with several modifications. The documentation here has also been modified in an attempt to describe the differences or to clarify the original. If you need help with the original Platinum Weather card, the best place to ask is in the Home Assistant Community. There is a thread that can be found [here](https://community.home-assistant.io/t/platinum-weather-card-support/449166).
+## Fork notes (rudizl)
+
+This fork is based on [tommyjlong/platinum-weather-card](https://github.com/tommyjlong/platinum-weather-card) and adds the following on top:
+
+- **Bug fixes (v1.2.1)**
+  - `slotVisibility` — missing `slot`/`li` wrapper (broken layout in slots section)
+  - `slotWind`/`slotWindKt` — malformed HTML in beaufort display (stray `</div>`)
+  - `slotPossibleTomorrow` — unsafe `forecast1[1]` access without length check
+  - `_getForecastPropFromWeather` — null guard for `dayForecast`/`nightForecast`
+  - `_needForecastSubscription` — removed dead if/else block
+  - `_checkForErrors` — `hourly` and `twice_daily` are now accepted (not just `daily`)
+  - `types.ts` — added missing `double_tap_action` and `entity_possible_tomorrow`
+- **Localization** — added `Gust` translation for all supported languages (bg: Пориви)
+
+## Need Help?
+This is not a supported repo. If you need help with the original Platinum Weather card, the best place to ask is in the Home Assistant Community. There is a thread that can be found [here](https://community.home-assistant.io/t/platinum-weather-card-support/449166).
 
 # Overview
 
@@ -25,11 +39,10 @@ The design goals for the card are:
 
 The original Platinum Weather Card supports installation using HACS. It actually discourages manual installation "Due to the complexities of the card (icons/split code for performance)". The original card also exists within the HACS Store making its installation even more convenient.  </br>
 
-This "forked version" can also use HACS, but one needs to configure HACS for this particular forked repository. 
-- Go to the HACS "Front End" page and click on the upper-right 3-dots, and then click on "Custom Repositories". For "Repository", paste ```https://github.com/tommyjlong/platinum-weather-card ```, and choose `Lovelace` for the Category.  Hit ADD.
-- Back in the HACS "Front End" page, click on "+ EXPLORE AND DOWNLOAD REPOSITORIES".  Then do a search for "Platinum Weather Card".  
-- :warning: THERE WILL BE TWO IDENTICAL Platinum Weather Card ENTRIES showing up.  The top one is the original version that comes in the HACS store, the one below it is this "forked version". Click on the below entry.
-- A page should appear showing the README and the author showing up in the upper left hand corner (make sure it shows `tommyjlong` otherwise this is the incorrect repository).  On this page it should allow you to DOWNLOAD this card.  
+This fork can be installed via HACS as a custom repository:
+- Go to HACS → Frontend → three dots (⋮) → **Custom repositories**
+- Add `https://github.com/rudizl/platinum-weather-card` as **Lovelace**
+- Search for "Platinum Weather Card" and install the one from `rudizl`  
 
 After installing the card you can add as many instances of the card on the dashboard as you desire. 
 # Getting Started
@@ -191,7 +204,7 @@ The following fields are available.
 | Option name                               | Type    | Description                                                                                                          |
 | ----------------------------------------- | ------- | -------------------------------------------------------------------------------------------------------------------- |
 | Weather Entity with Forecasts             | String  | In this "forked version", if a weather entity is configured anywhere to provide forecast data for this card, only a single weather entity is supported and it must be configured here. Any other configuration(s) below using a weather entity must set the configured weather entity to be the same as this one.    |
-| Forecast Type                             | String  | In this "forked version", if a weather entity is used to provide forecast data, the forecast type must be configured and set to "daily".  _Options for "Hourly" and "Twice Daily" are listed but are NOT._   |
+| Forecast Type                             | String  | The forecast type to request from the weather entity. Supported values: `daily`, `hourly`, `twice_daily`. Note: the card displays daily forecast sections; `hourly`/`twice_daily` will populate slots that read `forecast1[0]` but the daily forecast section is optimised for `daily`. |
 | Entity Forecast Icon 1                    | String  | The sensor entity whose state, or the weather entity whose forecast attribute `condition` contains the forecasted condition. It is used to derive the name of the icon to display.        |
 | Entity Forecast Summary 1                 | String  | The sensor entity whose state provides the short summary text (ex. "Showers increasing."). In this "forked version", a weather entity can be also be used and its forecast attribute `condition` will be used for the summary text and it is converted to a prettier state name. (Ex. partlycloudy to Partly cloudy).                                                                      |
 | Entity Forecast Min 1                     | String  | The entity that provides the forecast minimum temperature                                                            |
@@ -420,5 +433,5 @@ Create a new Platinum Weather Card, switch to the Code Editor (YAML mode) and si
 If there are still items that don't look correct you will need to manually adjust those to suit.
 
 [license-shield]: https://img.shields.io/github/license/makin-things/platinum-weather-card.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/tommyjlong/platinum-weather-card.svg?style=for-the-badge
-[releases]: https://github.com/tommyjlong/platinum-weather-card/releases
+[releases-shield]: https://img.shields.io/github/release/rudizl/platinum-weather-card.svg?style=for-the-badge
+[releases]: https://github.com/rudizl/platinum-weather-card/releases
