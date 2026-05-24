@@ -41,7 +41,7 @@ The original Platinum Weather Card supports installation using HACS. It actually
 
 This fork can be installed via HACS as a custom repository:
 - Go to HACS → Frontend → three dots (⋮) → **Custom repositories**
-- Add `https://github.com/rudizl/platinum-weather-card` as **Lovelace**
+- Add `https://github.com/rudizl/platinum-weather-card` as **Dashboard**
 - Search for "Platinum Weather Card" and install the one from `rudizl`  
 
 After installing the card you can add as many instances of the card on the dashboard as you desire. 
