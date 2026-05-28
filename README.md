@@ -11,6 +11,8 @@ A highly configurable weather card with a graphical configuration. Based on orig
 
 This fork is based on [tommyjlong/platinum-weather-card](https://github.com/tommyjlong/platinum-weather-card) and adds the following on top:
 
+- **Bug fixes (v1.2.2)**
+  - Fix all comboboxes/dropdowns in the card editor not working in newer HA versions (`@selected` → `@value-changed` on all `ha-select` elements)
 - **Bug fixes (v1.2.1)**
   - `slotVisibility` — missing `slot`/`li` wrapper (broken layout in slots section)
   - `slotWind`/`slotWindKt` — malformed HTML in beaufort display (stray `</div>`)
