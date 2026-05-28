@@ -23,8 +23,7 @@ This fork is based on [tommyjlong/platinum-weather-card](https://github.com/tomm
   - `types.ts` — added missing `double_tap_action` and `entity_possible_tomorrow`
 - **Localization** — added `Gust` translation for all supported languages (bg: Пориви)
 
-## Need Help?
-This is not a supported repo. If you need help with the original Platinum Weather card, the best place to ask is in the Home Assistant Community. There is a thread that can be found [here](https://community.home-assistant.io/t/platinum-weather-card-support/449166).
+Issues and PRs are welcome! For general discussion about the card, the Home Assistant Community thread can be found [here](https://community.home-assistant.io/t/platinum-weather-card-support/449166).
 
 # Overview
 
