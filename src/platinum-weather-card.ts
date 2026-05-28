@@ -2592,10 +2592,10 @@ export class PlatinumWeatherCard extends LitElement {
       case 'de': return "Böe";
       case 'nl': return "Windstoot";
       case 'pl': return "Poryw";
-      case 'he': return "בלת";
+      case 'he': return "נשיבה";
       case 'da': return "Vindstød";
       case 'ru': return "Порыв";
-      case 'ua': return "Поривистий";
+      case 'ua': return "Порив";
       case 'bg': return "Пориви";
       default: return "Gust";
     }
