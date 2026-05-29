@@ -210,6 +210,29 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 | `hold_action` | Action | none | Action on hold |
 | `double_tap_action` | Action | none | Action on double-tap |
 | `option_static_icons` | Boolean | `false` | Use non-animated icons |
+
+## Actions
+
+The card supports all standard [HA actions](https://www.home-assistant.io/dashboards/actions/). Some examples:
+
+```yaml
+# Tap — show more-info for a specific entity
+tap_action:
+  action: more-info
+entity: weather.my_weather
+
+# Hold — navigate to another dashboard view
+hold_action:
+  action: navigate
+  navigation_path: /lovelace/misc
+
+# Double-tap — toggle a light
+double_tap_action:
+  action: call-service
+  service: light.toggle
+  target:
+    entity_id: light.living_room
+```
 | `option_time_format` | String | `system` | `system` (follows HA Settings → Profile), `12hour` or `24hour` |
 | `option_locale` | String | none | Locale for timestamp and moon phase formatting |
 | `text_update_time_prefix` | String | none | Prefix for the update time display |
