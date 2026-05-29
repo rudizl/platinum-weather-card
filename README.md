@@ -12,6 +12,9 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog</strong></summary>
 
+**v1.3.0-beta.3** *(pre-release)*
+- Fix slot editor dropdowns correctly this time — beta.2 used `.value` on `<select>` but in lit-html dynamic children are inserted into the DOM *after* property bindings, so `select.value` was set before the `<option>` elements existed. Replaced shared `slotValues` TemplateResult with a `_slotOptions(currentValue)` method using `?selected` on each option
+
 **v1.3.0-beta.2** *(pre-release)*
 - Fix all 22 editor dropdowns not showing the saved value when opening the card editor — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration
 
