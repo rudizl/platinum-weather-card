@@ -35,12 +35,13 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 - Fix all dropdowns in the card editor not working in newer HA versions (`@selected` → `@value-changed`)
 
 **v1.2.1**
-- Fix broken layout in slots section (`slotVisibility` missing wrapper)
+- Add `double_tap_action` support
+- Add `Gust` localization for all supported languages (bg: Пориви)
+- Accept `hourly` and `twice_daily` as valid `forecast_type` values (previously only `daily` was accepted)
+- Fix broken layout in slots section
 - Fix malformed HTML in beaufort wind display
 - Fix unsafe array access in `slotPossibleTomorrow`
 - Fix null guard in forecast property lookup
-- Fix `_checkForErrors` to accept `hourly` and `twice_daily` forecast types
-- Add `Gust` localization for all supported languages (bg: Пориви)
 
 </details>
 
