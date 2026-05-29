@@ -23,6 +23,7 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 - Add Spanish (`es`) locale
 - HA profile integration — time and date format now read from HA Settings → Profile when set to `system`
 - Single-file build — eliminates browser caching issues after HACS updates
+- Added Actions documentation with examples for `tap_action`, `hold_action` and `double_tap_action`
 
 **v1.2.4**
 - Definitive fix for broken editor dropdowns — replaced all `ha-select`/`ha-list-item` with native `<select>` elements styled to match the HA editor
