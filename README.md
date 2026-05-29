@@ -11,17 +11,26 @@ A highly configurable weather card with a graphical configuration. Based on orig
 
 This fork is based on [tommyjlong/platinum-weather-card](https://github.com/tommyjlong/platinum-weather-card) and adds the following on top:
 
-- **Bug fixes (v1.2.2)**
-  - Fix all comboboxes/dropdowns in the card editor not working in newer HA versions (`@selected` → `@value-changed` on all `ha-select` elements)
-- **Bug fixes (v1.2.1)**
-  - `slotVisibility` — missing `slot`/`li` wrapper (broken layout in slots section)
-  - `slotWind`/`slotWindKt` — malformed HTML in beaufort display (stray `</div>`)
-  - `slotPossibleTomorrow` — unsafe `forecast1[1]` access without length check
-  - `_getForecastPropFromWeather` — null guard for `dayForecast`/`nightForecast`
-  - `_needForecastSubscription` — removed dead if/else block
-  - `_checkForErrors` — `hourly` and `twice_daily` are now accepted (not just `daily`)
-  - `types.ts` — added missing `double_tap_action` and `entity_possible_tomorrow`
-- **Localization** — added `Gust` translation for all supported languages (bg: Пориви)
+<details>
+<summary><strong>Changelog</strong></summary>
+
+**v1.2.3**
+- Fix editor dropdowns still not selectable — root cause was `mwc-list-item` removed in HA 2024.x; replaced with `ha-list-item` (136 occurrences)
+
+**v1.2.2**
+- Fix all comboboxes/dropdowns in the card editor not working in newer HA versions (`@selected` → `@value-changed` on all `ha-select` elements)
+
+**v1.2.1**
+- Fix `slotVisibility` missing `slot`/`li` wrapper (broken layout in slots section)
+- Fix `slotWind`/`slotWindKt` malformed HTML in beaufort display (stray `</div>`)
+- Fix `slotPossibleTomorrow` unsafe `forecast1[1]` access without length check
+- Fix `_getForecastPropFromWeather` null guard for `dayForecast`/`nightForecast`
+- Fix `_needForecastSubscription` removed dead if/else block
+- Fix `_checkForErrors` — `hourly` and `twice_daily` are now accepted (not just `daily`)
+- Fix `types.ts` — added missing `double_tap_action` and `entity_possible_tomorrow`
+- Add `Gust` localization for all supported languages (bg: Пориви; fixed he: נשיבה, ua: Порив)
+
+</details>
 
 Issues and PRs are welcome! For general discussion about the card, the Home Assistant Community thread can be found [here](https://community.home-assistant.io/t/platinum-weather-card-support/449166).
 
