@@ -12,6 +12,9 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog</strong></summary>
 
+**v1.3.0-beta.5** *(pre-release)*
+- Fix browser caching after HACS updates — switched to single bundled file; previously hash-named dependency files were served without a cache-busting version parameter, causing stale code to persist after updates
+
 **v1.3.0-beta.4** *(pre-release)*
 - Add `moon` slot — displays moon phase from any HA Moon integration sensor (`entity_moon`), with dynamic phase-specific icon (`mdi:moon-*`) and translated phase names for all 11 supported locales (bg, ru, ua, de, fr, it, nl, pl, da, es, he)
 - Default slot r4 changed from `fire_danger` to `moon`
