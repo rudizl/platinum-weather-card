@@ -1084,132 +1084,121 @@ get _forecast_type(): string {
     `;
   }
 
+  private _slotOptions(currentValue: string): TemplateResult {
+    const opts: Array<[string, string]> = [
+      ['humidity',          'Current humidity'],
+      ['rainfall',          "Today's recorded rainfall"],
+      ['pressure',          'Current air pressure'],
+      ['wind',              'Current wind conditions'],
+      ['wind_kt',           'Current wind conditions kts'],
+      ['visibility',        'Current visibility'],
+      ['observed_max',      "Today's observed max"],
+      ['observed_min',      "Today's observed min"],
+      ['forecast_max',      "Today's forecast max"],
+      ['forecast_min',      "Today's forecast min"],
+      ['temp_next',         'Next temp min/max'],
+      ['temp_following',    'Following temp min/max'],
+      ['temp_maximums',     'Observed/forecast max'],
+      ['temp_minimums',     'Observed/forecast min'],
+      ['sun_next',          'Next sun rise/set time'],
+      ['sun_following',     'Following sun rise/set time'],
+      ['pop',               'Chance of rain'],
+      ['popforecast',       'Rainfall forecast'],
+      ['possible_today',    "Today's forecast rainfall"],
+      ['possible_tomorrow', "Tomorrow's forecast rainfall"],
+      ['uv_summary',        "Today's uv forecast"],
+      ['fire_danger',       "Today's fire danger"],
+      ['custom1',           'Custom entity 1'],
+      ['custom2',           'Custom entity 2'],
+      ['custom3',           'Custom entity 3'],
+      ['custom4',           'Custom entity 4'],
+      ['empty',             'Blank slot'],
+      ['remove',            'Remove slot'],
+    ];
+    return html`${opts.map(([v, l]) => html`<option value="${v}" ?selected=${currentValue === v}>${l}</option>`)}`;
+  }
+
   private _sectionSlotsEditor(): TemplateResult {
-    const slotValues = html`
-      <option value="humidity">Current humidity</option>
-      <option value="rainfall">Today's recorded rainfall</option>
-      <option value="pressure">Current air pressure</option>
-      <option value="wind">Current wind conditions</option>
-      <option value="wind_kt">Current wind conditions kts</option>
-      <option value="visibility">Current visibility</option>
-      <option value="observed_max">Today's observed max</option>
-      <option value="observed_min">Today's observed min</option>
-      <option value="forecast_max">Today's forecast max</option>
-      <option value="forecast_min">Today's forecast min</option>
-      <option value="temp_next">Next temp min/max</option>
-      <option value="temp_following">Following temp min/max</option>
-      <option value="temp_maximums">Observed/forecast max</option>
-      <option value="temp_minimums">Observed/forecast min</option>
-      <option value="sun_next">Next sun rise/set time</option>
-      <option value="sun_following">Following sun rise/set time</option>
-      <option value="pop">Chance of rain</option>
-      <option value="popforecast">Rainfall forecast</option>
-      <option value="possible_today">Today's forecast rainfall</option>
-      <option value="possible_tomorrow">Tomorrow's forecast rainfall</option>
-      <option value="uv_summary">Today's uv forecast</option>
-      <option value="fire_danger">Today's fire danger</option>
-      <option value="custom1">Custom entity 1</option>
-      <option value="custom2">Custom entity 2</option>
-      <option value="custom3">Custom entity 3</option>
-      <option value="custom4">Custom entity 4</option>
-      <option value="empty">Blank slot</option>
-      <option value="remove">Remove slot</option>`;
 
     return html`
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 1</label>
-        <select class='ha-select-compat' .configValue=${'slot_l1'} .value=${this._slot_l1} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l1'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l1)}
         </select>
         <label class='mdc-label'>Slot Right 1</label>
-        <select class='ha-select-compat' .configValue=${'slot_r1'} .value=${this._slot_r1} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r1'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r1)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 2</label>
-        <select class='ha-select-compat' .configValue=${'slot_l2'} .value=${this._slot_l2} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l2'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l2)}
         </select>
         <label class='mdc-label'>Slot Right 2</label>
-        <select class='ha-select-compat' .configValue=${'slot_r2'} .value=${this._slot_r2} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r2'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r2)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 3</label>
-        <select class='ha-select-compat' .configValue=${'slot_l3'} .value=${this._slot_l3} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l3'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l3)}
         </select>
         <label class='mdc-label'>Slot Right 3</label>
-        <select class='ha-select-compat' .configValue=${'slot_r3'} .value=${this._slot_r3} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r3'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r3)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 4</label>
-        <select class='ha-select-compat' .configValue=${'slot_l4'} .value=${this._slot_l4} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l4'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l4)}
         </select>
         <label class='mdc-label'>Slot Right 4</label>
-        <select class='ha-select-compat' .configValue=${'slot_r4'} .value=${this._slot_r4} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r4'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r4)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 5</label>
-        <select class='ha-select-compat' .configValue=${'slot_l5'} .value=${this._slot_l5} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l5'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l5)}
         </select>
         <label class='mdc-label'>Slot Right 5</label>
-        <select class='ha-select-compat' .configValue=${'slot_r5'} .value=${this._slot_r5} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r5'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r5)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 6</label>
-        <select class='ha-select-compat' .configValue=${'slot_l6'} .value=${this._slot_l6} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l6'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l6)}
         </select>
         <label class='mdc-label'>Slot Right 6</label>
-        <select class='ha-select-compat' .configValue=${'slot_r6'} .value=${this._slot_r6} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r6'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r6)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 7</label>
-        <select class='ha-select-compat' .configValue=${'slot_l7'} .value=${this._slot_l7} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l7'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l7)}
         </select>
         <label class='mdc-label'>Slot Right 7</label>
-        <select class='ha-select-compat' .configValue=${'slot_r7'} .value=${this._slot_r7} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r7'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r7)}
         </select>
       </div>
       <div class="side-by-side">
         <label class='mdc-label'>Slot Left 8</label>
-        <select class='ha-select-compat' .configValue=${'slot_l8'} .value=${this._slot_l8} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_l8'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_l8)}
         </select>
         <label class='mdc-label'>Slot Right 8</label>
-        <select class='ha-select-compat' .configValue=${'slot_r8'} .value=${this._slot_r8} @change=${this._valueChanged}>
-
-          ${slotValues}
+        <select class='ha-select-compat' .configValue=${'slot_r8'} @change=${this._valueChanged}>
+          ${this._slotOptions(this._slot_r8)}
         </select>
       </div>
       ${this._optional_entities}
