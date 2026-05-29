@@ -427,11 +427,11 @@ export class PlatinumWeatherCard extends LitElement {
             const d = new Date(`${attribute}`);
             switch (this.timeFormat) {
               case '12hour':
-                return html`${d.toLocaleString(this.locale || navigator.language, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(" ", "") + ", " + d.toLocaleDateString(this.locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(",", "")}`;
+                return html`${d.toLocaleString(this.locale || navigator.language, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(" ", "") + ", " + this._formatDate(d)}`;
               case '24hour':
-                return html`${d.toLocaleString(this.locale || navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }) + ", " + d.toLocaleDateString(this.locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(",", "")}`;
+                return html`${d.toLocaleString(this.locale || navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }) + ", " + this._formatDate(d)}`;
               case 'system':
-                return html`${d.toLocaleTimeString(navigator.language, { timeStyle: 'short' }).replace(" ", "") + ", " + d.toLocaleDateString(navigator.language).replace(",", "")}`;
+                return html`${d.toLocaleTimeString(this.locale || navigator.language, { timeStyle: 'short' }).replace(" ", "") + ", " + this._formatDate(d)}`;
             }
           }
         }
@@ -439,11 +439,11 @@ export class PlatinumWeatherCard extends LitElement {
         const d = new Date(this.hass.states[this._config.entity_update_time].state);
         switch (this.timeFormat) {
           case '12hour':
-            return html`${d.toLocaleString(this.locale || navigator.language, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(" ", "") + ", " + d.toLocaleDateString(this.locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(",", "")}`;
+            return html`${d.toLocaleString(this.locale || navigator.language, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(" ", "") + ", " + this._formatDate(d)}`;
           case '24hour':
-            return html`${d.toLocaleString(this.locale || navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }) + ", " + d.toLocaleDateString(this.locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(",", "")}`;
+            return html`${d.toLocaleString(this.locale || navigator.language, { hour: '2-digit', minute: '2-digit', hour12: false }) + ", " + this._formatDate(d)}`;
           case 'system':
-            return html`${d.toLocaleTimeString(navigator.language, { timeStyle: 'short' }).replace(" ", "") + ", " + d.toLocaleDateString(navigator.language).replace(",", "")}`;
+            return html`${d.toLocaleTimeString(this.locale || navigator.language, { timeStyle: 'short' }).replace(" ", "") + ", " + this._formatDate(d)}`;
         }
       }
     }
@@ -2073,6 +2073,7 @@ export class PlatinumWeatherCard extends LitElement {
     const windDirections_he = ['צפון', 'צ-צ-מז', 'צפון מזרח', 'מז-צ-מז', 'מזרח', 'מז-ד-מז', 'דרום מזרח', 'ד-ד-מז', 'דרום', 'ד-ד-מע', 'דרום מערב', 'מע-ד-מע', 'מערב', 'מע-צ-מע', 'צפון מערב', 'צ-צ-מע', 'צפון'];
     const windDirections_da = ['N', 'NNØ', 'NØ', 'ØNØ', 'Ø', 'ØSØ', 'SØ', 'SSØ', 'S', 'SSV', 'SV', 'VSV', 'V', 'VNV', 'NV', 'NNV', 'N'];
     const windDirections_ru = ['С', 'ССВ', 'СВ', 'ВСВ', 'В', 'ВЮВ', 'ЮВ', 'ЮЮВ', 'Ю', 'ЮЮЗ', 'ЮЗ', 'ЗЮЗ', 'З', 'ЗСЗ', 'СЗ', 'ССЗ', 'С'];
+    const windDirections_es = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSO', 'SO', 'OSO', 'O', 'ONO', 'NO', 'NNO', 'N'];
     const windDirections_bg = ['С', 'ССИ', 'СИ', 'ИСИ', 'И', 'ИЮИ', 'ЮИ', 'ЮЮИ', 'Ю', 'ЮЮЗ', 'ЮЗ', 'ЗЮЗ', 'З', 'ЗСЗ', 'СЗ', 'ССЗ', 'С'];
 
     switch (this.locale) {
@@ -2083,6 +2084,8 @@ export class PlatinumWeatherCard extends LitElement {
         return windDirections_de;
       case "nl":
         return windDirections_nl;
+      case "es":
+        return windDirections_es;
       case "he":
         return windDirections_he;
       case "ru":
@@ -2256,7 +2259,30 @@ export class PlatinumWeatherCard extends LitElement {
 
   // is12Hour - returns true if 12 hour clock or false if 24
   get timeFormat(): timeFormat {
-    return this._config.option_time_format ? this._config.option_time_format : 'system';
+    if (this._config.option_time_format && this._config.option_time_format !== 'system') {
+      return this._config.option_time_format;
+    }
+    // Read from HA system settings (Settings → Profile → Time format)
+    const haTimeFormat = this.hass?.locale?.time_format;
+    if (haTimeFormat === '12') return '12hour';
+    if (haTimeFormat === '24') return '24hour';
+    return 'system';
+  }
+
+  private _formatDate(d: Date): string {
+    const haDateFormat = (this.hass?.locale as any)?.date_format;
+    const locale = this.locale || navigator.language;
+    switch (haDateFormat) {
+      case 'DMY':
+        return d.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(',', '');
+      case 'MDY':
+        return d.toLocaleDateString(locale, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' }).replace(',', '');
+      case 'YMD':
+        return d.toLocaleDateString(locale, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).replace(',', '');
+      default:
+        // 'language' or undefined — use locale default
+        return d.toLocaleDateString(locale, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' }).replace(',', '');
+    }
   }
 
   // get the icon that matches the current conditions
@@ -2453,6 +2479,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "מרגיש כמו";
       case 'da': return "Føles som";
       case 'ru': return "Ощущается как";
+      case 'es': return "Sensación";
       case 'ua': return "Відчувається як";
       case 'bg': return "Усеща се като";
       default: return "Feels like";
@@ -2469,6 +2496,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "נצפה מקסימום";
       case 'da': return "Observeret Max";
       case 'ru': return "Наблюдаемый макс.";
+      case 'es': return "Observado Max";
       case 'ua': return "Спостережуваний макс.";
       case 'bg': return "Наблюдавано макс.";
       default: return "Observed Max";
@@ -2485,6 +2513,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "נצפה מינימום";
       case 'da': return "Observeret Min";
       case 'ru': return "Наблюдаемый мин.";
+      case 'es': return "Observado Min";
       case 'ua': return "Спостережуваний мін.";
       case 'bg': return "Наблюдавано мин.";
       default: return "Observed Min";
@@ -2501,6 +2530,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "נצפה מקס";
       case 'da': return "Obs Max";
       case 'ru': return "Набл макс.";
+      case 'es': return "Obs Max";
       case 'ua': return "Спост макс.";
       case 'bg': return "Набл. макс.";
       default: return "Obs Max";
@@ -2517,6 +2547,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "נצפה מינ";
       case 'da': return "Obs Min";
       case 'ru': return "Набл мин.";
+      case 'es': return "Obs Min";
       case 'ua': return "Спост мін.";
       case 'bg': return "Набл. мин.";
       default: return "Obs Min";
@@ -2533,6 +2564,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "מקסימלי היום";
       case 'da': return "Højeste i dag";
       case 'ru': return "Макс сегодня";
+      case 'es': return "Máx hoy";
       case 'ua': return "Макс сьогодні";
       case 'bg': return "Макс днес";
       default: return "Forecast Max";
@@ -2549,6 +2581,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "דקות היום";
       case 'da': return "Laveste i dag";
       case 'ru': return "Мин сегодня";
+      case 'es': return "Mín hoy";
       case 'ua': return "Мін сьогодні";
       case 'bg': return "Мин днес";
       default: return "Forecast Min";
@@ -2565,6 +2598,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "תַחֲזִית";
       case 'da': return "Vejrudsigt";
       case 'ru': return "Прогноз";
+      case 'es': return "Previsión";
       case 'ua': return "Прогноз";
       case 'bg': return "Прогноза";
       default: return "Forecast";
@@ -2581,6 +2615,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "תחזית מחר";
       case 'da': return "Prog i morgen";
       case 'ru': return "Прогноз на завтра";
+      case 'es': return "Prev mañana";
       case 'ua': return "Прогноз на завтра";
       case 'bg': return "Прогноза за утре";
       default: return "Fore Tom";
@@ -2597,6 +2632,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "תַחֲזִית";
       case 'da': return "Prog";
       case 'ru': return "Прогноз";
+      case 'es': return "Prev";
       case 'ua': return "Прогноз";
       case 'bg': return "Прогноза";
       default: return "Fore";
@@ -2613,6 +2649,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "UV";
       case 'da': return "UV";
       case 'ru': return "УФ";
+      case 'es': return "UV";
       case 'ua': return "УФ";
       case 'bg': return "UV";
       default: return "UV";
@@ -2629,6 +2666,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "אֵשׁ";
       case 'da': return "Brand";
       case 'ru': return "Огонь";
+      case 'es': return "Fuego";
       case 'ua': return "Вогонь";
       case 'bg': return "Пожар";
       default: return "Fire";
@@ -2645,6 +2683,7 @@ export class PlatinumWeatherCard extends LitElement {
       case 'he': return "נשיבה";
       case 'da': return "Vindstød";
       case 'ru': return "Порыв";
+      case 'es': return "Ráfaga";
       case 'ua': return "Порив";
       case 'bg': return "Пориви";
       default: return "Gust";
