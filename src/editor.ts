@@ -405,6 +405,10 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
     return this._config?.entity_sun || '';
   }
 
+  get _entity_moon(): string {
+    return this._config?.entity_moon || '';
+  }
+
   get _entity_pop(): string {
     return this._config?.entity_pop || '';
   }
@@ -651,6 +655,9 @@ get _forecast_type(): string {
         case 'sun_following':
           entities.add('entity_sun');
           break;
+        case 'moon':
+          entities.add('entity_moon');
+          break;
         case 'pop':
           entities.add('entity_pop');
           break;
@@ -798,6 +805,13 @@ get _forecast_type(): string {
         </ha-entity-picker>
       ` : '';
 
+    const entity_moon = entities.has("entity_moon") ?
+      html`
+        <ha-entity-picker .hass=${this.hass} .configValue=${'entity_moon'} .value=${this._entity_moon} .includeDomains=${['sensor']}
+          name="entity_moon" label="Moon Phase Entity" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+        </ha-entity-picker>
+      ` : '';
+
     const entity_pop = entities.has("entity_pop") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_pop'} .value=${this._entity_pop} .includeDomains=${['sensor', 'weather']}
@@ -926,6 +940,7 @@ get _forecast_type(): string {
       ${entity_wind_gust_kt}
       ${entity_visibility}
       ${entity_sun}
+      ${entity_moon}
       ${entity_pop}
       ${entity_pos}
       ${entity_possible_tomorrow}
@@ -1102,6 +1117,7 @@ get _forecast_type(): string {
       ['temp_minimums',     'Observed/forecast min'],
       ['sun_next',          'Next sun rise/set time'],
       ['sun_following',     'Following sun rise/set time'],
+      ['moon',              'Moon phase'],
       ['pop',               'Chance of rain'],
       ['popforecast',       'Rainfall forecast'],
       ['possible_today',    "Today's forecast rainfall"],
