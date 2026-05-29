@@ -813,13 +813,13 @@ export class PlatinumWeatherCard extends LitElement {
         html`
           <li class="f-slot-horiz-text">
             <span>
-              <div class="slot-text highTemp">${maxTemp ? Math.round(Number(maxTemp)) : '---'}</div>
+              <div class="slot-text highTemp">${maxTemp ? Number(maxTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 }) : '---'}</div>
               ${tempUnit}
             </span>
           </li>
           <li class="f-slot-horiz-text">
             <span>
-              <div class="slot-text lowTemp">${minTemp ? Math.round(Number(minTemp)) : '---'}</div>
+              <div class="slot-text lowTemp">${minTemp ? Number(minTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 }) : '---'}</div>
               ${tempUnit}
             </span>
           </li>`
@@ -829,9 +829,9 @@ export class PlatinumWeatherCard extends LitElement {
           html`
             <li class="f-slot-horiz-text">
               <span>
-                <div class="slot-text highTemp">${maxTemp ? Math.round(Number(maxTemp)) : "---"}</div>
+                <div class="slot-text highTemp">${maxTemp ? Number(maxTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 }) : "---"}</div>
                 <div class="slot-text slash">/</div>
-                <div class="slot-text lowTemp">${minTemp ? Math.round(Number(minTemp)) : "---"}</div>
+                <div class="slot-text lowTemp">${minTemp ? Number(minTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 }) : "---"}</div>
                 ${tempUnit}
               </span>
             </li>`
@@ -839,9 +839,9 @@ export class PlatinumWeatherCard extends LitElement {
           html`
             <li class="f-slot-horiz-text">
               <span>
-                <div class="slot-text lowTemp">${minTemp ? Math.round(Number(minTemp)) : "---"}</div>
+                <div class="slot-text lowTemp">${minTemp ? Number(minTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 }) : "---"}</div>
                 <div class="slot-text slash">/</div>
-                <div class="slot-text highTemp">${maxTemp ? Math.round(Number(maxTemp)) : "---"}</div>
+                <div class="slot-text highTemp">${maxTemp ? Number(maxTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 }) : "---"}</div>
                 ${tempUnit}
               </span>
             </li>
@@ -860,11 +860,11 @@ export class PlatinumWeatherCard extends LitElement {
         //console.info(`getForecast-H precip_prob: ${popData}`);
         }
       //const popData = this._getForecastPropFromWeather(this.hass.states[popEntity].attributes.forecast, forecastDate, 'precipitation_probability');
-        pop = popEntity ? html`<li class="f-slot-horiz-text"><span><div class="slot-text pop">${this.hass.states[popEntity] && popData !== undefined ? Math.round(Number(popData)) : "---"}</div><div class="unit">%</div></span></li>` : html``;
+        pop = popEntity && this._config.option_show_forecast_pop !== false ? html`<li class="f-slot-horiz-text"><span><div class="slot-text pop">${this.hass.states[popEntity] && popData !== undefined ? Math.round(Number(popData)) : "---"}</div><div class="unit">%</div></span></li>` : html``;
       } else {
         start = this._config.entity_pop_1 ? this._config.entity_pop_1.match(/(\d+)(?!.*\d)/g) : false;
         const popEntity = start && this._config.entity_pop_1 ? this._config.entity_pop_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
-        pop = start ? html`<li class="f-slot-horiz-text"><span><div class="slot-text pop">${popEntity && this.hass.states[popEntity] ? Math.round(Number(this.hass.states[popEntity].state)) : "---"}</div><div class="unit">%</div></span></li>` : html``;
+        pop = start && this._config.option_show_forecast_pop !== false ? html`<li class="f-slot-horiz-text"><span><div class="slot-text pop">${popEntity && this.hass.states[popEntity] ? Math.round(Number(this.hass.states[popEntity].state)) : "---"}</div><div class="unit">%</div></span></li>` : html``;
       }
       if (this._config.entity_pos_1?.match('^weather.')) {
         const posEntity = this._config.entity_pos_1;
@@ -1016,12 +1016,12 @@ export class PlatinumWeatherCard extends LitElement {
       const min = minTemp ? html`
         <div class="f-slot-vert">
           <div class="temp-label">Min: </div>
-          <div class="low-temp">${Math.round(Number(minTemp))}</div>${tempUnit}
+          <div class="low-temp">${Number(minTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 })}</div>${tempUnit}
         </div>` : html`---`;
       const max = maxTemp ? html`
         <div class="f-slot-vert">
           <div class="temp-label">Max: </div>
-          <div class="high-temp">${Math.round(Number(maxTemp))}</div>${tempUnit}
+          <div class="high-temp">${Number(maxTemp).toLocaleString(this.locale, { minimumFractionDigits: this._config.option_forecast_decimals ? 1 : 0, maximumFractionDigits: this._config.option_forecast_decimals ? 1 : 0 })}</div>${tempUnit}
         </div>` : html`---`;
       if (this._config.entity_pop_1?.match('^weather.')) {
         const popEntity = this._config.entity_pop_1;
@@ -1801,7 +1801,7 @@ export class PlatinumWeatherCard extends LitElement {
   get slotWind(): TemplateResult {
     const beaufort = this._config.entity_wind_speed && this._config.option_show_beaufort ? html`<div class="slot-text">BFT: ${this.currentBeaufort} -&nbsp;</div>` : "";
     const bearing = this._config.entity_wind_bearing ? html`<div class="slot-text">${this.currentWindBearing}&nbsp;</div>` : "";
-    const units = html`<div class="slot-text unit">${this.getUOM('length')}/h</div>`;
+    const units = html`<div class="slot-text unit">${this.currentWindSpeedUnit}</div>`;
     const speed = this._config.entity_wind_speed ? html`<div class="slot-text">${this.currentWindSpeed}</div>${units}&nbsp;` : "";
     const gust = this._config.entity_wind_gust ? html`<div class="slot-text">(${this.localeTextGust} ${this.currentWindGust}</div>${units})` : "";
     return html`
@@ -2019,6 +2019,16 @@ export class PlatinumWeatherCard extends LitElement {
           ? Math.round(Number(this.hass.states[entity].attributes.wind_speed)).toLocaleString(this.locale)
           : '---'
       : '---';
+  }
+
+  get currentWindSpeedUnit(): string {
+    const entity = this._config.entity_wind_speed;
+    if (!entity || !this.hass.states[entity]) return this.getUOM('length') + '/h';
+    if (entity.match('^weather.') !== null) {
+      const unit = this.hass.states[entity].attributes.wind_speed_unit;
+      return unit !== undefined ? unit : this.getUOM('length') + '/h';
+    }
+    return this.getUOM('length') + '/h';
   }
 
   get currentWindGust(): string {
@@ -2361,7 +2371,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get iconRain(): string {
-    return `rainy-3`;
+    return `rainy-3-${this.dayOrNight}`;
   }
 
   get iconDust(): string {
@@ -2385,7 +2395,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get iconHeavyShowers(): string {
-    return `rainy-2-${this.dayOrNight}`;
+    return `rainy-3`;
   }
 
   get iconCyclone(): string {
@@ -2451,12 +2461,32 @@ export class PlatinumWeatherCard extends LitElement {
 
   get localeTextObservedMax(): string {
     switch (this.locale) {
+      case 'it': return "Osservata Max";
+      case 'fr': return "Observé Max";
+      case 'de': return "Beobachtet Max";
+      case 'nl': return "Opgemerkt Max";
+      case 'pl': return "Zaobserwowany Max";
+      case 'he': return "נצפה מקסימום";
+      case 'da': return "Observeret Max";
+      case 'ru': return "Наблюдаемый макс.";
+      case 'ua': return "Спостережуваний макс.";
+      case 'bg': return "Наблюдавано макс.";
       default: return "Observed Max";
     }
   }
 
   get localeTextObservedMin(): string {
     switch (this.locale) {
+      case 'it': return "Osservata Min";
+      case 'fr': return "Observé Min";
+      case 'de': return "Beobachtet Min";
+      case 'nl': return "Opgemerkt Min";
+      case 'pl': return "Zaobserwowany Min";
+      case 'he': return "נצפה מינימום";
+      case 'da': return "Observeret Min";
+      case 'ru': return "Наблюдаемый мин.";
+      case 'ua': return "Спостережуваний мін.";
+      case 'bg': return "Наблюдавано мин.";
       default: return "Observed Min";
     }
   }

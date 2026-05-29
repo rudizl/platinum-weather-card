@@ -554,6 +554,14 @@ get _forecast_type(): string {
     return this._config?.option_today_rainfall_decimals === true; // default off
   }
 
+  get _option_forecast_decimals(): boolean {
+    return this._config?.option_forecast_decimals === true; // default off
+  }
+
+  get _option_show_forecast_pop(): boolean {
+    return this._config?.option_show_forecast_pop !== false; // default on
+  }
+
   get _option_pressure_decimals(): pressureDecimals | null {
     return this._config?.option_pressure_decimals || null;
   }
@@ -1220,9 +1228,23 @@ get _forecast_type(): string {
           </ha-formfield>
         </div>
         <div>
+          <ha-formfield .label=${'Forecast Temperature Decimals'}>
+            <ha-switch .checked=${this._option_forecast_decimals !== false} .configValue=${'option_forecast_decimals'}
+              @change=${this._valueChanged}>
+            </ha-switch>
+          </ha-formfield>
         </div>
       </div>
       <div class="side-by-side">
+        <div>
+          <ha-formfield .label=${'Show Precipitation Probability in Forecast'}>
+            <ha-switch .checked=${this._option_show_forecast_pop !== false} .configValue=${'option_show_forecast_pop'}
+              @change=${this._valueChanged}>
+            </ha-switch>
+          </ha-formfield>
+        </div>
+        <div>
+        </div>
         <div>
           <ha-formfield .label=${'Colour Fire Danger'}>
             <ha-switch .checked=${this._option_color_fire_danger !== false} .configValue=${'option_color_fire_danger'}

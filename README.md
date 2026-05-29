@@ -14,6 +14,13 @@ This fork is based on [tommyjlong/platinum-weather-card](https://github.com/tomm
 <details>
 <summary><strong>Changelog</strong></summary>
 
+**v1.3.0-beta.1** *(pre-release)*
+- Fix rainy/pouring icon associations — pouring now shows more intense icon than rainy
+- Add `localeTextObservedMax`/`localeTextObservedMin` translations for all supported languages
+- Add `currentWindSpeedUnit` — reads wind speed unit directly from weather entity attributes
+- Add `option_forecast_decimals` — show 1 decimal place in forecast temperatures
+- Add `option_show_forecast_pop` — allow hiding precipitation probability in forecast section
+
 **v1.2.3**
 - Fix editor dropdowns still not selectable — root cause was `mwc-list-item` removed in HA 2024.x; replaced with `ha-list-item` (136 occurrences)
 
