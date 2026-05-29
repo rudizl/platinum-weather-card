@@ -2493,12 +2493,32 @@ export class PlatinumWeatherCard extends LitElement {
 
   get localeTextObsMax(): string {
     switch (this.locale) {
+      case 'it': return "Oss Max";
+      case 'fr': return "Obs Max";
+      case 'de': return "Beob Max";
+      case 'nl': return "Opgem Max";
+      case 'pl': return "Obs Max";
+      case 'he': return "נצפה מקס";
+      case 'da': return "Obs Max";
+      case 'ru': return "Набл макс.";
+      case 'ua': return "Спост макс.";
+      case 'bg': return "Набл. макс.";
       default: return "Obs Max";
     }
   }
 
   get localeTextObsMin(): string {
     switch (this.locale) {
+      case 'it': return "Oss Min";
+      case 'fr': return "Obs Min";
+      case 'de': return "Beob Min";
+      case 'nl': return "Opgem Min";
+      case 'pl': return "Obs Min";
+      case 'he': return "נצפה מינ";
+      case 'da': return "Obs Min";
+      case 'ru': return "Набл мин.";
+      case 'ua': return "Спост мін.";
+      case 'bg': return "Набл. мин.";
       default: return "Obs Min";
     }
   }
