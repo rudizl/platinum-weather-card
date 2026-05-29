@@ -45,8 +45,9 @@ export default [
   {
     input: 'src/platinum-weather-card.ts',
     output: {
-      dir: 'dist',
+      file: 'dist/platinum-weather-card.js',
       format: 'es',
+      inlineDynamicImports: true,
     },
     plugins: [...plugins],
   },
