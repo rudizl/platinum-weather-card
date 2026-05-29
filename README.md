@@ -12,6 +12,10 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog</strong></summary>
 
+**v1.3.0-beta.4** *(pre-release)*
+- Add `moon` slot — displays moon phase from any HA Moon integration sensor (`entity_moon`), with dynamic phase-specific icon (`mdi:moon-*`) and translated phase names for all 11 supported locales (bg, ru, ua, de, fr, it, nl, pl, da, es, he)
+- Default slot r4 changed from `fire_danger` to `moon`
+
 **v1.3.0-beta.3** *(pre-release)*
 - Fix slot editor dropdowns correctly this time — beta.2 used `.value` on `<select>` but in lit-html dynamic children are inserted into the DOM *after* property bindings, so `select.value` was set before the `<option>` elements existed. Replaced shared `slotValues` TemplateResult with a `_slotOptions(currentValue)` method using `?selected` on each option
 
