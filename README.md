@@ -12,27 +12,17 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog</strong></summary>
 
-**v1.3.0-beta.5** *(pre-release)*
-- Fix browser caching after HACS updates — switched to single bundled file; previously hash-named dependency files were served without a cache-busting version parameter, causing stale code to persist after updates
-
-**v1.3.0-beta.4** *(pre-release)*
-- Add `moon` slot — displays moon phase from any HA Moon integration sensor (`entity_moon`), with dynamic phase-specific icon (`mdi:moon-*`) and translated phase names for all 11 supported locales (bg, ru, ua, de, fr, it, nl, pl, da, es, he)
-- Default slot r4 changed from `fire_danger` to `moon`
-
-**v1.3.0-beta.3** *(pre-release)*
-- Fix slot editor dropdowns correctly this time — beta.2 used `.value` on `<select>` but in lit-html dynamic children are inserted into the DOM *after* property bindings, so `select.value` was set before the `<option>` elements existed. Replaced shared `slotValues` TemplateResult with a `_slotOptions(currentValue)` method using `?selected` on each option
-
-**v1.3.0-beta.2** *(pre-release)*
-- Fix all 22 editor dropdowns not showing the saved value when opening the card editor — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration
-
-**v1.3.0-beta.1** *(pre-release)*
+**v1.3.0**
+- Fix all card editor dropdowns not showing saved values — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration when opening the editor
 - Fix rainy/pouring icon associations — pouring now shows a more intense icon than rainy
-- Add `localeTextObservedMax`/`localeTextObservedMin` translations for all supported languages
-- Add `currentWindSpeedUnit` — reads wind speed unit directly from weather entity attributes
+- Add `moon` slot — displays moon phase from a HA Moon integration sensor (`entity_moon`), with dynamic phase-specific icon (`mdi:moon-*`) and translated phase names for all 11 supported locales (bg, ru, ua, de, fr, it, nl, pl, da, es, he); default slot r4 changed from `fire_danger` to `moon`
 - Add `option_forecast_decimals` — show 1 decimal place in forecast temperatures
 - Add `option_show_forecast_pop` — allow hiding precipitation probability in the forecast section
+- Add `currentWindSpeedUnit` — reads wind speed unit directly from weather entity attributes
+- Add `localeTextObservedMax`/`localeTextObservedMin` translations for all supported languages
 - Add Spanish (`es`) locale
-- HA profile integration — time and date format read from HA Settings → Profile
+- HA profile integration — time and date format now read from HA Settings → Profile when set to `system`
+- Single-file build — eliminates browser caching issues after HACS updates
 
 **v1.2.4**
 - Definitive fix for broken editor dropdowns — replaced all `ha-select`/`ha-list-item` with native `<select>` elements styled to match the HA editor
@@ -160,7 +150,7 @@ Up to 8 rows of data in 2 columns. The required entities update dynamically base
 | `temp_minimums` | Observed and forecast min | Obs Min 13°C (Fore 1°C) |
 | `sun_next` | Next sunrise or sunset | 7:10pm |
 | `sun_following` | Following sunrise or sunset | Mon 6:35am |
-| `moon` | Moon phase with translated name and phase-specific icon | Растяща луна |
+| `moon` | Moon phase with dynamic icon and translated name | Растяща луна |
 | `pop` | Chance of rain | 10% |
 | `popforecast` | Rainfall forecast | 10% - 3 to 6mm |
 | `possible_today` | Forecast rain today | Forecast 15-25mm |
@@ -221,7 +211,7 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 | `double_tap_action` | Action | none | Action on double-tap |
 | `option_static_icons` | Boolean | `false` | Use non-animated icons |
 | `option_time_format` | String | `system` | `system` (follows HA Settings → Profile), `12hour` or `24hour` |
-| `option_locale` | String | none | Locale for timestamp formatting |
+| `option_locale` | String | none | Locale for timestamp and moon phase formatting |
 | `text_update_time_prefix` | String | none | Prefix for the update time display |
 
 ## Overview Settings
@@ -302,7 +292,7 @@ Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressu
 | `forecast_type` | String | `daily` | `daily`, `hourly`, or `twice_daily` |
 | `daily_forecast_layout` | String | `horizontal` | `horizontal` or `vertical` |
 | `daily_forecast_days` | Number | `5` | Days to show: 1–5 (horizontal), 1–7 (vertical) |
-| `option_tooltips` | Boolean | `false` | Tooltips on horizontal forecast |
+| `option_tooltips` | Boolean | `false` | Tooltips on horizontal forecast |\
 | `daily_extended_forecast_days` | Number | `7` | Extended forecast days (vertical only, 0–7) |
 | `option_daily_color_fire_danger` | Boolean | `true` | Colour fire danger (vertical only) |
 | `old_daily_format` | Boolean | `false` | Stack max/min vertically instead of side by side |
