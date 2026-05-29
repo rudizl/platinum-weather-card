@@ -1895,13 +1895,13 @@ export class PlatinumWeatherCard extends LitElement {
     switch (this.locale) {
       case 'bg': switch (phase) {
         case 'new_moon':        return 'Новолуние';
-        case 'waxing_crescent': return 'Растяща сърповидна';
+        case 'waxing_crescent': return 'Растящ полумесец';
         case 'first_quarter':   return 'Първа четвърт';
-        case 'waxing_gibbous':  return 'Растяща гърбица';
+        case 'waxing_gibbous':  return 'Растяща луна';
         case 'full_moon':       return 'Пълнолуние';
-        case 'waning_gibbous':  return 'Намаляваща гърбица';
+        case 'waning_gibbous':  return 'Намаляваща луна';
         case 'last_quarter':    return 'Последна четвърт';
-        case 'waning_crescent': return 'Намаляваща сърповидна';
+        case 'waning_crescent': return 'Намаляващ полумесец';
         default: break;
       } break;
       case 'ru': switch (phase) {
@@ -1939,11 +1939,11 @@ export class PlatinumWeatherCard extends LitElement {
       } break;
       case 'fr': switch (phase) {
         case 'new_moon':        return 'Nouvelle lune';
-        case 'waxing_crescent': return 'Premier croissant';
+        case 'waxing_crescent': return 'Croissant';
         case 'first_quarter':   return 'Premier quartier';
-        case 'waxing_gibbous':  return 'Gibbeuse croissante';
+        case 'waxing_gibbous':  return 'Lune croissante';
         case 'full_moon':       return 'Pleine lune';
-        case 'waning_gibbous':  return 'Gibbeuse décroissante';
+        case 'waning_gibbous':  return 'Lune décroissante';
         case 'last_quarter':    return 'Dernier quartier';
         case 'waning_crescent': return 'Dernier croissant';
         default: break;
@@ -1952,9 +1952,9 @@ export class PlatinumWeatherCard extends LitElement {
         case 'new_moon':        return 'Luna nuova';
         case 'waxing_crescent': return 'Luna crescente';
         case 'first_quarter':   return 'Primo quarto';
-        case 'waxing_gibbous':  return 'Gibbosa crescente';
+        case 'waxing_gibbous':  return 'Luna quasi piena';
         case 'full_moon':       return 'Luna piena';
-        case 'waning_gibbous':  return 'Gibbosa calante';
+        case 'waning_gibbous':  return 'Luna calante';
         case 'last_quarter':    return 'Ultimo quarto';
         case 'waning_crescent': return 'Falce calante';
         default: break;
@@ -1974,9 +1974,9 @@ export class PlatinumWeatherCard extends LitElement {
         case 'new_moon':        return 'Nów';
         case 'waxing_crescent': return 'Sierp rosnący';
         case 'first_quarter':   return 'Pierwsza kwadra';
-        case 'waxing_gibbous':  return 'Przybywający';
+        case 'waxing_gibbous':  return 'Rosnący księżyc';
         case 'full_moon':       return 'Pełnia';
-        case 'waning_gibbous':  return 'Ubywający';
+        case 'waning_gibbous':  return 'Malejący księżyc';
         case 'last_quarter':    return 'Ostatnia kwadra';
         case 'waning_crescent': return 'Sierp ubywający';
         default: break;
@@ -1985,9 +1985,9 @@ export class PlatinumWeatherCard extends LitElement {
         case 'new_moon':        return 'Nymåne';
         case 'waxing_crescent': return 'Voksende måne';
         case 'first_quarter':   return 'Første kvartal';
-        case 'waxing_gibbous':  return 'Voksende knold';
+        case 'waxing_gibbous':  return 'Voksende måne';
         case 'full_moon':       return 'Fuldmåne';
-        case 'waning_gibbous':  return 'Aftagende knold';
+        case 'waning_gibbous':  return 'Aftagende måne';
         case 'last_quarter':    return 'Sidste kvartal';
         case 'waning_crescent': return 'Aftagende måne';
         default: break;
@@ -1996,9 +1996,9 @@ export class PlatinumWeatherCard extends LitElement {
         case 'new_moon':        return 'Luna nueva';
         case 'waxing_crescent': return 'Creciente';
         case 'first_quarter':   return 'Cuarto creciente';
-        case 'waxing_gibbous':  return 'Gibosa creciente';
+        case 'waxing_gibbous':  return 'Luna creciente';
         case 'full_moon':       return 'Luna llena';
-        case 'waning_gibbous':  return 'Gibosa menguante';
+        case 'waning_gibbous':  return 'Luna menguante';
         case 'last_quarter':    return 'Cuarto menguante';
         case 'waning_crescent': return 'Menguante';
         default: break;
@@ -2007,9 +2007,9 @@ export class PlatinumWeatherCard extends LitElement {
         case 'new_moon':        return 'ירח חדש';
         case 'waxing_crescent': return 'סהר בגדילה';
         case 'first_quarter':   return 'רבע ראשון';
-        case 'waxing_gibbous':  return 'כמעט מלא (גדל)';
+        case 'waxing_gibbous':  return 'ירח גדל';
         case 'full_moon':       return 'ירח מלא';
-        case 'waning_gibbous':  return 'כמעט מלא (קטן)';
+        case 'waning_gibbous':  return 'ירח קטן';
         case 'last_quarter':    return 'רבע אחרון';
         case 'waning_crescent': return 'סהר בקטנה';
         default: break;
