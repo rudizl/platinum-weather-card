@@ -1014,14 +1014,14 @@ get _forecast_type(): string {
   private _optionOverviewEditor(): TemplateResult {
     return html`
       <div class="side-by-side">
-        <ha-select label="Overview Layout" .configValue=${'overview_layout'}
-          .value=${this._overview_layout} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @value-changed=${this._valueChanged}>
-          <ha-list-item></ha-list-item>
-          <ha-list-item value="complete">complete</ha-list-item>
-          <ha-list-item value="observations">observations</ha-list-item>
-          <ha-list-item value="forecast">forecast</ha-list-item>
-          <ha-list-item value="title only">title only</ha-list-item>
-        </ha-select>
+        <label class='mdc-label'>Overview Layout</label>
+        <select class='ha-select-compat' .configValue=${'overview_layout'} @change=${this._valueChanged}>
+          <option value=""></option>
+          <option value="complete">complete</option>
+          <option value="observations">observations</option>
+          <option value="forecast">forecast</option>
+          <option value="title only">title only</option>
+        </select>
         <div></div>
       </div>
       <div class="side-by-side">
@@ -1048,7 +1048,7 @@ get _forecast_type(): string {
     if (this._extended_use_attr === true) {
       const attrs = this.hass !== undefined && this.hass.states[this._entity_extended] !== undefined ? this.hass.states[this._entity_extended].attributes : [];
       for (const element in attrs) {
-        attr_names.push(html`<ha-list-item value="${element}">${element}</ha-list-item>`);
+        attr_names.push(html`<option value="${element}">${element}</option>`);
       }
     }
 
@@ -1086,115 +1086,131 @@ get _forecast_type(): string {
 
   private _sectionSlotsEditor(): TemplateResult {
     const slotValues = html`
-      <ha-list-item value="humidity">Current humidity</ha-list-item>
-      <ha-list-item value="rainfall">Today's recorded rainfall</ha-list-item>
-      <ha-list-item value="pressure">Current air pressure</ha-list-item>
-      <ha-list-item value="wind">Current wind conditions</ha-list-item>
-      <ha-list-item value="wind_kt">Current wind conditions kts</ha-list-item>
-      <ha-list-item value="visibility">Current visibility</ha-list-item>
-      <ha-list-item value="observed_max">Today's observed max</ha-list-item>
-      <ha-list-item value="observed_min">Today's observed min</ha-list-item>
-      <ha-list-item value="forecast_max">Today's forecast max</ha-list-item>
-      <ha-list-item value="forecast_min">Today's forecast min</ha-list-item>
-      <ha-list-item value="temp_next">Next temp min/max</ha-list-item>
-      <ha-list-item value="temp_following">Following temp min/max</ha-list-item>
-      <ha-list-item value="temp_maximums">Observed/forecast max</ha-list-item>
-      <ha-list-item value="temp_minimums">Observed/forecast min</ha-list-item>
-      <ha-list-item value="sun_next">Next sun rise/set time</ha-list-item>
-      <ha-list-item value="sun_following">Following sun rise/set time</ha-list-item>
-      <ha-list-item value="pop">Chance of rain</ha-list-item>
-      <ha-list-item value="popforecast">Rainfall forecast</ha-list-item>
-      <ha-list-item value="possible_today">Today's forecast rainfall</ha-list-item>
-      <ha-list-item value="possible_tomorrow">Tomorrow's forecast rainfall</ha-list-item>
-      <ha-list-item value="uv_summary">Today's uv forecast</ha-list-item>
-      <ha-list-item value="fire_danger">Today's fire danger</ha-list-item>
-      <ha-list-item value="custom1">Custom entity 1</ha-list-item>
-      <ha-list-item value="custom2">Custom entity 2</ha-list-item>
-      <ha-list-item value="custom3">Custom entity 3</ha-list-item>
-      <ha-list-item value="custom4">Custom entity 4</ha-list-item>
-      <ha-list-item value="empty">Blank slot</ha-list-item>
-      <ha-list-item value="remove">Remove slot</ha-list-item>`;
+      <option value="humidity">Current humidity</option>
+      <option value="rainfall">Today's recorded rainfall</option>
+      <option value="pressure">Current air pressure</option>
+      <option value="wind">Current wind conditions</option>
+      <option value="wind_kt">Current wind conditions kts</option>
+      <option value="visibility">Current visibility</option>
+      <option value="observed_max">Today's observed max</option>
+      <option value="observed_min">Today's observed min</option>
+      <option value="forecast_max">Today's forecast max</option>
+      <option value="forecast_min">Today's forecast min</option>
+      <option value="temp_next">Next temp min/max</option>
+      <option value="temp_following">Following temp min/max</option>
+      <option value="temp_maximums">Observed/forecast max</option>
+      <option value="temp_minimums">Observed/forecast min</option>
+      <option value="sun_next">Next sun rise/set time</option>
+      <option value="sun_following">Following sun rise/set time</option>
+      <option value="pop">Chance of rain</option>
+      <option value="popforecast">Rainfall forecast</option>
+      <option value="possible_today">Today's forecast rainfall</option>
+      <option value="possible_tomorrow">Tomorrow's forecast rainfall</option>
+      <option value="uv_summary">Today's uv forecast</option>
+      <option value="fire_danger">Today's fire danger</option>
+      <option value="custom1">Custom entity 1</option>
+      <option value="custom2">Custom entity 2</option>
+      <option value="custom3">Custom entity 3</option>
+      <option value="custom4">Custom entity 4</option>
+      <option value="empty">Blank slot</option>
+      <option value="remove">Remove slot</option>`;
 
     return html`
       <div class="side-by-side">
-        <ha-select label="Slot Left 1" .configValue=${'slot_l1'} .value=${this._slot_l1 || 'forecast_max'}
+        <label class='mdc-label'>Slot Left 1</label>
+        <select class='ha-select-compat' .configValue=${'slot_l1'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 1" .configValue=${'slot_r1'} .value=${this._slot_r1 || 'popforecast'}
+        </select>
+        <label class='mdc-label'>Slot Right 1</label>
+        <select class='ha-select-compat' .configValue=${'slot_r1'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 2" .configValue=${'slot_l2'} .value=${this._slot_l2 || 'forecast_min'}
+        <label class='mdc-label'>Slot Left 2</label>
+        <select class='ha-select-compat' .configValue=${'slot_l2'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 2" .configValue=${'slot_r2'} .value=${this._slot_r2 || 'humidity'}
+        </select>
+        <label class='mdc-label'>Slot Right 2</label>
+        <select class='ha-select-compat' .configValue=${'slot_r2'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 3" .configValue=${'slot_l3'} .value=${this._slot_l3 || 'wind'}
+        <label class='mdc-label'>Slot Left 3</label>
+        <select class='ha-select-compat' .configValue=${'slot_l3'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 3" .configValue=${'slot_r3'} .value=${this._slot_r3 || 'uv_summary'}
+        </select>
+        <label class='mdc-label'>Slot Right 3</label>
+        <select class='ha-select-compat' .configValue=${'slot_r3'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 4" .configValue=${'slot_l4'} .value=${this._slot_l4 || 'pressure'}
+        <label class='mdc-label'>Slot Left 4</label>
+        <select class='ha-select-compat' .configValue=${'slot_l4'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 4" .configValue=${'slot_r4'} .value=${this._slot_r4 || 'fire_danger'}
+        </select>
+        <label class='mdc-label'>Slot Right 4</label>
+        <select class='ha-select-compat' .configValue=${'slot_r4'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 5" .configValue=${'slot_l5'} .value=${this._slot_l5 || 'sun_next'}
+        <label class='mdc-label'>Slot Left 5</label>
+        <select class='ha-select-compat' .configValue=${'slot_l5'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 5" .configValue=${'slot_r5'} .value=${this._slot_r5 || 'sun_following'}
+        </select>
+        <label class='mdc-label'>Slot Right 5</label>
+        <select class='ha-select-compat' .configValue=${'slot_r5'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 6" .configValue=${'slot_l6'} .value=${this._slot_l6 || 'remove'}
+        <label class='mdc-label'>Slot Left 6</label>
+        <select class='ha-select-compat' .configValue=${'slot_l6'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 6" .configValue=${'slot_r6'} .value=${this._slot_r6 || 'remove'}
+        </select>
+        <label class='mdc-label'>Slot Right 6</label>
+        <select class='ha-select-compat' .configValue=${'slot_r6'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 7" .configValue=${'slot_l7'} .value=${this._slot_l7 || 'remove'}
+        <label class='mdc-label'>Slot Left 7</label>
+        <select class='ha-select-compat' .configValue=${'slot_l7'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 7" .configValue=${'slot_r7'} .value=${this._slot_r7 || 'remove'}
+        </select>
+        <label class='mdc-label'>Slot Right 7</label>
+        <select class='ha-select-compat' .configValue=${'slot_r7'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       <div class="side-by-side">
-        <ha-select label="Slot Left 8" .configValue=${'slot_l8'} .value=${this._slot_l8 || 'remove'}
+        <label class='mdc-label'>Slot Left 8</label>
+        <select class='ha-select-compat' .configValue=${'slot_l8'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
-        <ha-select label="Slot Right 8" .configValue=${'slot_r8'} .value=${this._slot_r8 || 'remove'}
+        </select>
+        <label class='mdc-label'>Slot Right 8</label>
+        <select class='ha-select-compat' .configValue=${'slot_r8'} @change=${this._valueChanged}>
           @value-changed=${this._valueChanged} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()}>
           ${slotValues}
-        </ha-select>
+        </select>
       </div>
       ${this._optional_entities}
     `;
@@ -1210,14 +1226,15 @@ get _forecast_type(): string {
             </ha-switch>
           </ha-formfield>
         </div>
-        <ha-select label="Pressure Decimals" .configValue=${'option_pressure_decimals'}
+        <label class='mdc-label'>Pressure Decimals</label>
+        <select class='ha-select-compat' .configValue=${'option_pressure_decimals'} @change=${this._valueChanged}>
           .value=${this._option_pressure_decimals ? this._option_pressure_decimals.toString() : null} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChangedNumber}>
-          <ha-list-item></ha-list-item>
-          <ha-list-item value="0">0</ha-list-item>
-          <ha-list-item value="1">1</ha-list-item>
-          <ha-list-item value="2">2</ha-list-item>
-          <ha-list-item value="3">3</ha-list-item>
-        </ha-select>
+          <option value=""></option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+        </select>
       </div>
       <div class="side-by-side">
         <div>
@@ -1263,7 +1280,7 @@ get _forecast_type(): string {
     if (this._daily_extended_use_attr === true) {
       const attrs = this.hass !== undefined && this.hass.states[this._entity_extended_1] !== undefined ? this.hass.states[this._entity_extended_1].attributes : [];
       for (const element in attrs) {
-        attr_names.push(html`<ha-list-item value="${element}">${element}</ha-list-item>`);
+        attr_names.push(html`<option value="${element}">${element}</option>`);
       }
     }
 
@@ -1272,13 +1289,13 @@ get _forecast_type(): string {
         name="weather_entity" label="Weather Entity with Forecasts" allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
-      <ha-select label="Forecast Type" .configValue=${'forecast_type'}
-        .value=${this._forecast_type ? this._forecast_type : null} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @value-changed=${this._valueChanged}>
-        <ha-list-item></ha-list-item>
-        <ha-list-item value="daily">Daily</ha-list-item>
-        <ha-list-item value="hourly">Hourly</ha-list-item>
-        <ha-list-item value="twice_daily">Twice Daily</ha-list-item>
-      </ha-select>
+      <label class='mdc-label'>Forecast Type</label>
+      <select class='ha-select-compat' .configValue=${'forecast_type'} @change=${this._valueChanged}>
+        <option value=""></option>
+        <option value="daily">Daily</option>
+        <option value="hourly">Hourly</option>
+        <option value="twice_daily">Twice Daily</option>
+      </select>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_icon_1'} .value=${this._entity_forecast_icon_1} .includeDomains=${['sensor', 'weather']}
         name="entity_forecast_icon_1" label="Entity Forecast Icon 1" allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
@@ -1328,40 +1345,40 @@ get _forecast_type(): string {
   private _optionDailyForecastEditor(): TemplateResult {
     return html`
       <div class="side-by-side">
-        <ha-select label="Daily Forecast Layout" .configValue=${'daily_forecast_layout'}
-          .value=${this._daily_forecast_layout} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @value-changed=${this._valueChanged}>
-          <ha-list-item></ha-list-item>
-          <ha-list-item value="horizontal">horizontal</ha-list-item>
-          <ha-list-item value="vertical">vertical</ha-list-item>
-        </ha-select>
+        <label class='mdc-label'>Daily Forecast Layout</label>
+        <select class='ha-select-compat' .configValue=${'daily_forecast_layout'} @change=${this._valueChanged}>
+          <option value=""></option>
+          <option value="horizontal">horizontal</option>
+          <option value="vertical">vertical</option>
+        </select>
         <div></div>
       </div>
       <div class="side-by-side">
-        <ha-select label="Daily Forecast Days" .configValue=${'daily_forecast_days'}
+        <label class='mdc-label'>Daily Forecast Days</label>
+        <select class='ha-select-compat' .configValue=${'daily_forecast_days'} @change=${this._valueChanged}>
           .value=${this._daily_forecast_days ? this._daily_forecast_days.toString() : null} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChangedNumber}>
-          <ha-list-item></ha-list-item>
-          <ha-list-item value="1">1</ha-list-item>
-          <ha-list-item value="2">2</ha-list-item>
-          <ha-list-item value="3">3</ha-list-item>
-          <ha-list-item value="4">4</ha-list-item>
-          <ha-list-item value="5">5</ha-list-item>
+          <option value=""></option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
           ${this._daily_forecast_layout === 'vertical' ? html`
-            <ha-list-item value="6">6</ha-list-item>
-            <ha-list-item value="7">7</ha-list-item>` : html``}
-        </ha-select>
-        ${this._daily_forecast_layout === 'vertical' ? html`<ha-select label="Daily Extended Days"
-          .configValue=${'daily_extended_forecast_days'} .value=${this._daily_extended_forecast_days !== null ?
-          this._daily_extended_forecast_days.toString() : null} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @selected=${this._valueChangedNumber}>
-          <ha-list-item></ha-list-item>
-          <ha-list-item value="0">0</ha-list-item>
-          <ha-list-item value="1">1</ha-list-item>
-          <ha-list-item value="2">2</ha-list-item>
-          <ha-list-item value="3">3</ha-list-item>
-          <ha-list-item value="4">4</ha-list-item>
-          <ha-list-item value="5">5</ha-list-item>
-          <ha-list-item value="6">6</ha-list-item>
-          <ha-list-item value="7">7</ha-list-item>
-        </ha-select>` : html`<div></div>`}
+            <option value="6">6</option>
+            <option value="7">7</option>` : html``}
+        </select>
+        ${this._daily_forecast_layout === 'vertical' ? html`<label class='mdc-label'>Daily Extended Days</label>
+          <select class='ha-select-compat' .configValue=${'daily_extended_forecast_days'} @change=${this._valueChangedNumber}>
+          <option value=""></option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+        </select>` : html`<div></div>`}
       </div>
 
         <div class="side-by-side">
@@ -1400,12 +1417,13 @@ get _forecast_type(): string {
         <div></div>
       </div>
       <div class="side-by-side">
-        <ha-select label="Time Format" .configValue=${'option_time_format'} .value=${this._option_time_format} @closed=${(ev: { stopPropagation: () => any; }) => ev.stopPropagation()} @value-changed=${this._valueChanged}>
-          <ha-list-item></ha-list-item>
-          <ha-list-item value="system">System</ha-list-item>
-          <ha-list-item value="12hour">12 hour</ha-list-item>
-          <ha-list-item value="24hour">24 hour</ha-list-item>
-        </ha-select>
+        <label class='mdc-label'>Time Format</label>
+        <select class='ha-select-compat' .configValue=${'option_time_format'} @change=${this._valueChanged}>
+          <option value=""></option>
+          <option value="system">System</option>
+          <option value="12hour">12 hour</option>
+          <option value="24hour">24 hour</option>
+        </select>
         <ha-textfield label="Locale" .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
         </ha-textfield>
       </div>
@@ -1717,6 +1735,30 @@ get _forecast_type(): string {
               /* --mdc-menu-min-width: var(--parentWidth); */
       --mdc-menu-item-height: 36px;
       --mdc-typography-subtitle1-font-size: 13px;
+    }
+    .ha-select-compat {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      border: 1px solid var(--divider-color, #e0e0e0);
+      border-radius: 4px;
+      background: var(--card-background-color, #fff);
+      color: var(--primary-text-color, #212121);
+      cursor: pointer;
+      box-sizing: border-box;
+    }
+    .ha-select-compat:focus {
+      outline: none;
+      border-color: var(--primary-color, #03a9f4);
+    }
+    label.mdc-label {
+      display: block;
+      font-size: 12px;
+      color: var(--secondary-text-color, #727272);
+      margin-top: 8px;
+      margin-bottom: 2px;
     }
     mwc-select {
       display: block;
