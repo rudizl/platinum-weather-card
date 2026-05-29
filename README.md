@@ -157,6 +157,7 @@ Up to 8 rows of data in 2 columns. The required entities update dynamically base
 | `temp_minimums` | Observed and forecast min | Obs Min 13°C (Fore 1°C) |
 | `sun_next` | Next sunrise or sunset | 7:10pm |
 | `sun_following` | Following sunrise or sunset | Mon 6:35am |
+| `moon` | Moon phase with translated name and phase-specific icon | Растяща луна |
 | `pop` | Chance of rain | 10% |
 | `popforecast` | Rainfall forecast | 10% - 3 to 6mm |
 | `possible_today` | Forecast rain today | Forecast 15-25mm |
@@ -193,8 +194,8 @@ Two layout options: **Horizontal** (default, up to 5 days) and **Vertical** (up 
 | Option | Type | Description |
 | ------ | ---- | ----------- |
 | Show Static Icons | Boolean | Disable animated icons |
-| Time Format | String | `system`, `12hour`, or `24hour` |
-| Locale | String | Locale for timestamp formatting |
+| Time Format | String | `system` (follows HA Settings → Profile), `12hour`, or `24hour` |
+| Locale | String | Locale for timestamp and moon phase formatting |
 
 ---
 
@@ -216,7 +217,7 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 | `hold_action` | Action | none | Action on hold |
 | `double_tap_action` | Action | none | Action on double-tap |
 | `option_static_icons` | Boolean | `false` | Use non-animated icons |
-| `option_time_format` | String | `system` | `system`, `12hour` or `24hour` |
+| `option_time_format` | String | `system` | `system` (follows HA Settings → Profile), `12hour` or `24hour` |
 | `option_locale` | String | none | Locale for timestamp formatting |
 | `text_update_time_prefix` | String | none | Prefix for the update time display |
 
@@ -277,6 +278,7 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 | `entity_wind_gust_kt` | String | none | Required for `wind_kt` |
 | `entity_visibility` | String | none | Required for `visibility` |
 | `entity_sun` | String | none | Required for `sun_next`, `sun_following` |
+| `entity_moon` | String | none | Required for `moon` (HA Moon integration sensor) |
 | `custom1_value`–`custom4_value` | String | none | Entity for custom slot |
 | `custom1_icon`–`custom4_icon` | Icon | none | MDI icon for custom slot |
 | `custom1_units`–`custom4_units` | String | none | Unit label for custom slot |
@@ -287,7 +289,7 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 | `option_pressure_decimals` | Number | `0` | Decimal places for pressure: `0`–`3` |
 | `option_color_fire_danger` | Boolean | `true` | Colour fire danger by severity |
 
-Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressure`, l5=`sun_next`, l6–l8=`remove`, r1=`popforecast`, r2=`humidity`, r3=`uv_summary`, r4=`fire_danger`, r5=`sun_following`, r6–r8=`remove`.
+Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressure`, l5=`sun_next`, l6–l8=`remove`, r1=`popforecast`, r2=`humidity`, r3=`uv_summary`, r4=`moon`, r5=`sun_following`, r6–r8=`remove`.
 
 ## Daily Forecast Section
 
