@@ -78,7 +78,6 @@ export class PlatinumWeatherCard extends LitElement {
   private hassExtended!: HassFormatEntityState;
 
 
-  // Returns true if an entity state is unavailable or unknown
   private _isUnavailable(state: string): boolean {
     return state === 'unknown' || state === 'unavailable';
   }
@@ -1332,9 +1331,7 @@ export class PlatinumWeatherCard extends LitElement {
     const pop = this._config.entity_pop && this.hass.states[this._config.entity_pop] !== undefined
       ? this._config.entity_pop.match('^weather.') === null
         ? (this._isUnavailable(this.hass.states[this._config.entity_pop].state) ? '---' : Math.round(Number(this.hass.states[this._config.entity_pop].state)))
-        : forecast_pop !== undefined
-          ? Math.round(Number(forecast_pop))
-          : '---'
+        : forecast_pop !== undefined ? Math.round(Number(forecast_pop)) : '---'
       : "---";
     const pop_units = pop !== "---" ? html`<div class="slot-text unit">%</div>` : html``;
 
@@ -1343,9 +1340,7 @@ export class PlatinumWeatherCard extends LitElement {
     const pos = this._config.entity_pos && this.hass.states[this._config.entity_pos] !== undefined
       ? this._config.entity_pos.match('^weather.') === null
         ? (this._isUnavailable(this.hass.states[this._config.entity_pos].state) ? '---' : this.hass.states[this._config.entity_pos].state)
-        : forecast_pos !== undefined
-          ? forecast_pos
-          : '---'
+        : forecast_pos !== undefined ? forecast_pos : '---'
       : "---";
     const pos_units = pos !== "---" ? html`<div class="slot-text unit">${this.getUOM('precipitation')}</div>` : html``;
     return html`
@@ -1391,9 +1386,11 @@ export class PlatinumWeatherCard extends LitElement {
 
     const pos = this._config.entity_pos && this.hass.states[this._config.entity_pos] !== undefined
       ? this._config.entity_pos.match('^weather.') === null
-        ? (this._isUnavailable(this.hass.states[this._config.entity_pos].state) ? '---' : this.hass.states[this._config.entity_pos].state)
+        ? this.hass.states[this._config.entity_pos].state
         : forecast_pos !== undefined
+      //: this.hass.states[this._config.entity_pos].attributes.forecast[0].precipitation !== undefined
           ? forecast_pos
+        //? this.hass.states[this._config.entity_pos].attributes.forecast[0].precipitation
           : '---'
       : "---";
     const units = pos !== "---" ? html`<div class="slot-text unit">${this.getUOM('precipitation')}</div>` : html``;
@@ -1913,116 +1910,60 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotCustom1(): TemplateResult {
-    const entityId = this._config.custom1_value;
-    const stateObj = entityId ? this.hass.states[entityId] : undefined;
-    const icon = this._config.custom1_icon ?? 'mdi:help-box';
-    const unit = this._config.custom1_units ?? '';
-    if (!stateObj) {
-      return html`
-        <li>
-          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
-          <div class="slot-text custom-1-text">---</div>
-        </li>
-      `;
-    }
-    const hass = this.hass as any;
-    const value = this.hassExtended?.formatEntityState
-      ? this.hassExtended.formatEntityState(stateObj)
-      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
+    const icon = this._config.custom1_icon ? this._config.custom1_icon : 'mdi:help-box';
+    const value = this._config.custom1_value && this.hass.states[this._config.custom1_value] !== undefined ? this.hass.states[this._config.custom1_value].state : 'unknown';
+    const unit = this._config.custom1_units ? this._config.custom1_units : '';
     return html`
-      <li title=${title}>
-        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+      <li>
+        <div class="slot-icon">
+          <ha-icon icon=${icon}></ha-icon>
+        </div>
         <div class="slot-text custom-1-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
 
-
-
   get slotCustom2(): TemplateResult {
-    const entityId = this._config.custom2_value;
-    const stateObj = entityId ? this.hass.states[entityId] : undefined;
-    const icon = this._config.custom2_icon ?? 'mdi:help-box';
-    const unit = this._config.custom2_units ?? '';
-    if (!stateObj) {
-      return html`
-        <li>
-          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
-          <div class="slot-text custom-2-text">---</div>
-        </li>
-      `;
-    }
-    const hass = this.hass as any;
-    const value = this.hassExtended?.formatEntityState
-      ? this.hassExtended.formatEntityState(stateObj)
-      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
+    const icon = this._config.custom2_icon ? this._config.custom2_icon : 'mdi:help-box';
+    const value = this._config.custom2_value && this.hass.states[this._config.custom2_value] !== undefined ? this.hass.states[this._config.custom2_value].state : 'unknown';
+    const unit = this._config.custom2_units ? this._config.custom2_units : '';
     return html`
-      <li title=${title}>
-        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+      <li>
+        <div class="slot-icon">
+          <ha-icon icon=${icon}></ha-icon>
+        </div>
         <div class="slot-text custom-2-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
 
-
-
   get slotCustom3(): TemplateResult {
-    const entityId = this._config.custom3_value;
-    const stateObj = entityId ? this.hass.states[entityId] : undefined;
-    const icon = this._config.custom3_icon ?? 'mdi:help-box';
-    const unit = this._config.custom3_units ?? '';
-    if (!stateObj) {
-      return html`
-        <li>
-          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
-          <div class="slot-text custom-3-text">---</div>
-        </li>
-      `;
-    }
-    const hass = this.hass as any;
-    const value = this.hassExtended?.formatEntityState
-      ? this.hassExtended.formatEntityState(stateObj)
-      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
+    const icon = this._config.custom3_icon ? this._config.custom3_icon : 'mdi:help-box';
+    const value = this._config.custom3_value && this.hass.states[this._config.custom3_value] !== undefined ? this.hass.states[this._config.custom3_value].state : 'unknown';
+    const unit = this._config.custom3_units ? this._config.custom3_units : '';
     return html`
-      <li title=${title}>
-        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+      <li>
+        <div class="slot-icon">
+          <ha-icon icon=${icon}></ha-icon>
+        </div>
         <div class="slot-text custom-3-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
 
-
-
   get slotCustom4(): TemplateResult {
-    const entityId = this._config.custom4_value;
-    const stateObj = entityId ? this.hass.states[entityId] : undefined;
-    const icon = this._config.custom4_icon ?? 'mdi:help-box';
-    const unit = this._config.custom4_units ?? '';
-    if (!stateObj) {
-      return html`
-        <li>
-          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
-          <div class="slot-text custom-4-text">---</div>
-        </li>
-      `;
-    }
-    const hass = this.hass as any;
-    const value = this.hassExtended?.formatEntityState
-      ? this.hassExtended.formatEntityState(stateObj)
-      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
+    const icon = this._config.custom4_icon ? this._config.custom4_icon : 'mdi:help-box';
+    const value = this._config.custom4_value && this.hass.states[this._config.custom4_value] !== undefined ? this.hass.states[this._config.custom4_value].state : 'unknown';
+    const unit = this._config.custom4_units ? this._config.custom4_units : '';
     return html`
-      <li title=${title}>
-        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+      <li>
+        <div class="slot-icon">
+          <ha-icon icon=${icon}></ha-icon>
+        </div>
         <div class="slot-text custom-4-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
-
-
 
   // getters that return the value to be shown
   get forecastIcon(): string {
@@ -2070,8 +2011,7 @@ export class PlatinumWeatherCard extends LitElement {
     if (entity.match('^weather.') === null)
       return this._isUnavailable(state) ? '---' : (Number(state)).toLocaleString(this.locale);
     return this.hass.states[entity].attributes.humidity !== undefined
-      ? (Number(this.hass.states[entity].attributes.humidity)).toLocaleString(this.locale)
-      : '---';
+      ? (Number(this.hass.states[entity].attributes.humidity)).toLocaleString(this.locale) : '---';
   }
 
   get currentRainfall(): string {
@@ -2085,13 +2025,13 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentPressure(): string {
     const entity = this._config.entity_pressure;
-    if (!entity || !this.hass.states[entity]) return '---';
-    const state = this.hass.states[entity].state;
     const places = this._config.option_pressure_decimals ? Math.max(Math.min(this._config.option_pressure_decimals, 3), 0) : 0;
-    if (entity.match('^weather.') === null)
-      return this._isUnavailable(state) ? '---' : (Number(state)).toLocaleString(this.locale, { minimumFractionDigits: places, maximumFractionDigits: places });
-    return this.hass.states[entity].attributes.pressure !== undefined
-      ? (Number(this.hass.states[entity].attributes.pressure)).toLocaleString(this.locale)
+    return entity && this.hass.states[entity]
+      ? entity.match('^weather.') === null
+        ? (Number(this.hass.states[entity].state)).toLocaleString(this.locale, { minimumFractionDigits: places, maximumFractionDigits: places })
+        : this.hass.states[entity].attributes.pressure !== undefined
+          ? (Number(this.hass.states[entity].attributes.pressure)).toLocaleString(this.locale)
+          : '---'
       : '---';
   }
 
@@ -2102,8 +2042,7 @@ export class PlatinumWeatherCard extends LitElement {
     if (entity.match('^weather.') === null)
       return this._isUnavailable(state) ? '---' : (Number(state)).toLocaleString(this.locale);
     return this.hass.states[entity].attributes.visibility !== undefined
-      ? (Number(this.hass.states[entity].attributes.visibility)).toLocaleString(this.locale)
-      : '---';
+      ? (Number(this.hass.states[entity].attributes.visibility)).toLocaleString(this.locale) : '---';
   }
 
   get currentWindBearing(): string {
@@ -2144,12 +2083,12 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentWindGust(): string {
     const entity = this._config.entity_wind_gust;
-    if (!entity || !this.hass.states[entity]) return '---';
-    const state = this.hass.states[entity].state;
-    if (entity.match('^weather.') === null)
-      return this._isUnavailable(state) ? '---' : Math.round(Number(state)).toLocaleString(this.locale);
-    return this.hass.states[entity].attributes.wind_gust_speed !== undefined
-      ? Math.round(Number(this.hass.states[entity].attributes.wind_gust_speed)).toLocaleString(this.locale)
+    return entity && this.hass.states[entity]
+      ? entity.match('^weather.') === null
+        ? Math.round(Number(this.hass.states[entity].state)).toLocaleString(this.locale)
+        : this.hass.states[entity].attributes.wind_gust_speed !== undefined
+          ? Math.round(Number(this.hass.states[entity].attributes.wind_gust_speed)).toLocaleString(this.locale)
+          : '---'
       : '---';
 
   //return entity && this.hass.states[entity]
