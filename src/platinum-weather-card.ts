@@ -1917,7 +1917,7 @@ export class PlatinumWeatherCard extends LitElement {
     const stateObj = entityId ? this.hass.states[entityId] : undefined;
     const icon = this._config.custom1_icon ?? 'mdi:help-box';
     const unit = this._config.custom1_units ?? '';
-    if (!stateObj || this._isUnavailable(stateObj.state)) {
+    if (!stateObj) {
       return html`
         <li>
           <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -1939,12 +1939,13 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
 
+
   get slotCustom2(): TemplateResult {
     const entityId = this._config.custom2_value;
     const stateObj = entityId ? this.hass.states[entityId] : undefined;
     const icon = this._config.custom2_icon ?? 'mdi:help-box';
     const unit = this._config.custom2_units ?? '';
-    if (!stateObj || this._isUnavailable(stateObj.state)) {
+    if (!stateObj) {
       return html`
         <li>
           <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -1966,12 +1967,13 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
 
+
   get slotCustom3(): TemplateResult {
     const entityId = this._config.custom3_value;
     const stateObj = entityId ? this.hass.states[entityId] : undefined;
     const icon = this._config.custom3_icon ?? 'mdi:help-box';
     const unit = this._config.custom3_units ?? '';
-    if (!stateObj || this._isUnavailable(stateObj.state)) {
+    if (!stateObj) {
       return html`
         <li>
           <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -1993,12 +1995,13 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
 
+
   get slotCustom4(): TemplateResult {
     const entityId = this._config.custom4_value;
     const stateObj = entityId ? this.hass.states[entityId] : undefined;
     const icon = this._config.custom4_icon ?? 'mdi:help-box';
     const unit = this._config.custom4_units ?? '';
-    if (!stateObj || this._isUnavailable(stateObj.state)) {
+    if (!stateObj) {
       return html`
         <li>
           <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -2018,6 +2021,7 @@ export class PlatinumWeatherCard extends LitElement {
       </li>
     `;
   }
+
 
 
   // getters that return the value to be shown
