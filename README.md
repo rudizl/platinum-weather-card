@@ -48,6 +48,11 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog — Beta releases</strong></summary>
 
+**v1.3.1-beta.4**
+- Add `getEntitySuggestion` — card now appears in the HA 2026.6+ card picker under "Community" when a `weather.*` entity is selected, pre-filling `weather_entity` in the config
+- Custom slots (custom1–4): use `hass.formatEntityState()` for proper localized state display instead of raw `.state`; use `hass.formatEntityName()` as tooltip (both with graceful fallback for older HA versions)
+- Custom slots: show `---` instead of `unknown` when entity is unavailable
+
 **v1.3.1-beta.3**
 - Show `---` instead of `NaN%` / `unknownmm` when a sensor entity returns `unknown` or `unavailable` — affects humidity, rainfall, pressure, visibility, wind speed/gust, and precipitation slots
 
