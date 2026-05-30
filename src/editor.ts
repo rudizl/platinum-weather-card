@@ -877,8 +877,8 @@ get _forecast_type(): string {
           <ha-icon-picker .configValue=${'custom1_icon'} .value=${this._custom1_icon} name="custom1_icon"
             label="Custom 1 Icon" @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-textfield label="Custom 1 Units" .value=${this._custom1_units} .configValue=${'custom1_units'} @input=${this._valueChanged}>
-          </ha-textfield>
+          <ha-input label="Custom 1 Units" .value=${this._custom1_units} .configValue=${'custom1_units'} @input=${this._valueChanged}>
+          </ha-input>
         </div>
       ` : '';
 
@@ -891,8 +891,8 @@ get _forecast_type(): string {
           <ha-icon-picker .configValue=${'custom2_icon'} .value=${this._custom2_icon} name="custom2_icon"
             label="Custom 2 Icon" @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-textfield label="Custom 2 Units" .value=${this._custom2_units} .configValue=${'custom2_units'} @input=${this._valueChanged}>
-          </ha-textfield>
+          <ha-input label="Custom 2 Units" .value=${this._custom2_units} .configValue=${'custom2_units'} @input=${this._valueChanged}>
+          </ha-input>
         </div>
       ` : '';
 
@@ -905,8 +905,8 @@ get _forecast_type(): string {
           <ha-icon-picker .configValue=${'custom3_icon'} .value=${this._custom3_icon} name="custom3_icon"
             label="Custom 3 Icon" @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-textfield label="Custom 3 Units" .value=${this._custom3_units} .configValue=${'custom3_units'} @input=${this._valueChanged}>
-          </ha-textfield>
+          <ha-input label="Custom 3 Units" .value=${this._custom3_units} .configValue=${'custom3_units'} @input=${this._valueChanged}>
+          </ha-input>
         </div>
       ` : '';
 
@@ -919,8 +919,8 @@ get _forecast_type(): string {
           <ha-icon-picker .configValue=${'custom4_icon'} .value=${this._custom4_icon} name="custom4_icon"
             label="Custom 4 Icon" @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-textfield label="Custom 4 Units" .value=${this._custom4_units} .configValue=${'custom4_units'} @input=${this._valueChanged}>
-          </ha-textfield>
+          <ha-input label="Custom 4 Units" .value=${this._custom4_units} .configValue=${'custom4_units'} @input=${this._valueChanged}>
+          </ha-input>
         </div>
       ` : '';
 
@@ -970,7 +970,7 @@ get _forecast_type(): string {
       }
     }
 
-    if (!customElements.get('ha-switch') || !customElements.get('ha-textfield') || !customElements.get('ha-entity-picker')) {
+    if (!customElements.get('ha-switch') || (!customElements.get('ha-input') && !customElements.get('ha-textfield')) || !customElements.get('ha-entity-picker')) {
       (customElements.get('hui-entities-card') as HassCustomElement)?.getConfigElement();
     }
   }
@@ -978,12 +978,12 @@ get _forecast_type(): string {
   private _sectionOverviewEditor(): TemplateResult {
     //tjl added weather as an included domain for Apparent Temp
     return html`
-      <ha-textfield label="Card Title Text Line 1" .value=${this._text_card_title} .configValue=${'text_card_title'}
+      <ha-input label="Card Title Text Line 1" .value=${this._text_card_title} .configValue=${'text_card_title'}
         @input=${this._valueChanged}>
-      </ha-textfield>
-      <ha-textfield label="Card Title Text Line 2" .value=${this._text_card_title_2} .configValue=${'text_card_title_2'}
+      </ha-input>
+      <ha-input label="Card Title Text Line 2" .value=${this._text_card_title_2} .configValue=${'text_card_title_2'}
         @input=${this._valueChanged}>
-      </ha-textfield>
+      </ha-input>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_update_time'} .value=${this._entity_update_time} .includeDomains=${['sensor']}
         name="entity_update_time" label="Entity Update Time" allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
@@ -1004,9 +1004,9 @@ get _forecast_type(): string {
           @value-changed=${this._valueChangedPicker}>
         </ha-selector>` : html``}
       </div>` : html``}
-      <ha-textfield label="Update Time Prefix" .value=${this._text_update_time_prefix}
+      <ha-input label="Update Time Prefix" .value=${this._text_update_time_prefix}
         .configValue=${'text_update_time_prefix'} @input=${this._valueChanged}>
-      </ha-textfield>
+      </ha-input>
       ${this._overview_layout !== 'forecast' ?
         html`<ha-entity-picker .hass=${this.hass} .configValue=${'entity_temperature'} .value=${this._entity_temperature} .includeDomains=${['sensor', 'weather']}
           name="entity_temperature" label="Entity Current Temperature" allow-custom-entity
@@ -1427,8 +1427,8 @@ get _forecast_type(): string {
           <option value="12hour">12 hour</option>
           <option value="24hour">24 hour</option>
         </select>
-        <ha-textfield label="Locale" .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
-        </ha-textfield>
+        <ha-input label="Locale" .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
+        </ha-input>
       </div>
     `;
   }
@@ -1763,14 +1763,12 @@ get _forecast_type(): string {
       margin-top: 8px;
       margin-bottom: 2px;
     }
-    mwc-select {
-      display: block;
-    }
-    ha-textfield {
+    ha-input, ha-textfield {
       display: block;
     }
     ha-switch {
-      --mdc-theme-secondary: var(--switch-checked-color);
+      --ha-switch-checked-background-color: var(--primary-color);
+      --ha-switch-checked-thumb-background-color: var(--primary-text-color);
     }
     ha-formfield {
       height: 56px;
