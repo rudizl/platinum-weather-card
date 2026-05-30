@@ -34,6 +34,16 @@ console.info(
   type: 'platinum-weather-card',
   name: 'Platinum Weather Card',
   description: 'An fully customisable weather card with a GUI configuration',
+  // Suggest this card in the HA 2026.6+ card picker when a weather entity is selected
+  getEntitySuggestion: (hass: any, entityId: string) => {
+    if (entityId.split('.')[0] !== 'weather') return null;
+    return {
+      config: {
+        type: 'custom:platinum-weather-card',
+        weather_entity: entityId,
+      },
+    };
+  },
 });
 
 
@@ -1909,60 +1919,120 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotCustom1(): TemplateResult {
-    const icon = this._config.custom1_icon ? this._config.custom1_icon : 'mdi:help-box';
-    const value = this._config.custom1_value && this.hass.states[this._config.custom1_value] !== undefined ? this.hass.states[this._config.custom1_value].state : 'unknown';
-    const unit = this._config.custom1_units ? this._config.custom1_units : '';
+    const entityId = this._config.custom1_value;
+    const stateObj = entityId ? this.hass.states[entityId] : undefined;
+    const icon = this._config.custom1_icon ?? 'mdi:help-box';
+    const unit = this._config.custom1_units ?? '';
+    if (!stateObj || this._isUnavailable(stateObj.state)) {
+      return html`
+        <li>
+          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+          <div class="slot-text custom-1-text">---</div>
+        </li>
+      `;
+    }
+    const hass = this.hass as any;
+    const value = this.hassExtended?.formatEntityState
+      ? this.hassExtended.formatEntityState(stateObj)
+      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
+    const title = hass.formatEntityName
+      ? hass.formatEntityName(stateObj)
+      : (stateObj.attributes.friendly_name ?? '');
     return html`
-      <li>
-        <div class="slot-icon">
-          <ha-icon icon=${icon}></ha-icon>
-        </div>
+      <li title=${title}>
+        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
         <div class="slot-text custom-1-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
 
+
   get slotCustom2(): TemplateResult {
-    const icon = this._config.custom2_icon ? this._config.custom2_icon : 'mdi:help-box';
-    const value = this._config.custom2_value && this.hass.states[this._config.custom2_value] !== undefined ? this.hass.states[this._config.custom2_value].state : 'unknown';
-    const unit = this._config.custom2_units ? this._config.custom2_units : '';
+    const entityId = this._config.custom2_value;
+    const stateObj = entityId ? this.hass.states[entityId] : undefined;
+    const icon = this._config.custom2_icon ?? 'mdi:help-box';
+    const unit = this._config.custom2_units ?? '';
+    if (!stateObj || this._isUnavailable(stateObj.state)) {
+      return html`
+        <li>
+          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+          <div class="slot-text custom-2-text">---</div>
+        </li>
+      `;
+    }
+    const hass = this.hass as any;
+    const value = this.hassExtended?.formatEntityState
+      ? this.hassExtended.formatEntityState(stateObj)
+      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
+    const title = hass.formatEntityName
+      ? hass.formatEntityName(stateObj)
+      : (stateObj.attributes.friendly_name ?? '');
     return html`
-      <li>
-        <div class="slot-icon">
-          <ha-icon icon=${icon}></ha-icon>
-        </div>
+      <li title=${title}>
+        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
         <div class="slot-text custom-2-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
 
+
   get slotCustom3(): TemplateResult {
-    const icon = this._config.custom3_icon ? this._config.custom3_icon : 'mdi:help-box';
-    const value = this._config.custom3_value && this.hass.states[this._config.custom3_value] !== undefined ? this.hass.states[this._config.custom3_value].state : 'unknown';
-    const unit = this._config.custom3_units ? this._config.custom3_units : '';
+    const entityId = this._config.custom3_value;
+    const stateObj = entityId ? this.hass.states[entityId] : undefined;
+    const icon = this._config.custom3_icon ?? 'mdi:help-box';
+    const unit = this._config.custom3_units ?? '';
+    if (!stateObj || this._isUnavailable(stateObj.state)) {
+      return html`
+        <li>
+          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+          <div class="slot-text custom-3-text">---</div>
+        </li>
+      `;
+    }
+    const hass = this.hass as any;
+    const value = this.hassExtended?.formatEntityState
+      ? this.hassExtended.formatEntityState(stateObj)
+      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
+    const title = hass.formatEntityName
+      ? hass.formatEntityName(stateObj)
+      : (stateObj.attributes.friendly_name ?? '');
     return html`
-      <li>
-        <div class="slot-icon">
-          <ha-icon icon=${icon}></ha-icon>
-        </div>
+      <li title=${title}>
+        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
         <div class="slot-text custom-3-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
 
+
   get slotCustom4(): TemplateResult {
-    const icon = this._config.custom4_icon ? this._config.custom4_icon : 'mdi:help-box';
-    const value = this._config.custom4_value && this.hass.states[this._config.custom4_value] !== undefined ? this.hass.states[this._config.custom4_value].state : 'unknown';
-    const unit = this._config.custom4_units ? this._config.custom4_units : '';
+    const entityId = this._config.custom4_value;
+    const stateObj = entityId ? this.hass.states[entityId] : undefined;
+    const icon = this._config.custom4_icon ?? 'mdi:help-box';
+    const unit = this._config.custom4_units ?? '';
+    if (!stateObj || this._isUnavailable(stateObj.state)) {
+      return html`
+        <li>
+          <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
+          <div class="slot-text custom-4-text">---</div>
+        </li>
+      `;
+    }
+    const hass = this.hass as any;
+    const value = this.hassExtended?.formatEntityState
+      ? this.hassExtended.formatEntityState(stateObj)
+      : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
+    const title = hass.formatEntityName
+      ? hass.formatEntityName(stateObj)
+      : (stateObj.attributes.friendly_name ?? '');
     return html`
-      <li>
-        <div class="slot-icon">
-          <ha-icon icon=${icon}></ha-icon>
-        </div>
+      <li title=${title}>
+        <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
         <div class="slot-text custom-4-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
   }
+
 
   // getters that return the value to be shown
   get forecastIcon(): string {
