@@ -10,22 +10,7 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 ![Platinum Weather card](https://raw.githubusercontent.com/Makin-Things/platinum-weather-card/master/images/platinum-weather-card.png)
 
 <details>
-<summary><strong>Changelog</strong></summary>
-
-**v1.3.1** *(beta)*
-
-*beta.2*
-- Remove `resize-observer-polyfill` dependency (~30KB bundle saving; all HA-supported browsers have had native `ResizeObserver` since 2020)
-- Add missing `entity_moon` to TypeScript `WeatherCardConfig` interface
-- Replace all `var` declarations with `const`/`let` throughout
-- Remove `ha-textfield` from editor CSS (officially removed in HA 2026.5)
-- Remove `eslint-disable` directives, commented-out debug lines, stale TODO comments and old attribution comments
-
-*beta.1*
-- Fix editor switch color — replace removed HA 2026.5 MDC tokens (`--mdc-theme-secondary`, `--switch-checked-color`) with new WebAwesome tokens (`--ha-switch-checked-background-color`, `--ha-switch-checked-thumb-background-color`)
-- Migrate all editor text inputs from deprecated `ha-textfield` to `ha-input` (HA 2026.5+ compatible)
-- Update editor loading guard to detect both `ha-input` and `ha-textfield` — prevents editor hang if `ha-textfield` is removed in a future HA release
-- Remove dead `mwc-select` CSS rule (unused since v1.2.4)
+<summary><strong>Changelog — Stable releases</strong></summary>
 
 **v1.3.0**
 - Fix all card editor dropdowns not showing saved values — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration when opening the editor
@@ -57,6 +42,24 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 - Fix malformed HTML in beaufort wind display
 - Fix unsafe array access in `slotPossibleTomorrow`
 - Fix null guard in forecast property lookup
+
+</details>
+
+<details>
+<summary><strong>Changelog — Beta releases</strong></summary>
+
+**v1.3.1-beta.2**
+- Remove `resize-observer-polyfill` dependency (~30KB bundle saving; all HA-supported browsers have had native `ResizeObserver` since 2020)
+- Add missing `entity_moon` to TypeScript `WeatherCardConfig` interface
+- Replace all `var` declarations with `const`/`let` throughout
+- Remove `ha-textfield` from editor CSS (officially removed in HA 2026.5)
+- Remove `eslint-disable` directives, commented-out debug lines, stale TODO comments and old attribution comments
+
+**v1.3.1-beta.1**
+- Fix editor switch color — replace removed HA 2026.5 MDC tokens (`--mdc-theme-secondary`, `--switch-checked-color`) with new WebAwesome tokens (`--ha-switch-checked-background-color`, `--ha-switch-checked-thumb-background-color`)
+- Migrate all editor text inputs from deprecated `ha-textfield` to `ha-input` (HA 2026.5+ compatible)
+- Update editor loading guard to detect both `ha-input` and `ha-textfield` — prevents editor hang if `ha-textfield` is removed in a future HA release
+- Remove dead `mwc-select` CSS rule (unused since v1.2.4)
 
 </details>
 
