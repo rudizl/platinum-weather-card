@@ -12,6 +12,12 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog</strong></summary>
 
+**v1.3.1** *(beta)*
+- Fix editor switch color — replace removed HA 2026.5 MDC tokens (`--mdc-theme-secondary`, `--switch-checked-color`) with new WebAwesome tokens (`--ha-switch-checked-background-color`, `--ha-switch-checked-thumb-background-color`)
+- Migrate all editor text inputs from deprecated `ha-textfield` to `ha-input` (HA 2026.5+ compatible)
+- Update editor loading guard to detect both `ha-input` and `ha-textfield` — prevents editor hang if `ha-textfield` is removed in a future HA release
+- Remove dead `mwc-select` CSS rule (unused since v1.2.4)
+
 **v1.3.0**
 - Fix all card editor dropdowns not showing saved values — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration when opening the editor
 - Fix rainy/pouring icon associations — pouring now shows a more intense icon than rainy
