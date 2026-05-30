@@ -73,6 +73,12 @@ export class PlatinumWeatherCard extends LitElement {
   private forecast1!: ForecastAttribute[] | undefined;
   private hassExtended!: HassFormatEntityState;
 
+
+  // Returns true if an entity state is unavailable or unknown
+  private _isUnavailable(state: string): boolean {
+    return state === 'unknown' || state === 'unavailable';
+  }
+
   public getCardSize(): number {
 
 
@@ -1321,11 +1327,9 @@ export class PlatinumWeatherCard extends LitElement {
 
     const pop = this._config.entity_pop && this.hass.states[this._config.entity_pop] !== undefined
       ? this._config.entity_pop.match('^weather.') === null
-        ? Math.round(Number(this.hass.states[this._config.entity_pop].state))
+        ? (this._isUnavailable(this.hass.states[this._config.entity_pop].state) ? '---' : Math.round(Number(this.hass.states[this._config.entity_pop].state)))
         : forecast_pop !== undefined
-      //: this.hass.states[this._config.entity_pop].attributes.forecast[0].precipitation_probability !== undefined
           ? Math.round(Number(forecast_pop))
-      //  ? Math.round(Number(this.hass.states[this._config.entity_pop].attributes.forecast[0].precipitation_probability))
           : '---'
       : "---";
     const pop_units = pop !== "---" ? html`<div class="slot-text unit">%</div>` : html``;
@@ -1334,11 +1338,9 @@ export class PlatinumWeatherCard extends LitElement {
 
     const pos = this._config.entity_pos && this.hass.states[this._config.entity_pos] !== undefined
       ? this._config.entity_pos.match('^weather.') === null
-        ? this.hass.states[this._config.entity_pos].state
+        ? (this._isUnavailable(this.hass.states[this._config.entity_pos].state) ? '---' : this.hass.states[this._config.entity_pos].state)
         : forecast_pos !== undefined
-      //: this.hass.states[this._config.entity_pos].attributes.forecast[0].precipitation !== undefined
-          ? forecast_pos 
-        //? this.hass.states[this._config.entity_pos].attributes.forecast[0].precipitation
+          ? forecast_pos
           : '---'
       : "---";
     const pos_units = pos !== "---" ? html`<div class="slot-text unit">${this.getUOM('precipitation')}</div>` : html``;
@@ -1385,11 +1387,9 @@ export class PlatinumWeatherCard extends LitElement {
 
     const pos = this._config.entity_pos && this.hass.states[this._config.entity_pos] !== undefined
       ? this._config.entity_pos.match('^weather.') === null
-        ? this.hass.states[this._config.entity_pos].state
+        ? (this._isUnavailable(this.hass.states[this._config.entity_pos].state) ? '---' : this.hass.states[this._config.entity_pos].state)
         : forecast_pos !== undefined
-      //: this.hass.states[this._config.entity_pos].attributes.forecast[0].precipitation !== undefined
           ? forecast_pos
-        //? this.hass.states[this._config.entity_pos].attributes.forecast[0].precipitation
           : '---'
       : "---";
     const units = pos !== "---" ? html`<div class="slot-text unit">${this.getUOM('precipitation')}</div>` : html``;
@@ -2005,42 +2005,44 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentHumidity(): string {
     const entity = this._config.entity_humidity;
-    return entity && this.hass.states[entity]
-      ? entity.match('^weather.') === null
-        ? (Number(this.hass.states[entity].state)).toLocaleString(this.locale)
-        : this.hass.states[entity].attributes.humidity !== undefined
-          ? (Number(this.hass.states[entity].attributes.humidity)).toLocaleString(this.locale)
-          : '---'
+    if (!entity || !this.hass.states[entity]) return '---';
+    const state = this.hass.states[entity].state;
+    if (entity.match('^weather.') === null)
+      return this._isUnavailable(state) ? '---' : (Number(state)).toLocaleString(this.locale);
+    return this.hass.states[entity].attributes.humidity !== undefined
+      ? (Number(this.hass.states[entity].attributes.humidity)).toLocaleString(this.locale)
       : '---';
   }
 
   get currentRainfall(): string {
     const entity = this._config.entity_rainfall;
+    if (!entity || !this.hass.states[entity]) return '---';
+    const state = this.hass.states[entity].state;
+    if (this._isUnavailable(state)) return '---';
     const digits = this._config.option_today_rainfall_decimals === true ? 1 : 0;
-    return entity && this.hass.states[entity]
-      ? (Number(this.hass.states[entity].state)).toLocaleString(this.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }) : '---';
+    return (Number(state)).toLocaleString(this.locale, { minimumFractionDigits: digits, maximumFractionDigits: digits });
   }
 
   get currentPressure(): string {
     const entity = this._config.entity_pressure;
+    if (!entity || !this.hass.states[entity]) return '---';
+    const state = this.hass.states[entity].state;
     const places = this._config.option_pressure_decimals ? Math.max(Math.min(this._config.option_pressure_decimals, 3), 0) : 0;
-    return entity && this.hass.states[entity]
-      ? entity.match('^weather.') === null
-        ? (Number(this.hass.states[entity].state)).toLocaleString(this.locale, { minimumFractionDigits: places, maximumFractionDigits: places })
-        : this.hass.states[entity].attributes.pressure !== undefined
-          ? (Number(this.hass.states[entity].attributes.pressure)).toLocaleString(this.locale)
-          : '---'
+    if (entity.match('^weather.') === null)
+      return this._isUnavailable(state) ? '---' : (Number(state)).toLocaleString(this.locale, { minimumFractionDigits: places, maximumFractionDigits: places });
+    return this.hass.states[entity].attributes.pressure !== undefined
+      ? (Number(this.hass.states[entity].attributes.pressure)).toLocaleString(this.locale)
       : '---';
   }
 
   get currentVisibility(): string {
     const entity = this._config.entity_visibility;
-    return entity && this.hass.states[entity]
-      ? entity.match('^weather.') === null
-        ? (Number(this.hass.states[entity].state)).toLocaleString(this.locale)
-        : this.hass.states[entity].attributes.visibility !== undefined
-          ? (Number(this.hass.states[entity].attributes.visibility)).toLocaleString(this.locale)
-          : '---'
+    if (!entity || !this.hass.states[entity]) return '---';
+    const state = this.hass.states[entity].state;
+    if (entity.match('^weather.') === null)
+      return this._isUnavailable(state) ? '---' : (Number(state)).toLocaleString(this.locale);
+    return this.hass.states[entity].attributes.visibility !== undefined
+      ? (Number(this.hass.states[entity].attributes.visibility)).toLocaleString(this.locale)
       : '---';
   }
 
@@ -2061,12 +2063,12 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentWindSpeed(): string {
     const entity = this._config.entity_wind_speed;
-    return entity && this.hass.states[entity]
-      ? entity.match('^weather.') === null
-        ? Math.round(Number(this.hass.states[entity].state)).toLocaleString(this.locale)
-        : this.hass.states[entity].attributes.wind_speed !== undefined
-          ? Math.round(Number(this.hass.states[entity].attributes.wind_speed)).toLocaleString(this.locale)
-          : '---'
+    if (!entity || !this.hass.states[entity]) return '---';
+    const state = this.hass.states[entity].state;
+    if (entity.match('^weather.') === null)
+      return this._isUnavailable(state) ? '---' : Math.round(Number(state)).toLocaleString(this.locale);
+    return this.hass.states[entity].attributes.wind_speed !== undefined
+      ? Math.round(Number(this.hass.states[entity].attributes.wind_speed)).toLocaleString(this.locale)
       : '---';
   }
 
@@ -2082,12 +2084,12 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentWindGust(): string {
     const entity = this._config.entity_wind_gust;
-    return entity && this.hass.states[entity]
-      ? entity.match('^weather.') === null
-        ? Math.round(Number(this.hass.states[entity].state)).toLocaleString(this.locale)
-        : this.hass.states[entity].attributes.wind_gust_speed !== undefined
-          ? Math.round(Number(this.hass.states[entity].attributes.wind_gust_speed)).toLocaleString(this.locale)
-          : '---'
+    if (!entity || !this.hass.states[entity]) return '---';
+    const state = this.hass.states[entity].state;
+    if (entity.match('^weather.') === null)
+      return this._isUnavailable(state) ? '---' : Math.round(Number(state)).toLocaleString(this.locale);
+    return this.hass.states[entity].attributes.wind_gust_speed !== undefined
+      ? Math.round(Number(this.hass.states[entity].attributes.wind_gust_speed)).toLocaleString(this.locale)
       : '---';
 
   //return entity && this.hass.states[entity]
