@@ -34,15 +34,9 @@ console.info(
   type: 'platinum-weather-card',
   name: 'Platinum Weather Card',
   description: 'An fully customisable weather card with a GUI configuration',
-  // Suggest this card in the HA 2026.6+ card picker when a weather entity is selected
-  getEntitySuggestion: (hass: any, entityId: string) => {
+  getEntitySuggestion: (_hass: any, entityId: string) => {
     if (entityId.split('.')[0] !== 'weather') return null;
-    return {
-      config: {
-        type: 'custom:platinum-weather-card',
-        weather_entity: entityId,
-      },
-    };
+    return { config: { type: 'custom:platinum-weather-card', weather_entity: entityId } };
   },
 });
 
@@ -1025,7 +1019,7 @@ export class PlatinumWeatherCard extends LitElement {
       }
 
       start = this._config.entity_fire_danger_1 ? this._config.entity_fire_danger_1.match(/(\d+)(?!.*\d)/g) : false;
-      let fireDanger: TemplateResult = html``;
+      fireDanger = html``;
       const fireDangerEntity = start && this._config.entity_fire_danger_1 ? this._config.entity_fire_danger_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
       if ((start) && (fireDangerEntity)) {
         const fireStyle = this._config.option_daily_color_fire_danger !== false && this.hass.states[fireDangerEntity].attributes.color_fill ? `background-color:${this.hass.states[fireDangerEntity].attributes.color_fill}; color:${this.hass.states[fireDangerEntity].attributes.color_text};` : "";
@@ -1935,9 +1929,7 @@ export class PlatinumWeatherCard extends LitElement {
     const value = this.hassExtended?.formatEntityState
       ? this.hassExtended.formatEntityState(stateObj)
       : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName
-      ? hass.formatEntityName(stateObj)
-      : (stateObj.attributes.friendly_name ?? '');
+    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
     return html`
       <li title=${title}>
         <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -1964,9 +1956,7 @@ export class PlatinumWeatherCard extends LitElement {
     const value = this.hassExtended?.formatEntityState
       ? this.hassExtended.formatEntityState(stateObj)
       : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName
-      ? hass.formatEntityName(stateObj)
-      : (stateObj.attributes.friendly_name ?? '');
+    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
     return html`
       <li title=${title}>
         <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -1993,9 +1983,7 @@ export class PlatinumWeatherCard extends LitElement {
     const value = this.hassExtended?.formatEntityState
       ? this.hassExtended.formatEntityState(stateObj)
       : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName
-      ? hass.formatEntityName(stateObj)
-      : (stateObj.attributes.friendly_name ?? '');
+    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
     return html`
       <li title=${title}>
         <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -2022,9 +2010,7 @@ export class PlatinumWeatherCard extends LitElement {
     const value = this.hassExtended?.formatEntityState
       ? this.hassExtended.formatEntityState(stateObj)
       : stateObj.state + (unit ? '' : (stateObj.attributes.unit_of_measurement ?? ''));
-    const title = hass.formatEntityName
-      ? hass.formatEntityName(stateObj)
-      : (stateObj.attributes.friendly_name ?? '');
+    const title = hass.formatEntityName ? hass.formatEntityName(stateObj) : (stateObj.attributes.friendly_name ?? '');
     return html`
       <li title=${title}>
         <div class="slot-icon"><ha-icon icon=${icon}></ha-icon></div>
@@ -2133,12 +2119,12 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentWindSpeed(): string {
     const entity = this._config.entity_wind_speed;
-    if (!entity || !this.hass.states[entity]) return '---';
-    const state = this.hass.states[entity].state;
-    if (entity.match('^weather.') === null)
-      return this._isUnavailable(state) ? '---' : Math.round(Number(state)).toLocaleString(this.locale);
-    return this.hass.states[entity].attributes.wind_speed !== undefined
-      ? Math.round(Number(this.hass.states[entity].attributes.wind_speed)).toLocaleString(this.locale)
+    return entity && this.hass.states[entity]
+      ? entity.match('^weather.') === null
+        ? Math.round(Number(this.hass.states[entity].state)).toLocaleString(this.locale)
+        : this.hass.states[entity].attributes.wind_speed !== undefined
+          ? Math.round(Number(this.hass.states[entity].attributes.wind_speed)).toLocaleString(this.locale)
+          : '---'
       : '---';
   }
 

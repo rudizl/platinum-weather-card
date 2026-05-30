@@ -26,7 +26,7 @@ const serveopts = {
 const plugins = [
   nodeResolve({}),
   commonjs(),
-  typescript({ transformers: [service => ({
+  typescript({ check: false, transformers: [service => ({
     before: [ keysTransformer(service.getProgram()) ],
     after: []
   })] }),
