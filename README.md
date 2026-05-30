@@ -48,6 +48,9 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog — Beta releases</strong></summary>
 
+**v1.3.1-beta.3**
+- Show `---` instead of `NaN%` / `unknownmm` when a sensor entity returns `unknown` or `unavailable` — affects humidity, rainfall, pressure, visibility, wind speed/gust, and precipitation slots
+
 **v1.3.1-beta.2**
 - Remove `resize-observer-polyfill` dependency (~30KB bundle saving; all HA-supported browsers have had native `ResizeObserver` since 2020)
 - Add missing `entity_moon` to TypeScript `WeatherCardConfig` interface
