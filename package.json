@@ -29,7 +29,6 @@
     "home-assistant-js-websocket": "^5.11.1",
     "lit": "^2.4.0",
     "mkdirp": "^3.0.1",
-    "resize-observer-polyfill": "^1.5.1",
     "ts-transformer-keys": "^0.4.3"
   },
   "devDependencies": {

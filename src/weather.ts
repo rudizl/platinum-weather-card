@@ -1,9 +1,5 @@
 import { HomeAssistant } from 'custom-card-helpers';
 import { HassEntityAttributeBase, HassEntityBase } from "home-assistant-js-websocket";
-//import { HassConfig, HassEntityAttributeBase, HassEntityBase } from "home-assistant-js-websocket";
-
-//tjl Most of this is from
-//  https://github.com/home-assistant/frontend/blob/dev/src/data/weather.ts
 
 export type ModernForecastType = "hourly" | "daily" | "twice_daily";
 export type ForecastType = ModernForecastType | "legacy";

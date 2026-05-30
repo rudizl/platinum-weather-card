@@ -30,7 +30,6 @@ export type extendedDays = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 export type pressureDecimals = 0 | 1 | 2 | 3;
 export type timeFormat = 'system' | '12hour' | '24hour';
 
-// TODO Add your configuration elements here for type-checking
 export interface WeatherCardConfig extends LovelaceCardConfig {
   type: string;
   card_config_version?: number;
@@ -91,6 +90,7 @@ export interface WeatherCardConfig extends LovelaceCardConfig {
   entity_pop?: string;
   entity_pos?: string;
   entity_sun?: string;
+  entity_moon?: string;
   entity_uv_alert_summary?: string;
   entity_rainfall?: string;
   entity_todays_fire_danger?: string;

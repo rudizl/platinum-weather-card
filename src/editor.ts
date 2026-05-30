@@ -1763,7 +1763,7 @@ get _forecast_type(): string {
       margin-top: 8px;
       margin-bottom: 2px;
     }
-    ha-input, ha-textfield {
+    ha-input {
       display: block;
     }
     ha-switch {

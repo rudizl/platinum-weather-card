@@ -1,22 +1,19 @@
-/* eslint-disable no-var */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { LitElement, html, TemplateResult, css, PropertyValues, CSSResult, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { HomeAssistant, LovelaceCardEditor, getLovelace, debounce, hasAction, ActionHandlerEvent, handleAction } from 'custom-card-helpers';
-import ResizeObserver from 'resize-observer-polyfill';
 import { getLocale } from './helpers';
 import { entityComputeStateDisplay, stringComputeStateDisplay } from './compute_state_display';
 
-//tjl add ifDefined in support of tap action
+// ifDefined in support of tap action
 import { ifDefined } from "lit/directives/if-defined";
 
-//tjl add HassFormatentity state formatting
+// HassFormatentity state formatting
 //  This is the new method for formatting state data to the user and includes localization from user's profile.
 //  https://developers.home-assistant.io/blog/2023/08/29/hass-format-state/
 //  https://developers.home-assistant.io/docs/frontend/data/#entity-state-formatting
 import type { timeFormat, WeatherCardConfig, HassFormatEntityState } from './types';
 
-//tjl add subscribeForecast, ForecastEvent in support of 2023.9 method of getting forecasts data.
+// subscribeForecast, ForecastEvent in support of 2023.9 method of getting forecasts data.
 //  From  https://github.com/bramkragten/weather-card/blob/master/dist/weather-card.js
 import { ForecastEvent, subscribeForecast, getForecast, ForecastAttribute } from './weather';
 
@@ -40,10 +37,8 @@ console.info(
 });
 
 
-// TODO Name your custom element
 @customElement('platinum-weather-card')
 export class PlatinumWeatherCard extends LitElement {
-  //tjl from bramkragten
   static get properties() {
     return {
       _config: {},
@@ -60,14 +55,9 @@ export class PlatinumWeatherCard extends LitElement {
   public static getStubConfig(): Record<string, unknown> {
     return {};
   }
-
-  //tjl copied from HA front-end.  Supports subscribing to weather forecast events.
-  //  https://github/homeassistant/frontend/src/panels/lovelace/cards/hui-weather-forecast-card.ts
   @state() private _subscribed?: Promise<() => void>;
   @state() private _forecastEvent?: ForecastEvent;
 
-  // TODO Add any properities that should cause your element to re-render here
-  // https://lit.dev/docs/components/properties/
   @property({ attribute: false }) public hass!: HomeAssistant;
 
   @state() private _config!: WeatherCardConfig;
@@ -78,15 +68,13 @@ export class PlatinumWeatherCard extends LitElement {
 
   private _error: string[] = [];
 
-  //tjl added. 
+  //. 
   //  forecast1 is THE entity to subscribe for weather forecast events
   private forecast1!: ForecastAttribute[] | undefined;
   private hassExtended!: HassFormatEntityState;
 
   public getCardSize(): number {
 
-    // console.info(`Tempate Test String:${entityComputeStateDisplay(this.hass.localize, this.hass.states['sensor.template_test_string'], getLocale(this.hass))}`);
-    // console.info(`Tempate Test Number:${entityComputeStateDisplay(this.hass.localize, this.hass.states['sensor.template_test_number'], getLocale(this.hass))}`);
 
     // Get the heights of each section
     const overiewSectionHeight = this._getCardSizeOverviewSection();
@@ -101,14 +89,12 @@ export class PlatinumWeatherCard extends LitElement {
     // Now calculate an estimated cardsize
     const cardSize = Math.ceil(cardHeight / 50);
 
-    //    console.info(`Card Size=${cardSize} Card Height=${cardHeight} Overview=${overiewSectionHeight} Extended=${extendedSectionHeight} Slots=${slotsSectionHeight} DailyForecast=${dailyForecastSectionHeight}`);
 
     return cardSize;
   }
 
   // https://lit.dev/docs/components/properties/#accessors-custom
   public setConfig(config: WeatherCardConfig): void {
-    // TODO Check for required fields and that they are of the proper format
     if (!config) {
       throw new Error('Invalid configuration');
     }
@@ -122,9 +108,6 @@ export class PlatinumWeatherCard extends LitElement {
       ...config,
     };
   }
-
-
-  //tjl from bramkragten's weather-card 
   //  Change bramkragtent config check for "forecast" to "weather_entity"
   //  weather_entity is a new config. It is THE weather entity used to get forecast data
   _needForecastSubscription() {
@@ -135,20 +118,13 @@ export class PlatinumWeatherCard extends LitElement {
       this._config.forecast_type !== "legacy"
     );
   }
-
-  //tjl copy from bramkragten's weather-card
   _unsubscribeForecastEvents() {
-  //console.info(`_unsubscribeForecastEvents`);
     if (this._subscribed) {
       this._subscribed.then((unsub) => unsub());
       this._subscribed = undefined;
     }
   }
-
-
-  //tjl copy/modified from bramkragten weather-card
   async _subscribeForecastEvents() {
-  //console.info(`_subscribeForecastEvents`);
     this._unsubscribeForecastEvents();
     if (
       !this.isConnected ||
@@ -159,9 +135,7 @@ export class PlatinumWeatherCard extends LitElement {
       return;
     }
 
-  //console.info(`Attempt SubscribeForecastEvents`);
-
-//  //tjl - from bramkragten's weather card. Couldn't get this to build
+//
 //  this._subscribed = this.hass.connection.subscribeMessage(
 //    (event) => {
 //      this._forecastEvent = event;
@@ -172,7 +146,6 @@ export class PlatinumWeatherCard extends LitElement {
 //      entity_id: this._config.weather_entity,
 //    }
 //  );
-    //tjl - but could build this.  
     //  https://github/homeassistant/frontend/src/panels/lovelace/cards/hui-weather-forecast-card.ts
     //  Change "entity" (?:string) to new weather_entity type (string only)
     //  Note: forecast_type required to be set.
@@ -187,21 +160,13 @@ export class PlatinumWeatherCard extends LitElement {
       }
     );
   }
-
-
-  //tjl from bramkragten's weather-card
   connectedCallback() {
-  //console.info(`SubscribeForecast connected`);
     super.connectedCallback();
     if (this.hasUpdated && this._config && this.hass) {
       this._subscribeForecastEvents();
     }
   }
-
-
-  //tjl from bramkragten's weather-card
   disconnectedCallback() {
-  //console.info(`SubscribeForecast disconnected`);
     super.disconnectedCallback();
     this._unsubscribeForecastEvents();
   }
@@ -214,12 +179,9 @@ export class PlatinumWeatherCard extends LitElement {
     if (!this._config) {
       return false;
     }
-    //tjl from hasConfigOrEntityChanged
     if (changedProps.has("_config") || changedProps.has("_forecastEvent")) {
       return true;
     }
-
-    //tjl from hasConfigOrEntityChanged w. inverted logic
     if (changedProps.has("hass")) {
       return true;
     }
@@ -257,7 +219,7 @@ export class PlatinumWeatherCard extends LitElement {
           const start = this._config[entity].match(/(\d+)(?!.*\d)/g);
           if (start) {
             // has a number so now check all the extra entities exist
-            for (var _i = 1; _i < days; _i++) {
+            for (let _i = 1; _i < days; _i++) {
               const newEntity = this._config[entity].replace(/(\d+)(?!.*\d)/g, Number(start) + _i);
               if (oldHass.states[newEntity] !== this.hass.states[newEntity]) {
                 return true;
@@ -270,8 +232,6 @@ export class PlatinumWeatherCard extends LitElement {
 
     return changedProps.has('config');
   }
-
-  //tjl from bramkragten's weather-card
   updated(changedProps) {
     if (!this.hass || !this._config) {
       return;
@@ -284,7 +244,6 @@ export class PlatinumWeatherCard extends LitElement {
   protected firstUpdated(): void {
     this._resize();
     this._attachObserver();
-    // console.info(`Initial cardwdith = ${this._cardWidth}`);
   }
 
   private _attachObserver() {
@@ -311,7 +270,6 @@ export class PlatinumWeatherCard extends LitElement {
     const card = this.shadowRoot?.querySelector('ha-card');
     if (!card) return;
     this._cardWidth = card.getBoundingClientRect().width;
-    // console.info(`Resize cardwdith = ${this._cardWidth}`);
   }
 
   private _checkForErrors(): boolean {
@@ -326,7 +284,7 @@ export class PlatinumWeatherCard extends LitElement {
     // tjl - build warning - says "days" never used, so for now comment it out
   //const days = this._config.daily_forecast_days || 5;
 
-    //tjl add a few more configs to check if they are weather entities.
+    // a few more configs to check if they are weather entities.
     for (const entityName of ['entity_forecast_icon_1', 'entity_summary_1', 'entity_forecast_min_1', 'entity_forecast_max_1', 
       'entity_pop_1', 'entity_pos_1', 'entity_extended_1', 'entity_pop', 'entity_forecast_min', 'entity_forecast_max']) {
       if (this._config[entityName] !== undefined) {
@@ -336,8 +294,6 @@ export class PlatinumWeatherCard extends LitElement {
         // check if we have a weather domain as the entity
         if (this._config[entityName].match('^weather.')) {
           // we are dealing with the weather domain
-
-          //tjl using new forecast subscribe method.
           //  If any of the entityName items are weather entities, then user needs to configure a weather_entity 
           //    and the entityName item must be the same as weather_entity configuration.
           if ( this.hass.states[this._config.weather_entity] === undefined ) {
@@ -354,7 +310,6 @@ export class PlatinumWeatherCard extends LitElement {
             const forecastDate = new Date();
             forecastDate.setDate(forecastDate.getDate() + 1);
             switch (entityName) {
-              //tjl use new forecast subscribe method below
               case 'entity_forecast_icon_1':
                 if (this._getForecastPropFromWeather(forecast, forecastDate, 'condition') === undefined) {
               //if (this._getForecastPropFromWeather(entity.attributes.forecast, forecastDate, 'condition') === undefined) {}
@@ -403,7 +358,7 @@ export class PlatinumWeatherCard extends LitElement {
         }
       }
     }
-      //tjl add warning if new method for getting forecast is used and forecast_type not 'daily'
+      // warning if new method for getting forecast is used and forecast_type not 'daily'
       if (this._config.weather_entity !== undefined ) {
         if ( this._config.forecast_type !== undefined ) {
           if ( !['daily','hourly','twice_daily'].includes(this._config.forecast_type)) {
@@ -475,8 +430,6 @@ export class PlatinumWeatherCard extends LitElement {
     ` : html``;
 
     const separator = this._config.option_show_overview_separator === true ? html`<hr class=line>` : ``;
-
-  //tjl use the new formatEntityState method for formatting an entity's presentation state (sunny to Sunny).
     const forecastText = (this._config.entity_summary) && (this.hass.states[this._config.entity_summary]) ?
       html`<div class="forecast-text">${this.hassExtended.formatEntityState(this.hass.states[this._config.entity_summary])}</div>` ?? html`<div class="forecast-text">---</div>` : html``;
     //html`<div class="forecast-text">${entityComputeStateDisplay(this.hass.localize, this.hass.states[this._config.entity_summary], getLocale(this.hass))}</div>` ?? html`<div class="forecast-text">---</div>` : html``;
@@ -558,9 +511,6 @@ export class PlatinumWeatherCard extends LitElement {
     const biggerIcon = html`<div class="big-icon"><img src="${url.href}" width="100%" height="100%" title="${hoverText}"></div>`;
 
     const separator = this._config.option_show_overview_separator === true ? html`<hr class=line>` : ``;
-
-
-  //tjl use the new formatEntityState method for formatting an entity's presentation state (sunny to Sunny).
     const forecastText = (this._config.entity_summary) && (this.hass.states[this._config.entity_summary]) ?
       html`<div class="forecast-text-right">${this.hassExtended.formatEntityState(this.hass.states[this._config.entity_summary])}</div>` ?? html`<div class="forecast-text-right">---</div>` : html``;
 
@@ -581,7 +531,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   private _getCardSizeOverviewSection(): number {
-    var sectionHeight = 0;
+    let sectionHeight = 0;
     if (this._config.show_section_overview !== false) {
       if (this._config.overview_layout === 'observations') {
         return 76;
@@ -616,7 +566,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   private _getCardSizeExtendedSection(): number {
-    var sectionHeight = 0;
+    let sectionHeight = 0;
     if (this._config.show_section_extended !== false) {
       // Add the basic margins
       sectionHeight += 16;
@@ -631,10 +581,8 @@ export class PlatinumWeatherCard extends LitElement {
     if ((this._config?.show_section_extended === false) || (this._config.entity_extended === undefined) && (this._config.entity_todays_uv_forecast === undefined) && (this._config.entity_todays_fire_danger === undefined)) return html``;
 
     const extendedEntity = this._config.entity_extended || '';
-    var extended: TemplateResult[] = [];
+    const extended: TemplateResult[] = [];
     if (this.hass.states[extendedEntity] !== undefined) {
-
-      //tjl Feature add for entity_extended.  Add support for weather entity.
       //  Weather entity whose forecast attribute for today is defined by extended_name_attr.
       //    Example: extended_name_attr is "detailed_description"
       //    this is forecast[0].detailed_description or forecast[0]["detailed_description"]
@@ -642,7 +590,7 @@ export class PlatinumWeatherCard extends LitElement {
       if (this._config.entity_extended?.match('^weather.')) {
         const forecast = this.forecast1;
         if (forecast !== undefined ) {
-          var attrib: string | undefined;
+          let attrib: string | undefined;
           attrib = undefined;
           if (this._config.extended_use_attr === true) {
             if (this._config.extended_name_attr !== undefined) {
@@ -681,10 +629,10 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   private _getCardSizeSlotsSection(): number {
-    var sectionHeight = 0;
+    let sectionHeight = 0;
     if (this._config.show_section_slots !== false) {
       // Calculate the max number of slots in both left and right
-      var slotsLeft =
+      const slotsLeft =
         (this._config.slot_l1 !== 'remove' ? 1 : 0) +
         (this._config.slot_l2 !== 'remove' ? 1 : 0) +
         (this._config.slot_l3 !== 'remove' ? 1 : 0) +
@@ -693,7 +641,7 @@ export class PlatinumWeatherCard extends LitElement {
         ((this._config.slot_l6 !== undefined) && (this._config.slot_l6 !== 'remove') ? 1 : 0) +
         ((this._config.slot_l7 !== undefined) && (this._config.slot_l7 !== 'remove') ? 1 : 0) +
         ((this._config.slot_l8 !== undefined) && (this._config.slot_l8 !== 'remove') ? 1 : 0);
-      var slotsRight =
+      const slotsRight =
         (this._config.slot_r1 !== 'remove' ? 1 : 0) +
         (this._config.slot_r2 !== 'remove' ? 1 : 0) +
         (this._config.slot_r3 !== 'remove' ? 1 : 0) +
@@ -710,7 +658,7 @@ export class PlatinumWeatherCard extends LitElement {
   private _renderSlotsSection(): TemplateResult {
     if (this._config?.show_section_slots === false) return html``;
 
-    var slot_section = (this._config.use_old_column_format === true) ? html`
+    const slot_section = (this._config.use_old_column_format === true) ? html`
       <div>
         <ul class="variations-ugly">
           <li>
@@ -747,25 +695,20 @@ export class PlatinumWeatherCard extends LitElement {
     const htmlDays: TemplateResult[] = [];
     const days = this._config.daily_forecast_days || 5;
 
-    for (var i = 0; i < days; i++) {
+    for (let i = 0; i < days; i++) {
       const forecastDate = new Date();
       forecastDate.setDate(forecastDate.getDate() + i + 1);
-      var htmlIcon: TemplateResult;
-      var maxTemp: string | undefined;
-      var minTemp: string | undefined;
-
-    //console.info(`Forecast-H Date ${forecastDate}`); //tjl
+      let htmlIcon: TemplateResult;
+      let maxTemp: string | undefined;
+      let minTemp: string | undefined;
 
       if (this._config.entity_forecast_icon_1?.match('^weather.')) {
         // using a weather domain entity
         const iconEntity = this._config.entity_forecast_icon_1;
-
-        //tjl using new forecast subscribe method
-        var condition: string | undefined;
+        let condition: string | undefined;
         if (this.forecast1 !== undefined ) {
           condition = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
-        //console.info(`getForecast-H condition: ${condition}`);
-        }
+            }
       //const condition = this._getForecastPropFromWeather(this.hass.states[iconEntity].attributes.forecast, forecastDate, 'condition');
         if (condition === undefined) {
           break;
@@ -775,7 +718,7 @@ export class PlatinumWeatherCard extends LitElement {
         htmlIcon = html`<li class="f-slot-horiz-icon"><i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i></li>`;
       } else {
         // using sensor domain entities
-        var start = this._config.entity_forecast_icon_1 ? this._config.entity_forecast_icon_1.match(/(\d+)(?!.*\d)/g) : false;
+        const start = this._config.entity_forecast_icon_1 ? this._config.entity_forecast_icon_1.match(/(\d+)(?!.*\d)/g) : false;
         const iconEntity = this._config.entity_forecast_icon_1 ? this._config.entity_forecast_icon_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
         if ((iconEntity === undefined) || (this.hass.states[iconEntity] === undefined)) { // if there is no data then cut the forecast short
           break;
@@ -784,24 +727,18 @@ export class PlatinumWeatherCard extends LitElement {
         htmlIcon = html`<i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i>`;
       }
       if (this._config.entity_forecast_max_1?.match('^weather.')) {
-
-       //tjl using new forecast subscribe method
         if (this.forecast1 !== undefined ) {
           maxTemp = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'temperature');
-        //console.info(`getForecast-H temperature: ${maxTemp}`);
-        }
+            }
       //maxTemp = this._getForecastPropFromWeather(this.hass.states[this._config.entity_forecast_max_1].attributes.forecast, forecastDate, 'temperature');
       } else {
         start = this._config.entity_forecast_max_1 ? this._config.entity_forecast_max_1.match(/(\d+)(?!.*\d)/g) : false;
         maxTemp = start && this._config.entity_forecast_max_1 ? this.hass.states[this._config.entity_forecast_max_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i))].state : undefined;
       }
       if (this._config.entity_forecast_min_1?.match('^weather.')) {
-
-       //tjl using new forecast subscribe method
         if (this.forecast1 !== undefined ) {
           minTemp = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'templow');
-        //console.info(`getForecast templow: ${minTemp}`);
-        }
+            }
       //minTemp = this._getForecastPropFromWeather(this.hass.states[this._config.entity_forecast_min_1].attributes.forecast, forecastDate, 'templow');
       } else {
         start = this._config.entity_forecast_min_1 ? this._config.entity_forecast_min_1.match(/(\d+)(?!.*\d)/g) : false;
@@ -847,18 +784,15 @@ export class PlatinumWeatherCard extends LitElement {
             </li>
           `;
 
-      var pop: TemplateResult;
-      var pos: TemplateResult;
-      var tooltip: TemplateResult;
+      let pop: TemplateResult;
+      let pos: TemplateResult;
+      let tooltip: TemplateResult;
       if (this._config.entity_pop_1?.match('^weather.')) {
         const popEntity = this._config.entity_pop_1;
-
-        //tjl using new forecast subscribe method
-        var popData: string | undefined;
+        let popData: string | undefined;
         if (this.forecast1 !== undefined ) {
           popData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'precipitation_probability');
-        //console.info(`getForecast-H precip_prob: ${popData}`);
-        }
+            }
       //const popData = this._getForecastPropFromWeather(this.hass.states[popEntity].attributes.forecast, forecastDate, 'precipitation_probability');
         pop = popEntity && this._config.option_show_forecast_pop !== false ? html`<li class="f-slot-horiz-text"><span><div class="slot-text pop">${this.hass.states[popEntity] && popData !== undefined ? Math.round(Number(popData)) : "---"}</div><div class="unit">%</div></span></li>` : html``;
       } else {
@@ -868,13 +802,10 @@ export class PlatinumWeatherCard extends LitElement {
       }
       if (this._config.entity_pos_1?.match('^weather.')) {
         const posEntity = this._config.entity_pos_1;
-
-        //tjl using new forecast subscribe method
-        var posData: string | undefined;
+        let posData: string | undefined;
         if (this.forecast1 !== undefined ) {
           posData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'precipitation');
-        //console.info(`getForecast-H precipipation: ${posData}`);
-        }
+            }
       //const posData = this._getForecastPropFromWeather(this.hass.states[posEntity].attributes.forecast, forecastDate, 'precipitation');
         pos = posEntity ? html`<li class="f-slot-horiz-text"><span><div class="pos">${this.hass.states[posEntity] && posData !== undefined ? posData : "---"}</div><div class="unit">${this.getUOM('precipitation')}</div></span></li>` : html``;
       } else {
@@ -884,13 +815,10 @@ export class PlatinumWeatherCard extends LitElement {
       }
       if (this._config.entity_summary_1?.match('^weather.')) {
         const tooltipEntity = this._config.entity_summary_1;
-
-       //tjl using new forecast subscribe method
-        var tooltipData: string | undefined;
+        let tooltipData: string | undefined;
         if (this.forecast1 !== undefined ) {
           tooltipData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
-        //console.info(`getForecast-H tooltipData: ${tooltipData}`);
-        }
+            }
       //const tooltipData = this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'condition');
         tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : "---"}</div>
             <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
@@ -927,28 +855,23 @@ export class PlatinumWeatherCard extends LitElement {
     const htmlDays: TemplateResult[] = [];
     const days = this._config.daily_forecast_days || 5;
 
-    for (var i = 0; i < days; i++) {
+    for (let i = 0; i < days; i++) {
       const forecastDate = new Date();
       forecastDate.setDate(forecastDate.getDate() + i + 1);
-      var htmlIcon: TemplateResult;
-      var maxTemp: string | undefined;
-      var minTemp: string | undefined;
-      var pop: TemplateResult;
-      var pos: TemplateResult;
-      var fireDanger: TemplateResult;
-      var condition: string | undefined; //tjl moved to here; changed to var
-
-    //console.info(`Forecast-V Date ${forecastDate}`); //tjl
+      let htmlIcon: TemplateResult;
+      let maxTemp: string | undefined;
+      let minTemp: string | undefined;
+      let pop: TemplateResult;
+      let pos: TemplateResult;
+      let fireDanger: TemplateResult;
+      let condition: string | undefined;
 
       if (this._config.entity_forecast_icon_1?.match('^weather.')) {
         // using a weather domain entity
         const iconEntity = this._config.entity_forecast_icon_1;
-
-        //tjl using new forecast subscribe method
         if (this.forecast1 !== undefined ) {
           condition = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
-        //console.info(`getForecast-V condition: ${condition}`);
-        }
+            }
       //const condition = this._getForecastPropFromWeather(this.hass.states[iconEntity].attributes.forecast, forecastDate, 'condition');
         if (condition === undefined) {
           break;
@@ -958,7 +881,7 @@ export class PlatinumWeatherCard extends LitElement {
         htmlIcon = html`<i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i><br>`;
       } else {
         // using sensor domain entities
-        var start = this._config.entity_forecast_icon_1 ? this._config.entity_forecast_icon_1.match(/(\d+)(?!.*\d)/g) : false;
+        const start = this._config.entity_forecast_icon_1 ? this._config.entity_forecast_icon_1.match(/(\d+)(?!.*\d)/g) : false;
         const iconEntity = start && this._config.entity_forecast_icon_1 ? this._config.entity_forecast_icon_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
         if (!iconEntity || this.hass.states[iconEntity] === undefined || this.hass.states[iconEntity].state === 'unknown') { // Stop adding forecast days as soon as an undefined entity is encountered
           break;
@@ -967,33 +890,27 @@ export class PlatinumWeatherCard extends LitElement {
         htmlIcon = html`<i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i><br>`;
       }
 
-      //tjl Feature add for entity_summary_1.  Add support for weather entity using the forecast attribute 'condition'. 
-      //tjl Use new forecast subscribe method
       if (this._config.entity_summary_1?.match('^weather.')) {
         if (this.forecast1 !== undefined ) {
           condition = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
         }
         start = true;
-        //tjl use the new formatEntityState method for formatting an entity's presentation state (sunny to Sunny).
         //  Since the we're using attribute 'condition' instead of actual state,
         //    formatEntityState supports a hack where you can force a textual state.  Ex. hass.formatEntityState(hass.states["light.my_light"], 'off');
         //    So get the forecast 'condtion' and make it the textual state.
-        var summary = start ? html`
+        const summary = start ? html`
           <div class="f-summary-vert">${this.hass.states[this._config.entity_summary_1] ? this.hassExtended.formatEntityState(this.hass.states[this._config.entity_summary_1],condition) : "---"}</div>` : ``;
       } else {
         start = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
         const summaryEntity = start && this._config.entity_summary_1 ? this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
-        var summary = start ? html`
+        const summary = start ? html`
           <div class="f-summary-vert">${summaryEntity && this.hass.states[summaryEntity] ? this.hass.states[summaryEntity].state : "---"}</div>` : ``;
       }
 
       if (this._config.entity_forecast_max_1?.match('^weather.')) {
-
-        //tjl using new forecast subscribe method
         if (this.forecast1 !== undefined ) {
           maxTemp = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'temperature');
-        //console.info(`getForecast-V temperature: ${maxTemp}`);
-        }
+            }
       //maxTemp = this._getForecastPropFromWeather(this.hass.states[this._config.entity_forecast_max_1].attributes.forecast, forecastDate, 'temperature');
 
       } else {
@@ -1001,12 +918,9 @@ export class PlatinumWeatherCard extends LitElement {
         maxTemp = start && this._config.entity_forecast_max_1 ? this.hass.states[this._config.entity_forecast_max_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i))].state : undefined;
       }
       if (this._config.entity_forecast_min_1?.match('^weather.')) {
-
-       //tjl using new forecast subscribe method
         if (this.forecast1 !== undefined ) {
           minTemp = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'templow');
-        //console.info(`getForecast-V templow: ${minTemp}`);
-        }
+            }
       //minTemp = this._getForecastPropFromWeather(this.hass.states[this._config.entity_forecast_min_1].attributes.forecast, forecastDate, 'templow');
       } else {
         start = this._config.entity_forecast_min_1 ? this._config.entity_forecast_min_1.match(/(\d+)(?!.*\d)/g) : false;
@@ -1025,13 +939,10 @@ export class PlatinumWeatherCard extends LitElement {
         </div>` : html`---`;
       if (this._config.entity_pop_1?.match('^weather.')) {
         const popEntity = this._config.entity_pop_1;
-
-       //tjl using new forecast subscribe method
-        var popData: string | undefined;
+        let popData: string | undefined;
         if (this.forecast1 !== undefined ) {
           popData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'precipitation_probability');
-        //console.info(`getForecast-V precip_prob: ${popData}`);
-        }
+            }
       //const popData = this._getForecastPropFromWeather(this.hass.states[popEntity].attributes.forecast, forecastDate, 'precipitation_probability');
         pop = popEntity ? html`<div class="f-slot-vert"><div class="f-label">Chance of rain </div>
         <div class="pop">${this.hass.states[popEntity] && popData !== undefined ? Math.round(Number(popData)) : "---"}</div><div class="unit">%</div></div>` : html``;
@@ -1044,13 +955,10 @@ export class PlatinumWeatherCard extends LitElement {
       }
       if (this._config.entity_pos_1?.match('^weather.')) {
         const posEntity = this._config.entity_pos_1;
-
-       //tjl using new forecast subscribe method
-        var posData: string | undefined;
+        let posData: string | undefined;
         if (this.forecast1 !== undefined ) {
           posData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'precipitation');
-        //console.info(`getForecast-V precipipation: ${posData}`);
-        }
+            }
       //const posData = this._getForecastPropFromWeather(this.hass.states[posEntity].attributes.forecast, forecastDate, 'precipitation');
         pos = posEntity ? html`<div class="f-slot-vert"><div class="f-label">Possible rain </div>
         <div class="pos">${this.hass.states[posEntity] && posData !== undefined ? posData : "---"}</div><div class="unit">${this.getUOM('precipitation')}</div></div>` : html``;
@@ -1062,20 +970,16 @@ export class PlatinumWeatherCard extends LitElement {
           <div class="pos">${posEntity && this.hass.states[posEntity] ? this.hass.states[posEntity].state : "---"}</div>
           <div class="unit">${this.getUOM('precipitation')}</div></div>` : html``;
       }
-
-      //tjl Feature add for entity_extended_1  Add support for weather entity 
-      //  This will require use of configured daily_extended_name_attr. 
-      //tjl Use new forecast subscribe method
-      var extended: TemplateResult = html``;
+      //  This will require use of configured daily_extended_name_attr.
+      let extended: TemplateResult = html``;
       if (this._config.entity_extended_1?.match('^weather.')) {
         if (this.forecast1 !== undefined ) {
-          var attrib: string | undefined;
+          let attrib: string | undefined;
           attrib = undefined;
           if (this._config.daily_extended_use_attr === true) {
             if (this._config.daily_extended_name_attr !== undefined) {
               attrib = this._getForecastPropFromWeather(this.forecast1, forecastDate, this._config.daily_extended_name_attr);
-            //console.info(`Forecast Daily Extended Attrib: ${attrib}`);
-            }
+                    }
           }  else {
             attrib = "daily_extended_use_attr: - must be set to true when entity_extended_1 is set to a weather entity";
           }
@@ -1086,7 +990,7 @@ export class PlatinumWeatherCard extends LitElement {
 
       } else {
         start = this._config.entity_extended_1 && i < (this._config.daily_extended_forecast_days !== 0 ? this._config.daily_extended_forecast_days || 7 : 0) ? this._config.entity_extended_1.match(/(\d+)(?!.*\d)/g) : false;
-      //var extended: TemplateResult = html``;//tjl move this higher up to cover both sensor entities and new weather entity
+      //let extended: TemplateResult = html``;
         if (i < (this._config.daily_extended_forecast_days ? this._config.daily_extended_forecast_days : 7)) {
           if (this._config.daily_extended_use_attr === true) {
             start = this._config.entity_extended_1 ? this._config.entity_extended_1.match(/(\d+)(?!.*\d)/g) : false;
@@ -1105,10 +1009,10 @@ export class PlatinumWeatherCard extends LitElement {
       }
 
       start = this._config.entity_fire_danger_1 ? this._config.entity_fire_danger_1.match(/(\d+)(?!.*\d)/g) : false;
-      var fireDanger: TemplateResult = html``;
+      let fireDanger: TemplateResult = html``;
       const fireDangerEntity = start && this._config.entity_fire_danger_1 ? this._config.entity_fire_danger_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
       if ((start) && (fireDangerEntity)) {
-        var fireStyle = this._config.option_daily_color_fire_danger !== false && this.hass.states[fireDangerEntity].attributes.color_fill ? `background-color:${this.hass.states[fireDangerEntity].attributes.color_fill}; color:${this.hass.states[fireDangerEntity].attributes.color_text};` : "";
+        const fireStyle = this._config.option_daily_color_fire_danger !== false && this.hass.states[fireDangerEntity].attributes.color_fill ? `background-color:${this.hass.states[fireDangerEntity].attributes.color_fill}; color:${this.hass.states[fireDangerEntity].attributes.color_text};` : "";
         if (this._config.option_daily_color_fire_danger === false) {
           fireDanger = start && this.hass.states[fireDangerEntity].state !== 'unknown' ? html`
           <div class="f-firedanger-vert">${fireDangerEntity && this.hass.states[fireDangerEntity] ? this.hass.states[fireDangerEntity].state : "---"}</div>` : html``;
@@ -1180,7 +1084,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   private _getCardSizeDailyForecastSection(): number {
-    var sectionHeight = 0;
+    let sectionHeight = 0;
     if (this._config.show_section_daily_forecast !== false) {
       if (this._config.daily_forecast_layout !== 'vertical') {
         // Horizontal layout
@@ -1211,10 +1115,10 @@ export class PlatinumWeatherCard extends LitElement {
   protected render(): TemplateResult | void {
     const htmlCode: TemplateResult[] = [];
 
-    //tjl added. Extend Hass to include "formatEntityState"
+    //. Extend Hass to include "formatEntityState"
     this.hassExtended = this.hass as HassFormatEntityState;
 
-    //tjl added/modified
+    ///modified
     //  from: https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/hui-weather-forecast-card.ts
     const forecastData = getForecast(
    // WeatherObj.attributes,
@@ -1222,7 +1126,7 @@ export class PlatinumWeatherCard extends LitElement {
       this._config?.forecast_type
     );
 
-    //tjl added/modified
+    ///modified
     //  from: https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/hui-weather-forecast-card.ts
     this.forecast1 = 
     //this._config?.show_forecast !== false && forecastData?.forecast?.length
@@ -1252,8 +1156,6 @@ export class PlatinumWeatherCard extends LitElement {
         }
       });
     }
-
-    //tjl modify the ha-card below to match hui-weather-card (except keep class="card" to retain margins, etc). 
     //  from: https://github.com/home-assistant/frontend/blob/dev/src/panels/lovelace/cards/hui-weather-forecast-card.ts
     // In support of tap/hold/double_tap actions. 
 
@@ -1415,9 +1317,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotPopForecast(): TemplateResult {
-    //tjl use new forecast subscribe method below
     const forecast_pop = this.forecast1 !== undefined ? this.forecast1[0].precipitation_probability : undefined;
-  //console.info(`Pop Forecast: ${forecast_pop}`);
 
     const pop = this._config.entity_pop && this.hass.states[this._config.entity_pop] !== undefined
       ? this._config.entity_pop.match('^weather.') === null
@@ -1431,7 +1331,6 @@ export class PlatinumWeatherCard extends LitElement {
     const pop_units = pop !== "---" ? html`<div class="slot-text unit">%</div>` : html``;
 
     const forecast_pos = this.forecast1 !== undefined ? this.forecast1[0].precipitation : undefined;
-  //console.info(`Pos Forecast: ${forecast_pos}`);
 
     const pos = this._config.entity_pos && this.hass.states[this._config.entity_pos] !== undefined
       ? this._config.entity_pos.match('^weather.') === null
@@ -1457,9 +1356,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotPop(): TemplateResult {
-    //tjl using new forecast subscribe method.
     const forecast_pop = this.forecast1 !== undefined ? this.forecast1[0].precipitation_probability : undefined;
-  //console.info(`Forecast Pop: ${forecast_pop}`);
 
     const pop = this._config.entity_pop && this.hass.states[this._config.entity_pop] !== undefined
       ? this._config.entity_pop.match('^weather.') === null
@@ -1484,9 +1381,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotPos(): TemplateResult {
-    //tjl use new forecast subscribe method below
     const forecast_pos = this.forecast1 !== undefined ? this.forecast1[0].precipitation : undefined;
-  //console.info(`Pos: ${forecast_pos}`);
 
     const pos = this._config.entity_pos && this.hass.states[this._config.entity_pos] !== undefined
       ? this._config.entity_pos.match('^weather.') === null
@@ -1510,9 +1405,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotPossibleTomorrow(): TemplateResult {
-    //tjl use new forecast subscribe method below
     const forecast_pos = this.forecast1 !== undefined && this.forecast1.length > 1 ? this.forecast1[1].precipitation : undefined;
-  //console.info(`Pos Tommorrow: ${forecast_pos}`);
 
     const pos = this._config.entity_possible_tomorrow && this.hass.states[this._config.entity_possible_tomorrow] !== undefined
       ? this._config.entity_possible_tomorrow.match('^weather.') === null
@@ -1614,9 +1507,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotForecastMax(): TemplateResult {
-    //tjl using new forecast subscribe method.
     const temp_max = this.forecast1 !== undefined ? this.forecast1[0].temperature : undefined;
-  //console.info(`Forecast Tempmax: ${temp_max}`);
 
     const digits = this._config.option_today_temperature_decimals === true ? 1 : 0;
     
@@ -1645,9 +1536,7 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotForecastMin(): TemplateResult {
-    //tjl using new forecast subscribe method.
     const temp_low = this.forecast1 !== undefined ? this.forecast1[0].templow : undefined;
-  //console.info(`Forecast Templow: ${temp_low}`);
 
     const digits = this._config.option_today_temperature_decimals === true ? 1 : 0;
     const temp = this._config.entity_forecast_min && this.hass.states[this._config.entity_forecast_min] !== undefined
@@ -1770,7 +1659,7 @@ export class PlatinumWeatherCard extends LitElement {
   get slotFireDanger(): TemplateResult {
     const entity = this._config.entity_fire_danger;
     const fire = entity && this.hass.states[entity] !== undefined ? this.hass.states[entity].state !== 'unknown' ? this._config.option_color_fire_danger === false ? this.hass.states[entity].state : this.hass.states[entity].state.toLocaleUpperCase() : "Not Applicable" : "---";
-    var fireStyle = entity && this._config.option_color_fire_danger !== false && this.hass.states[entity].attributes.color_fill ? `background-color:${this.hass.states[entity].attributes.color_fill}; color:${this.hass.states[entity].attributes.color_text};` : "";
+    const fireStyle = entity && this._config.option_color_fire_danger !== false && this.hass.states[entity].attributes.color_fill ? `background-color:${this.hass.states[entity].attributes.color_fill}; color:${this.hass.states[entity].attributes.color_text};` : "";
     if (this._config.option_color_fire_danger === false) {
       return html`
       <li>
@@ -2020,9 +1909,9 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotCustom1(): TemplateResult {
-    var icon = this._config.custom1_icon ? this._config.custom1_icon : 'mdi:help-box';
-    var value = this._config.custom1_value && this.hass.states[this._config.custom1_value] !== undefined ? this.hass.states[this._config.custom1_value].state : 'unknown';
-    var unit = this._config.custom1_units ? this._config.custom1_units : '';
+    const icon = this._config.custom1_icon ? this._config.custom1_icon : 'mdi:help-box';
+    const value = this._config.custom1_value && this.hass.states[this._config.custom1_value] !== undefined ? this.hass.states[this._config.custom1_value].state : 'unknown';
+    const unit = this._config.custom1_units ? this._config.custom1_units : '';
     return html`
       <li>
         <div class="slot-icon">
@@ -2034,9 +1923,9 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotCustom2(): TemplateResult {
-    var icon = this._config.custom2_icon ? this._config.custom2_icon : 'mdi:help-box';
-    var value = this._config.custom2_value && this.hass.states[this._config.custom2_value] !== undefined ? this.hass.states[this._config.custom2_value].state : 'unknown';
-    var unit = this._config.custom2_units ? this._config.custom2_units : '';
+    const icon = this._config.custom2_icon ? this._config.custom2_icon : 'mdi:help-box';
+    const value = this._config.custom2_value && this.hass.states[this._config.custom2_value] !== undefined ? this.hass.states[this._config.custom2_value].state : 'unknown';
+    const unit = this._config.custom2_units ? this._config.custom2_units : '';
     return html`
       <li>
         <div class="slot-icon">
@@ -2048,9 +1937,9 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotCustom3(): TemplateResult {
-    var icon = this._config.custom3_icon ? this._config.custom3_icon : 'mdi:help-box';
-    var value = this._config.custom3_value && this.hass.states[this._config.custom3_value] !== undefined ? this.hass.states[this._config.custom3_value].state : 'unknown';
-    var unit = this._config.custom3_units ? this._config.custom3_units : '';
+    const icon = this._config.custom3_icon ? this._config.custom3_icon : 'mdi:help-box';
+    const value = this._config.custom3_value && this.hass.states[this._config.custom3_value] !== undefined ? this.hass.states[this._config.custom3_value].state : 'unknown';
+    const unit = this._config.custom3_units ? this._config.custom3_units : '';
     return html`
       <li>
         <div class="slot-icon">
@@ -2062,9 +1951,9 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get slotCustom4(): TemplateResult {
-    var icon = this._config.custom4_icon ? this._config.custom4_icon : 'mdi:help-box';
-    var value = this._config.custom4_value && this.hass.states[this._config.custom4_value] !== undefined ? this.hass.states[this._config.custom4_value].state : 'unknown';
-    var unit = this._config.custom4_units ? this._config.custom4_units : '';
+    const icon = this._config.custom4_icon ? this._config.custom4_icon : 'mdi:help-box';
+    const value = this._config.custom4_value && this.hass.states[this._config.custom4_value] !== undefined ? this.hass.states[this._config.custom4_value].state : 'unknown';
+    const unit = this._config.custom4_units ? this._config.custom4_units : '';
     return html`
       <li>
         <div class="slot-icon">
@@ -2098,7 +1987,6 @@ export class PlatinumWeatherCard extends LitElement {
   get currentApparentTemperature(): string {
     const entity = this._config.entity_apparent_temp;
     const digits = this._config.option_show_overview_decimals === true ? 1 : 0;
-    //tjl Feature Add - Add capability to get Apparent Temperature from weather entity attribute
     if ( entity && this.hass.states[entity] ){
       return entity && this.hass.states[entity]
         ? entity.match('^weather.') === null
@@ -2135,7 +2023,7 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentPressure(): string {
     const entity = this._config.entity_pressure;
-    var places = this._config.option_pressure_decimals ? Math.max(Math.min(this._config.option_pressure_decimals, 3), 0) : 0;
+    const places = this._config.option_pressure_decimals ? Math.max(Math.min(this._config.option_pressure_decimals, 3), 0) : 0;
     return entity && this.hass.states[entity]
       ? entity.match('^weather.') === null
         ? (Number(this.hass.states[entity].state)).toLocaleString(this.locale, { minimumFractionDigits: places, maximumFractionDigits: places })
@@ -2194,8 +2082,6 @@ export class PlatinumWeatherCard extends LitElement {
 
   get currentWindGust(): string {
     const entity = this._config.entity_wind_gust;
-
-    //tjl Feature Add - Add capability to get current Wind Gust from weather entity attribute
     return entity && this.hass.states[entity]
       ? entity.match('^weather.') === null
         ? Math.round(Number(this.hass.states[entity].state)).toLocaleString(this.locale)
@@ -2339,8 +2225,8 @@ export class PlatinumWeatherCard extends LitElement {
 
   // SunSetAndRise: returns set and rise information
   get sunSet(): { next: TemplateResult, following: TemplateResult, nextText: string, followingText: string, nextIcon: string, followingIcon: string } {
-    var nextSunSet: string;
-    var nextSunRise: string;
+    let nextSunSet: string;
+    let nextSunRise: string;
     switch (this.timeFormat) {
       case '12hour':
         nextSunSet = this._config.entity_sun && (this.hass.states[this._config.entity_sun] !== undefined) ? new Date(this.hass.states[this._config.entity_sun].attributes.next_setting).toLocaleTimeString(this.locale, { hour: 'numeric', minute: '2-digit', hour12: true }).replace(" am", "am").replace(" pm", "pm") : "";
@@ -2355,7 +2241,7 @@ export class PlatinumWeatherCard extends LitElement {
         nextSunRise = this._config.entity_sun && (this.hass.states[this._config.entity_sun] !== undefined) ? new Date(this.hass.states[this._config.entity_sun].attributes.next_rising).toLocaleTimeString(navigator.language, { timeStyle: 'short' }).replace(" am", "am").replace(" pm", "pm") : "";
         break;
     }
-    var nextDate = new Date();
+    const nextDate = new Date();
     nextDate.setDate(nextDate.getDate() + 1);
     if ((this._config.entity_sun) && (this.hass.states[this._config.entity_sun] !== undefined)) {
       if (this.hass.states[this._config.entity_sun].state === "above_horizon") {
@@ -2921,7 +2807,7 @@ export class PlatinumWeatherCard extends LitElement {
     const forecastTextFontSize = this._config.forecast_text_font_size || "21px";
     const forecastTextAlignment = this._config.forecast_text_alignment || "center";
 
-    //tjl add ha-card styles from bramkragten's Weather-Card w/o margins, etc (which are already in the .card styles). 
+    // ha-card styles from bramkragten's Weather-Card w/o margins, etc (which are already in the .card styles). 
     //  Provides for cursor to show on the card in support of tap/hold/double_tap actions
     return css`
       ha-card {
