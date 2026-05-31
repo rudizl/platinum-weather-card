@@ -89,6 +89,11 @@ export class PlatinumWeatherCard extends LitElement {
   private forecast1!: ForecastAttribute[] | undefined;
   private hassExtended!: HassFormatEntityState;
 
+
+  private _isUnavailable(state: string): boolean {
+    return state === 'unknown' || state === 'unavailable';
+  }
+
   public getCardSize(): number {
 
     // console.info(`Tempate Test String:${entityComputeStateDisplay(this.hass.localize, this.hass.states['sensor.template_test_string'], getLocale(this.hass))}`);
