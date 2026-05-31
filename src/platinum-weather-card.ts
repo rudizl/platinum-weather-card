@@ -47,6 +47,10 @@ console.info(
 
 
 // TODO Name your custom element
+function isUnavailable(state: string): boolean {
+  return state === 'unknown' || state === 'unavailable';
+}
+
 @customElement('platinum-weather-card')
 export class PlatinumWeatherCard extends LitElement {
   //tjl from bramkragten
@@ -89,10 +93,6 @@ export class PlatinumWeatherCard extends LitElement {
   private forecast1!: ForecastAttribute[] | undefined;
   private hassExtended!: HassFormatEntityState;
 
-
-  private _isUnavailable(state: string): boolean {
-    return state === 'unknown' || state === 'unavailable';
-  }
 
   public getCardSize(): number {
 
