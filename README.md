@@ -388,6 +388,7 @@ double_tap_action:
 | `custom1_value`–`custom4_value` | String | none | Entity for custom slot |
 | `custom1_icon`–`custom4_icon` | Icon | none | MDI icon for custom slot |
 | `custom1_units`–`custom4_units` | String | none | Unit label for custom slot |
+| `custom1_label`–`custom4_label` | String | none | Optional text label shown before the value |
 | `option_today_temperature_decimals` | Boolean | `false` | 1 decimal on temperature slots |
 | `option_today_rainfall_decimals` | Boolean | `false` | 1 decimal on rainfall slots |
 | `option_forecast_decimals` | Boolean | `false` | 1 decimal on forecast temperatures |
@@ -405,7 +406,8 @@ Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressu
 | `forecast_type` | String | `daily` | `daily`, `hourly`, or `twice_daily` |
 | `daily_forecast_layout` | String | `horizontal` | `horizontal` or `vertical` |
 | `daily_forecast_days` | Number | `5` | Days to show: 1–5 (horizontal), 1–7 (vertical) |
-| `option_tooltips` | Boolean | `false` | Tooltips on horizontal forecast |\
+| `option_tooltips` | Boolean | `false` | Tooltips on horizontal forecast |
+| `option_show_current_day` | Boolean | `false` | Include today in forecast strip (starts from today instead of tomorrow) |
 | `daily_extended_forecast_days` | Number | `7` | Extended forecast days (vertical only, 0–7) |
 | `option_daily_color_fire_danger` | Boolean | `true` | Colour fire danger (vertical only) |
 | `old_daily_format` | Boolean | `false` | Stack max/min vertically instead of side by side |
