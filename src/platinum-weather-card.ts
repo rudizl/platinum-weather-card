@@ -663,7 +663,10 @@ export class PlatinumWeatherCard extends LitElement {
             if (attribute !== undefined) extended.push(html`${attribute}`);
           }
         } else {
-          if (this.hass.states[extendedEntity] !== undefined) extended.push(html`${this.hass.states[extendedEntity].state}`);
+          if (this.hass.states[extendedEntity] !== undefined) {
+            const extState = this.hass.states[extendedEntity].state;
+            if (extState !== 'unknown' && extState !== 'unavailable') extended.push(html`${extState}`);
+          }
         }
       }
     }
