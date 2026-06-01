@@ -1269,11 +1269,6 @@ get _forecast_type(): string {
           </ha-formfield>
         </div>
         <div>
-          <ha-formfield .label=${'Include Today in Forecast'}>
-            <ha-switch .checked=${this._option_show_current_day === true} .configValue=${'option_show_current_day'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
         </div>
         <div>
           <ha-formfield .label=${'Colour Fire Danger'}>
@@ -1401,7 +1396,13 @@ get _forecast_type(): string {
                 </ha-switch>
               </ha-formfield>` : html``}
           </div>
-          <div></div>
+          <div>
+            <ha-formfield .label=${'Include Today in Forecast'}>
+              <ha-switch .checked=${this._option_show_current_day === true} .configValue=${'option_show_current_day'}
+                @change=${this._valueChanged}>
+              </ha-switch>
+            </ha-formfield>
+          </div>
         </div>
         <div class="side-by-side">
         ${this._daily_forecast_layout === 'vertical' ? html`<div>

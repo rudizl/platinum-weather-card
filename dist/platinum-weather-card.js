@@ -2182,11 +2182,6 @@ const Cn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
           </ha-formfield>
         </div>
         <div>
-          <ha-formfield .label=${"Include Today in Forecast"}>
-            <ha-switch .checked=${!0===this._option_show_current_day} .configValue=${"option_show_current_day"}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
         </div>
         <div>
           <ha-formfield .label=${"Colour Fire Danger"}>
@@ -2298,7 +2293,13 @@ const Cn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
                 </ha-switch>
               </ha-formfield>`:B``}
           </div>
-          <div></div>
+          <div>
+            <ha-formfield .label=${"Include Today in Forecast"}>
+              <ha-switch .checked=${!0===this._option_show_current_day} .configValue=${"option_show_current_day"}
+                @change=${this._valueChanged}>
+              </ha-switch>
+            </ha-formfield>
+          </div>
         </div>
         <div class="side-by-side">
         ${"vertical"===this._daily_forecast_layout?B`<div>
