@@ -159,7 +159,7 @@ After installing, add as many instances of the card to your dashboard as needed.
 
 You must have a weather integration configured before adding the card — it only visualises data from existing entities. When you first create a card it will appear empty until you configure it via the GUI editor.
 
-![Unconfigured card](https://raw.githubusercontent.com/Makin-Things/platinum-weather-card/master/images/unconfigured-card.png)
+![Unconfigured card](./images/unconfigured-card.png)
 
 ---
 
@@ -167,7 +167,7 @@ You must have a weather integration configured before adding the card — it onl
 
 The card is divided into sections that can each be enabled, disabled, and reordered independently. Each section has its own configuration page for entity selection and display options.
 
-![Platinum Weather card](https://raw.githubusercontent.com/Makin-Things/platinum-weather-card/master/images/all-sections-highlighted.png)
+![Platinum Weather card](./images/all-sections-highlighted.png)
 
 There is no reason all your weather data needs to be on a single card — you can create multiple instances with different configurations.
 
