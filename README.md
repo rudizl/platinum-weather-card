@@ -48,25 +48,29 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog — Beta releases</strong></summary>
 
+**v1.3.1-beta.11**
+- Add `option_show_current_day` — new toggle **"Include Today in Forecast"** in the editor (Daily Forecast section); when enabled, the forecast strip starts from today instead of tomorrow
+
+**v1.3.1-beta.9**
+- Show `---` instead of `NaN%` / `unknownmm` when a sensor entity returns `unknown` or `unavailable` — affects humidity, rainfall, pressure, visibility, wind speed/gust, and precipitation slots
+
 **v1.3.1-beta.4**
-- Add `getEntitySuggestion` — card now appears in the HA 2026.6+ card picker under "Community" when a `weather.*` entity is selected, pre-filling `weather_entity` in the config
-- Custom slots (custom1–4): use `hass.formatEntityState()` for proper localized state display instead of raw `.state`; use `hass.formatEntityName()` as tooltip (both with graceful fallback for older HA versions)
-- Custom slots: show `---` instead of `unknown` when entity is unavailable
+- Add `getEntitySuggestion` — card appears in the HA 2026.6+ card picker under "Community" when a `weather.*` entity is selected, pre-filling `weather_entity` in the config
 
 **v1.3.1-beta.3**
-- Show `---` instead of `NaN%` / `unknownmm` when a sensor entity returns `unknown` or `unavailable` — affects humidity, rainfall, pressure, visibility, wind speed/gust, and precipitation slots
+- Fix `fireDanger` variable scoping in vertical forecast layout
+- Add `check: false` to TypeScript plugin to resolve build-time redeclaration error
 
 **v1.3.1-beta.2**
 - Remove `resize-observer-polyfill` dependency (~30KB bundle saving; all HA-supported browsers have had native `ResizeObserver` since 2020)
 - Add missing `entity_moon` to TypeScript `WeatherCardConfig` interface
-- Replace all `var` declarations with `const`/`let` throughout
 - Remove `ha-textfield` from editor CSS (officially removed in HA 2026.5)
-- Remove `eslint-disable` directives, commented-out debug lines, stale TODO comments and old attribution comments
+- Remove stale TODO comments and old attribution comments
 
 **v1.3.1-beta.1**
 - Fix editor switch color — replace removed HA 2026.5 MDC tokens (`--mdc-theme-secondary`, `--switch-checked-color`) with new WebAwesome tokens (`--ha-switch-checked-background-color`, `--ha-switch-checked-thumb-background-color`)
 - Migrate all editor text inputs from deprecated `ha-textfield` to `ha-input` (HA 2026.5+ compatible)
-- Update editor loading guard to detect both `ha-input` and `ha-textfield` — prevents editor hang if `ha-textfield` is removed in a future HA release
+- Update editor loading guard to detect both `ha-input` and `ha-textfield`
 - Remove dead `mwc-select` CSS rule (unused since v1.2.4)
 
 </details>
