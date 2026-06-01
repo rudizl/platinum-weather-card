@@ -46,6 +46,9 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog — Beta releases</strong></summary>
 
+**v1.3.1-beta.13**
+- Hide `unknown`/`unavailable` state in the extended forecast section — was showing raw `unknown` text below the separator line when the entity was unavailable
+
 **v1.3.1-beta.12**
 - Fix false-positive errors for sensor entities with multi-digit numbers in their names (e.g. `sensor.ivarna103_*`) — the card no longer checks if an auto-incremented entity name exists, eliminating spurious `'entity_pop'+'1'=...not found` warnings
 - Add optional label field to custom slots (custom1–4) — set `custom1_label: 'My label'` to display a small secondary text before the entity value; configurable via the editor
