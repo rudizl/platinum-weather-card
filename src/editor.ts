@@ -566,6 +566,10 @@ get _forecast_type(): string {
     return this._config?.option_show_forecast_pop !== false; // default on
   }
 
+  get _option_show_current_day(): boolean {
+    return this._config?.option_show_current_day === true; // default off
+  }
+
   get _option_pressure_decimals(): pressureDecimals | null {
     return this._config?.option_pressure_decimals || null;
   }
@@ -1265,6 +1269,11 @@ get _forecast_type(): string {
           </ha-formfield>
         </div>
         <div>
+          <ha-formfield .label=${'Include Today in Forecast'}>
+            <ha-switch .checked=${this._option_show_current_day === true} .configValue=${'option_show_current_day'}
+              @change=${this._valueChanged}>
+            </ha-switch>
+          </ha-formfield>
         </div>
         <div>
           <ha-formfield .label=${'Colour Fire Danger'}>

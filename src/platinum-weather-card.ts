@@ -755,7 +755,7 @@ export class PlatinumWeatherCard extends LitElement {
 
     for (var i = 0; i < days; i++) {
       const forecastDate = new Date();
-      forecastDate.setDate(forecastDate.getDate() + i + 1);
+      forecastDate.setDate(forecastDate.getDate() + i + (this._config.option_show_current_day ? 0 : 1));
       var htmlIcon: TemplateResult;
       var maxTemp: string | undefined;
       var minTemp: string | undefined;
@@ -935,7 +935,7 @@ export class PlatinumWeatherCard extends LitElement {
 
     for (var i = 0; i < days; i++) {
       const forecastDate = new Date();
-      forecastDate.setDate(forecastDate.getDate() + i + 1);
+      forecastDate.setDate(forecastDate.getDate() + i + (this._config.option_show_current_day ? 0 : 1));
       var htmlIcon: TemplateResult;
       var maxTemp: string | undefined;
       var minTemp: string | undefined;
