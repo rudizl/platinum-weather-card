@@ -48,6 +48,10 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog — Beta releases</strong></summary>
 
+**v1.3.1-beta.12**
+- Fix false-positive errors for sensor entities with multi-digit numbers in their names (e.g. `sensor.ivarna103_*`) — the card no longer checks if an auto-incremented entity name exists, eliminating spurious `'entity_pop'+'1'=...not found` warnings
+- Add optional label field to custom slots (custom1–4) — set `custom1_label: 'My label'` to display a small secondary text before the entity value; configurable via the editor
+
 **v1.3.1-beta.11**
 - Add `option_show_current_day` — new toggle **"Include Today in Forecast"** in the editor (Daily Forecast section); when enabled, the forecast strip starts from today instead of tomorrow
 
