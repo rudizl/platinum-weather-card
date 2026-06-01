@@ -7,7 +7,67 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 [![License][license-shield]](LICENSE.md)
 ![Maintenance](https://img.shields.io/badge/MAINTAINED-YES-green?style=for-the-badge)
 
-![Platinum Weather card](https://raw.githubusercontent.com/Makin-Things/platinum-weather-card/master/images/platinum-weather-card.png)
+## Screenshots
+
+<table>
+<tr>
+<td align="center" width="50%">
+
+**Card overview**
+
+![Card overview](docs/images/card-overview.png)
+
+</td>
+<td align="center" width="50%">
+
+**Slot configuration in editor**
+
+![Editor slots](docs/images/editor-slots.png)
+
+</td>
+</tr>
+<tr>
+<td align="center">
+
+**Include Today in Forecast — ON**
+
+![Include today on](docs/images/editor-include-today-on.png)
+
+</td>
+<td align="center">
+
+**Include Today in Forecast — OFF**
+
+![Include today off](docs/images/editor-include-today-off.png)
+
+</td>
+</tr>
+<tr>
+<td align="center">
+
+**Forecast temperature decimals — ON**
+
+![Forecast decimals on](docs/images/editor-forecast-decimals-on.png)
+
+</td>
+<td align="center">
+
+**Forecast temperature decimals — OFF**
+
+![Forecast decimals off](docs/images/editor-forecast-decimals-off.png)
+
+</td>
+</tr>
+<tr>
+<td align="center" colspan="2">
+
+**Custom slot with label** — `custom1_label: 'Place'` displays a text prefix before the entity value
+
+![Custom slot label](docs/images/editor-custom-slot-label.png)
+
+</td>
+</tr>
+</table>
 
 <details>
 <summary><strong>Changelog — Stable releases</strong></summary>
