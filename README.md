@@ -278,7 +278,8 @@ Two layout options: **Horizontal** (default, up to 5 days) and **Vertical** (up 
 | ------ | ---- | ----------- |
 | Show Static Icons | Boolean | Disable animated icons |
 | Time Format | String | `system` (follows HA Settings → Profile), `12hour`, or `24hour` |
-| Locale | String | Locale for timestamp and moon phase formatting |
+| Locale | String | Locale for timestamp and moon phase formatting. Supported: `bg`, `ru`, `ua`, `de`, `fr`, `it`, `nl`, `pl`, `da`, `es`, `he` (leave empty to use browser locale) |
+| Include Today in Forecast | Boolean | Start the daily forecast strip from today instead of tomorrow |
 
 ---
 
@@ -324,7 +325,7 @@ double_tap_action:
     entity_id: light.living_room
 ```
 | `option_time_format` | String | `system` | `system` (follows HA Settings → Profile), `12hour` or `24hour` |
-| `option_locale` | String | none | Locale for timestamp and moon phase formatting |
+| `option_locale` | String | none | Locale for timestamp and moon phase: `bg`, `ru`, `ua`, `de`, `fr`, `it`, `nl`, `pl`, `da`, `es`, `he` |
 | `text_update_time_prefix` | String | none | Prefix for the update time display |
 
 ## Overview Settings
@@ -378,7 +379,7 @@ double_tap_action:
 | `entity_uv_alert_summary` | String | none | Required for `uv_summary` |
 | `entity_fire_danger` | String | none | Required for `fire_danger` |
 | `entity_wind_bearing` | String | none | Required for `wind`, `wind_kt` |
-| `entity_wind_speed` | String | none | Required for `wind` |
+| `entity_wind_speed` | String | none | Required for `wind`; wind speed unit is read automatically from the weather entity attributes |
 | `entity_wind_gust` | String | none | Required for `wind` |
 | `entity_wind_speed_kt` | String | none | Required for `wind_kt` |
 | `entity_wind_gust_kt` | String | none | Required for `wind_kt` |
