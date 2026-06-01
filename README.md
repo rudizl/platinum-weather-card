@@ -184,8 +184,6 @@ Use the switch on the main config dialog to hide a section entirely, and the up/
 
 ## Overview Section
 
-![Platinum Weather card](./images/overview-section-highlighted-update.png)
-
 Four layout options are available:
 
 | Layout | Preview |
@@ -212,7 +210,6 @@ Four layout options are available:
 
 Shows today's detailed forecast text.
 
-![Platinum Weather card](./images/extended-section-highlighted.png)
 
 | Option | Type | Description |
 | ------ | ---- | ----------- |
@@ -226,7 +223,6 @@ Shows today's detailed forecast text.
 
 Up to 8 rows of data in 2 columns. The required entities update dynamically based on which slots are selected.
 
-![Platinum Weather card](./images/slots-section-highlighted.png)
 
 | Slot Value | Description | Example |
 | ---------- | ----------- | ------- |
@@ -259,7 +255,6 @@ Up to 8 rows of data in 2 columns. The required entities update dynamically base
 
 ## Daily Forecast Section
 
-![Platinum Weather card](./images/daily-forecast-section-highlighted-updated.png)
 
 Two layout options: **Horizontal** (default, up to 5 days) and **Vertical** (up to 7 days).
 
@@ -278,7 +273,6 @@ Two layout options: **Horizontal** (default, up to 5 days) and **Vertical** (up 
 
 ## Global Options
 
-![Platinum Weather card](./images/global-options.png)
 
 | Option | Type | Description |
 | ------ | ---- | ----------- |
