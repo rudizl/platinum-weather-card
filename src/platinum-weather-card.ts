@@ -395,15 +395,12 @@ export class PlatinumWeatherCard extends LitElement {
           }
         } else {
           // we are dealing with the sensor domain
-          // check there is a number in the name
+          // check there is a number in the name (needed for day-increment pattern)
+          // Note: we intentionally do NOT check if entity+1 exists — this causes
+          // false positives for sensors with multi-digit numbers (e.g. ivarna103_*)
+          // or when some forecast day sensors are deliberately disabled.
           const start = this._config[entityName].match(/(\d+)(?!.*\d)/g);
-          if (start) {
-            // has a number so now check all the extra entities exist
-            const newEntity = this._config[entityName].replace(/(\d+)(?!.*\d)/g, Number(start) + 1);
-            if (this.hass.states[newEntity] === undefined) {
-              this._error.push(`'${entityName}'+'1'=${newEntity}' not found`);
-            }
-          } else {
+          if (!start) {
             this._error.push(`'${entityName}=${this._config[entityName]}' value needs to have a number`);
           }
         }
@@ -2025,11 +2022,13 @@ export class PlatinumWeatherCard extends LitElement {
     var icon = this._config.custom1_icon ? this._config.custom1_icon : 'mdi:help-box';
     var value = this._config.custom1_value && this.hass.states[this._config.custom1_value] !== undefined ? this.hass.states[this._config.custom1_value].state : 'unknown';
     var unit = this._config.custom1_units ? this._config.custom1_units : '';
+    var label = this._config.custom1_label ? this._config.custom1_label : '';
     return html`
       <li>
         <div class="slot-icon">
           <ha-icon icon=${icon}></ha-icon>
         </div>
+        ${label ? html`<div class="slot-text label-text">${label}</div>` : html``}
         <div class="slot-text custom-1-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
@@ -2039,11 +2038,13 @@ export class PlatinumWeatherCard extends LitElement {
     var icon = this._config.custom2_icon ? this._config.custom2_icon : 'mdi:help-box';
     var value = this._config.custom2_value && this.hass.states[this._config.custom2_value] !== undefined ? this.hass.states[this._config.custom2_value].state : 'unknown';
     var unit = this._config.custom2_units ? this._config.custom2_units : '';
+    var label = this._config.custom2_label ? this._config.custom2_label : '';
     return html`
       <li>
         <div class="slot-icon">
           <ha-icon icon=${icon}></ha-icon>
         </div>
+        ${label ? html`<div class="slot-text label-text">${label}</div>` : html``}
         <div class="slot-text custom-2-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
@@ -2053,11 +2054,13 @@ export class PlatinumWeatherCard extends LitElement {
     var icon = this._config.custom3_icon ? this._config.custom3_icon : 'mdi:help-box';
     var value = this._config.custom3_value && this.hass.states[this._config.custom3_value] !== undefined ? this.hass.states[this._config.custom3_value].state : 'unknown';
     var unit = this._config.custom3_units ? this._config.custom3_units : '';
+    var label = this._config.custom3_label ? this._config.custom3_label : '';
     return html`
       <li>
         <div class="slot-icon">
           <ha-icon icon=${icon}></ha-icon>
         </div>
+        ${label ? html`<div class="slot-text label-text">${label}</div>` : html``}
         <div class="slot-text custom-3-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
@@ -2067,11 +2070,13 @@ export class PlatinumWeatherCard extends LitElement {
     var icon = this._config.custom4_icon ? this._config.custom4_icon : 'mdi:help-box';
     var value = this._config.custom4_value && this.hass.states[this._config.custom4_value] !== undefined ? this.hass.states[this._config.custom4_value].state : 'unknown';
     var unit = this._config.custom4_units ? this._config.custom4_units : '';
+    var label = this._config.custom4_label ? this._config.custom4_label : '';
     return html`
       <li>
         <div class="slot-icon">
           <ha-icon icon=${icon}></ha-icon>
         </div>
+        ${label ? html`<div class="slot-text label-text">${label}</div>` : html``}
         <div class="slot-text custom-4-text">${value}</div><div class="slot-text unit">${unit}</div>
       </li>
     `;
@@ -3112,6 +3117,13 @@ export class PlatinumWeatherCard extends LitElement {
       .slot-text {
         display: table-cell;
         position: relative;
+      }
+      .label-text {
+        display: table-cell;
+        position: relative;
+        font-size: 0.85em;
+        color: var(--secondary-text-color);
+        padding-right: 4px;
       }
       .fire-danger-text-color {
         display: inline-block;

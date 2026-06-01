@@ -449,6 +449,10 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
     return this._config?.custom1_icon || '';
   }
 
+  get _custom1_label(): string {
+    return this._config?.custom1_label || '';
+  }
+
   get _custom1_units(): string {
     return this._config?.custom1_units || '';
   }
@@ -459,6 +463,10 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
 
   get _custom2_icon(): string {
     return this._config?.custom2_icon || '';
+  }
+
+  get _custom2_label(): string {
+    return this._config?.custom2_label || '';
   }
 
   get _custom2_units(): string {
@@ -473,6 +481,10 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
     return this._config?.custom3_icon || '';
   }
 
+  get _custom3_label(): string {
+    return this._config?.custom3_label || '';
+  }
+
   get _custom3_units(): string {
     return this._config?.custom3_units || '';
   }
@@ -483,6 +495,10 @@ export class WeatherCardEditor extends LitElement implements LovelaceCardEditor 
 
   get _custom4_icon(): string {
     return this._config?.custom4_icon || '';
+  }
+
+  get _custom4_label(): string {
+    return this._config?.custom4_label || '';
   }
 
   get _custom4_units(): string {
@@ -884,6 +900,8 @@ get _forecast_type(): string {
           <ha-input label="Custom 1 Units" .value=${this._custom1_units} .configValue=${'custom1_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
+        <ha-input label="Custom 1 Label (optional)" .value=${this._custom1_label} .configValue=${'custom1_label'} @input=${this._valueChanged}>
+        </ha-input>
       ` : '';
 
     const entity_custom2 = entities.has("custom2") ?
@@ -898,6 +916,8 @@ get _forecast_type(): string {
           <ha-input label="Custom 2 Units" .value=${this._custom2_units} .configValue=${'custom2_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
+        <ha-input label="Custom 2 Label (optional)" .value=${this._custom2_label} .configValue=${'custom2_label'} @input=${this._valueChanged}>
+        </ha-input>
       ` : '';
 
     const entity_custom3 = entities.has("custom3") ?
@@ -912,6 +932,8 @@ get _forecast_type(): string {
           <ha-input label="Custom 3 Units" .value=${this._custom3_units} .configValue=${'custom3_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
+        <ha-input label="Custom 3 Label (optional)" .value=${this._custom3_label} .configValue=${'custom3_label'} @input=${this._valueChanged}>
+        </ha-input>
       ` : '';
 
     const entity_custom4 = entities.has("custom4") ?
@@ -926,6 +948,8 @@ get _forecast_type(): string {
           <ha-input label="Custom 4 Units" .value=${this._custom4_units} .configValue=${'custom4_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
+        <ha-input label="Custom 4 Label (optional)" .value=${this._custom4_label} .configValue=${'custom4_label'} @input=${this._valueChanged}>
+        </ha-input>
       ` : '';
 
     return html`

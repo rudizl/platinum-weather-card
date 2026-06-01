@@ -96,15 +96,19 @@ export interface WeatherCardConfig extends LovelaceCardConfig {
   entity_todays_fire_danger?: string;
   entity_todays_uv_forecast?: string;
 
+  custom1_label?: string;
   custom1_value?: string;
   custom1_icon?: string;
   custom1_units?: string;
+  custom2_label?: string;
   custom2_value?: string;
   custom2_icon?: string;
   custom2_units?: string;
+  custom3_label?: string;
   custom3_value?: string;
   custom3_icon?: string;
   custom3_units?: string;
+  custom4_label?: string;
   custom4_value?: string;
   custom4_icon?: string;
   custom4_units?: string;
