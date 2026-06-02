@@ -117,6 +117,65 @@ export class PlatinumWeatherCard extends LitElement {
       throw new Error('Invalid configuration');
     }
 
+    // ── Required fields ────────────────────────────────────────────────────
+    if (!config.weather_entity) {
+      throw new Error(
+        'platinum-weather-card: weather_entity is required. ' +
+        'Please set a weather entity in the card configuration.'
+      );
+    }
+
+    // ── Entity ID format: domain.object_id ─────────────────────────────────
+    const entityIdPattern = /^[a-z0-9_]+\.[a-z0-9_]+$/;
+    const entityFields = [
+      'weather_entity', 'entity_temperature', 'entity_apparent_temp',
+      'entity_forecast_icon', 'entity_summary', 'entity_extended',
+      'entity_humidity', 'entity_pressure', 'entity_visibility',
+      'entity_wind_bearing', 'entity_wind_speed', 'entity_wind_gust',
+      'entity_wind_speed_kt', 'entity_wind_gust_kt',
+      'entity_temp_next', 'entity_temp_following',
+      'entity_forecast_max', 'entity_forecast_min',
+      'entity_observed_max', 'entity_observed_min',
+      'entity_fire_danger', 'entity_pop', 'entity_pos',
+      'entity_sun', 'entity_moon', 'entity_uv_alert_summary',
+      'entity_rainfall', 'entity_update_time',
+    ] as const;
+    for (const field of entityFields) {
+      const value = config[field as keyof WeatherCardConfig];
+      if (value && typeof value === 'string' && !entityIdPattern.test(value)) {
+        throw new Error(
+          `platinum-weather-card: "${field}" has invalid entity ID format: "${value}". ` +
+          `Expected format: domain.object_id (e.g. sensor.temperature).`
+        );
+      }
+    }
+
+    // ── section_order: only valid section names ────────────────────────────
+    const validSections = ['overview', 'extended', 'slots', 'daily_forecast'];
+    if (config.section_order) {
+      if (!Array.isArray(config.section_order)) {
+        throw new Error('platinum-weather-card: section_order must be an array.');
+      }
+      for (const section of config.section_order) {
+        if (!validSections.includes(section)) {
+          throw new Error(
+            `platinum-weather-card: invalid section "${section}" in section_order. ` +
+            `Valid values: ${validSections.join(', ')}.`
+          );
+        }
+      }
+    }
+
+    // ── daily_forecast_days: integer 1–7 ──────────────────────────────────
+    if (config.daily_forecast_days !== undefined) {
+      const days = Number(config.daily_forecast_days);
+      if (!Number.isInteger(days) || days < 1 || days > 7) {
+        throw new Error(
+          `platinum-weather-card: daily_forecast_days must be an integer between 1 and 7, got "${config.daily_forecast_days}".`
+        );
+      }
+    }
+
     if (config.test_gui) {
       getLovelace().setEditMode(true);
     }
