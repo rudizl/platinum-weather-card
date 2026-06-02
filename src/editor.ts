@@ -578,12 +578,28 @@ get _forecast_type(): string {
     return this._config?.option_forecast_decimals === true; // default off
   }
 
+  get _option_show_gust_in_wind(): boolean {
+    return this._config?.option_show_gust_in_wind !== false; // default on
+  }
+
+  get _option_show_forecast_wind(): boolean {
+    return this._config?.option_show_forecast_wind === true; // default off
+  }
+
   get _option_show_forecast_pop(): boolean {
     return this._config?.option_show_forecast_pop !== false; // default on
   }
 
   get _option_show_current_day(): boolean {
     return this._config?.option_show_current_day === true; // default off
+  }
+
+  get _option_show_temperature_chart(): boolean {
+    return this._config?.option_show_temperature_chart === true; // default off
+  }
+
+  get _option_show_precipitation_chart(): boolean {
+    return this._config?.option_show_precipitation_chart === true; // default off
   }
 
   get _option_pressure_decimals(): pressureDecimals | null {
@@ -1133,6 +1149,7 @@ get _forecast_type(): string {
       ['rainfall',          "Today's recorded rainfall"],
       ['pressure',          'Current air pressure'],
       ['wind',              'Current wind conditions'],
+      ['wind_gust',         'Current wind gust'],
       ['wind_kt',           'Current wind conditions kts'],
       ['visibility',        'Current visibility'],
       ['observed_max',      "Today's observed max"],
@@ -1293,6 +1310,18 @@ get _forecast_type(): string {
           </ha-formfield>
         </div>
         <div>
+          <ha-formfield .label=${'Show Wind in Forecast'}>
+            <ha-switch .checked=${this._option_show_forecast_wind === true} .configValue=${'option_show_forecast_wind'}
+              @change=${this._valueChanged}>
+            </ha-switch>
+          </ha-formfield>
+        </div>
+        <div>
+          <ha-formfield .label=${'Show Gust in Wind Slot'}>
+            <ha-switch .checked=${this._option_show_gust_in_wind !== false} .configValue=${'option_show_gust_in_wind'}
+              @change=${this._valueChanged}>
+            </ha-switch>
+          </ha-formfield>
         </div>
         <div>
           <ha-formfield .label=${'Colour Fire Danger'}>
@@ -1423,6 +1452,22 @@ get _forecast_type(): string {
           <div>
             <ha-formfield .label=${'Include Today in Forecast'}>
               <ha-switch .checked=${this._option_show_current_day === true} .configValue=${'option_show_current_day'}
+                @change=${this._valueChanged}>
+              </ha-switch>
+            </ha-formfield>
+          </div>
+        </div>
+        <div class="side-by-side">
+          <div>
+            <ha-formfield .label=${'Show Temperature Chart'}>
+              <ha-switch .checked=${this._option_show_temperature_chart === true} .configValue=${'option_show_temperature_chart'}
+                @change=${this._valueChanged}>
+              </ha-switch>
+            </ha-formfield>
+          </div>
+          <div>
+            <ha-formfield .label=${'Show Precipitation Chart'}>
+              <ha-switch .checked=${this._option_show_precipitation_chart === true} .configValue=${'option_show_precipitation_chart'}
                 @change=${this._valueChanged}>
               </ha-switch>
             </ha-formfield>
