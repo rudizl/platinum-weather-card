@@ -1290,10 +1290,10 @@ export class PlatinumWeatherCard extends LitElement {
     }
     if (data.length === 0) return html``;
 
-    const tempH   = showTemp   ? 75 : 0;
-    const precipH = showPrecip ? 72 : 0;
-    const gap     = showTemp && showPrecip ? 4 : 0;
-    const totalH  = tempH + gap + precipH;
+    const tempH   = showTemp   ? 75 : 52;
+    const precipH = 0; // bars now live INSIDE the temp area — no separate section
+    const gap     = 0;
+    const totalH  = tempH + (showPrecip ? 16 : 0); // 16px label strip below if precip enabled
     const BH = 13;
     const MIN_SEP = BH + 5;
 
@@ -1330,8 +1330,8 @@ export class PlatinumWeatherCard extends LitElement {
         `<polyline points="${maxPts}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
         `<polyline points="${minPts}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
         (showPrecip ? (() => {
-          const pBase2 = tempH + gap + precipH - 24;
-          return `<line x1="0" y1="${pBase2}" x2="100" y2="${pBase2}" stroke="rgba(115,198,239,0.3)" stroke-width="0.8" vector-effect="non-scaling-stroke"/>`;
+          // baseline at bottom of temp area
+          return `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>`;
         })() : '') +
         `</svg>`;
     })() : '';
@@ -1347,23 +1347,21 @@ export class PlatinumWeatherCard extends LitElement {
       }
       if (showPrecip) {
         const pMax  = Math.max(...data.map(x => x.precip), 0.1);
-        const pArea = precipH - 24;
-        const pBase = tempH + gap + precipH - 24; // baseline
-        const boxH  = 13;
+        const maxBarH = tempH * 0.85; // bars use up to 85% of the temp area height
         if (d.precip > 0) {
-          const bH    = (d.precip / pMax) * pArea;
-          const bTop  = pBase - Math.max(bH, 1);
+          const bH    = Math.max((d.precip / pMax) * maxBarH, 2);
+          const bTop  = tempH - bH;
           const label = (d.precip % 1 === 0 ? String(d.precip) : d.precip.toFixed(1)) + ' мм';
-          // Bar: full column width
-          colHtml += `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${Math.max(bH,1)}px;background:rgba(151,230,255,0.72);border-radius:2px 2px 0 0;"></div>`;
-          // Label: centered ON the baseline line
-          colHtml += `<div style="position:absolute;top:${pBase - boxH / 2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
+          // Bar behind everything (z-index 0), rising from bottom of temp area
+          colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.18);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
+          // Label below the chart area
+          colHtml += `<div style="position:absolute;top:${tempH + 2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
         } else {
           // 0mm: subtle dash at baseline
-          colHtml += `<div style="position:absolute;top:${pBase - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.2);border-radius:1px;"></div>`;
+          colHtml += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
         }
       }
-      const colDivH = tempH + gap + precipH - 24;
+      const colDivH = totalH;
       return `<div class="day-horiz" style="position:relative;height:${colDivH}px;overflow:visible;">${colHtml}</div>`;
     }).join('');
 
