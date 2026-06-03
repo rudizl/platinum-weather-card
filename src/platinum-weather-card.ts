@@ -1282,21 +1282,10 @@ export class PlatinumWeatherCard extends LitElement {
     for (let i = 0; i < days; i++) {
       const f = this.forecast1[startIdx + i];
       if (!f) break;
-      const precipOverride = (this._config as any).debug_precip_override;
-      let precip = Number(f.precipitation ?? 0);
-      if (precipOverride !== undefined) {
-        if (Array.isArray(precipOverride)) {
-          precip = Number(precipOverride[i] ?? 0);
-        } else {
-          // Vary by day: [1.0, 0.5, 0.05, 0.25, 0.15] of override value
-          const factors = [1.0, 0.5, 0.05, 0.25, 0.15];
-          precip = Number(precipOverride) * (factors[i % 5] ?? 0);
-        }
-      }
       data.push({
         maxT:   Number(f.temperature   ?? 0),
         minT:   Number(f.templow       ?? f.temperature ?? 0),
-        precip,
+        precip: Number(f.precipitation ?? 0),
       });
     }
     if (data.length === 0) return html``;
