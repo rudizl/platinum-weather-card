@@ -1364,7 +1364,7 @@ export class PlatinumWeatherCard extends LitElement {
           const bTop  = tempH - bH;
           const label = (d.precip % 1 === 0 ? String(d.precip) : d.precip.toFixed(1)) + ' мм';
           // Bar behind everything (z-index 0), rising from bottom of temp area
-          colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.45);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
+          colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.75);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
           // Label below the chart area
           colHtml += `<div style="position:absolute;top:${tempH + 2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
         } else {
