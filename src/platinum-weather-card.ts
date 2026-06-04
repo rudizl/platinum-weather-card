@@ -2645,6 +2645,9 @@ export class PlatinumWeatherCard extends LitElement {
     const wccName = this._iconToWcc(adjusted);
     if (pack === 'wcc-1') return `/hacsfiles/weather-chart-card/icons/${wccName}.svg`;
     if (pack === 'wcc-2') return `/hacsfiles/weather-chart-card/icons2/${wccName}.svg`;
+    const metName = this._iconToMeteocons(adjusted);
+    if (pack === 'meteocons-fill') return `https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/${metName}.svg`;
+    if (pack === 'meteocons-line') return `https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/line/all/${metName}.svg`;
     if (pack === 'custom' && this._config?.icon_pack_path)
       return this._config.icon_pack_path.replace('{condition}', wccName);
 
@@ -2683,6 +2686,38 @@ export class PlatinumWeatherCard extends LitElement {
       'unknown':              'exceptional',
     };
     return map[iconName] ?? 'exceptional';
+  }
+
+  private _iconToMeteocons(iconName: string): string {
+    const map: { [key: string]: string } = {
+      'clear-day':            'clear-day',
+      'clear-night':          'clear-night',
+      'mostly-sunny':         'clear-day',
+      'partly-cloudy-day':    'partly-cloudy-day',
+      'partly-cloudy-night':  'partly-cloudy-night',
+      'cloudy':               'cloudy',
+      'fog':                  'fog',
+      'hazy':                 'haze',
+      'rain':                 'rain',
+      'light-rain':           'drizzle',
+      'showers':              'rain',
+      'light-showers':        'drizzle',
+      'heavy-showers':        'rain',
+      'storm':                'thunderstorms',
+      'lightning':            'thunderstorms',
+      'lightning-rainy':      'thunderstorms-rain',
+      'snow':                 'snow',
+      'frost':                'snow',
+      'snow-rain':            'sleet',
+      'sleet':                'sleet',
+      'hail':                 'hail',
+      'windy':                'wind',
+      'windy-variant':        'wind',
+      'dust':                 'dust-wind',
+      'cyclone':              'tornado',
+      'unknown':              'not-available',
+    };
+    return map[iconName] ?? 'not-available';
   }
 
   private _weatherIcon(conditions: string): string {

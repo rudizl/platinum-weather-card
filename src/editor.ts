@@ -1346,6 +1346,8 @@ get _forecast_type(): string {
           <label class="label">Icon Pack</label>
           <select class='ha-select-compat' .configValue=${'icon_pack'} .value=${this._icon_pack} @change=${this._valueChanged}>
             <option value='default'>Default (built-in animated)</option>
+            <option value='meteocons-fill'>Meteocons — Fill (CDN)</option>
+            <option value='meteocons-line'>Meteocons — Line (CDN)</option>
             <option value='wcc-1'>Weather Chart Card — Pack 1</option>
             <option value='wcc-2'>Weather Chart Card — Pack 2</option>
             <option value='custom'>Custom path...</option>
