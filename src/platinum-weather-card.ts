@@ -496,7 +496,7 @@ export class PlatinumWeatherCard extends LitElement {
     if (this._config?.show_section_overview === false) return html``;
 
     const weatherIcon = this._weatherIcon(this.forecastIcon);
-    const url = new URL((this._config.option_static_icons ? 's-' : 'a-') + weatherIcon + '.svg', import.meta.url);
+    const url = { href: this._getIconUrl(weatherIcon) };
     const hoverText = weatherIcon !== 'unknown' ? '' : `Unknown condition\n${this.forecastIcon}`;
     const unknownDiv = weatherIcon !== 'unknown' ? html`` : html`<div class="unknown-forecast">${this.forecastIcon}</div>`;
     const biggerIcon = html`<div class="big-icon"><img src="${url.href}" width="100%" height="100%" title="${hoverText}"></div>`;
@@ -594,7 +594,7 @@ export class PlatinumWeatherCard extends LitElement {
     if (this._config?.show_section_overview === false) return html``;
 
     const weatherIcon = this._weatherIcon(this.forecastIcon);
-    const url = new URL((this._config.option_static_icons ? 's-' : 'a-') + weatherIcon + '.svg', import.meta.url);
+    const url = { href: this._getIconUrl(weatherIcon) };
     const hoverText = weatherIcon !== 'unknown' ? '' : `Unknown condition\n${this.forecastIcon}`;
     const unknownDiv = weatherIcon !== 'unknown' ? html`` : html`<div class="unknown-forecast">${this.forecastIcon}</div>`;
     const biggerIcon = html`<div class="big-icon"><img src="${url.href}" width="100%" height="100%" title="${hoverText}"></div>`;
@@ -815,7 +815,7 @@ export class PlatinumWeatherCard extends LitElement {
           break;
         }
 
-        const url = new URL(((this._config.option_static_icons ? 's-' : 'a-') + (iconEntity && condition ? this._weatherIcon(condition) : 'unknown') + '.svg').replace("-night", "-day"), import.meta.url);
+        const url = { href: this._getIconUrl(iconEntity && condition ? this._weatherIcon(condition) : 'unknown', true) };
         htmlIcon = html`<li class="f-slot-horiz-icon"><i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i></li>`;
       } else {
         // using sensor domain entities
@@ -824,7 +824,7 @@ export class PlatinumWeatherCard extends LitElement {
         if ((iconEntity === undefined) || (this.hass.states[iconEntity] === undefined)) { // if there is no data then cut the forecast short
           break;
         }
-        const url = new URL(((this._config.option_static_icons ? 's-' : 'a-') + (iconEntity && this.hass.states[iconEntity] ? this._weatherIcon(this.hass.states[iconEntity].state) : 'unknown') + '.svg').replace("-night", "-day"), import.meta.url);
+        const url = { href: this._getIconUrl(iconEntity && this.hass.states[iconEntity] ? this._weatherIcon(this.hass.states[iconEntity].state) : 'unknown', true) };
         htmlIcon = html`<i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i>`;
       }
       if (this._config.entity_forecast_max_1?.match('^weather.')) {
@@ -1018,7 +1018,7 @@ export class PlatinumWeatherCard extends LitElement {
           break;
         }
 
-        const url = new URL(((this._config.option_static_icons ? 's-' : 'a-') + (iconEntity && condition ? this._weatherIcon(condition) : 'unknown') + '.svg').replace("-night", "-day"), import.meta.url);
+        const url = { href: this._getIconUrl(iconEntity && condition ? this._weatherIcon(condition) : 'unknown', true) };
         htmlIcon = html`<i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i><br>`;
       } else {
         // using sensor domain entities
@@ -1027,7 +1027,7 @@ export class PlatinumWeatherCard extends LitElement {
         if (!iconEntity || this.hass.states[iconEntity] === undefined || this.hass.states[iconEntity].state === 'unknown') { // Stop adding forecast days as soon as an undefined entity is encountered
           break;
         }
-        const url = new URL(((this._config.option_static_icons ? 's-' : 'a-') + (this.hass.states[iconEntity] !== undefined ? this._weatherIcon(this.hass.states[iconEntity].state) : 'unknown') + '.svg').replace("-night", "-day"), import.meta.url);
+        const url = { href: this._getIconUrl(this.hass.states[iconEntity] !== undefined ? this._weatherIcon(this.hass.states[iconEntity].state) : 'unknown', true) };
         htmlIcon = html`<i class="icon" style="background: none, url(${url.href}) no-repeat; background-size: contain;"></i><br>`;
       }
 
@@ -2633,6 +2633,58 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   // get the icon that matches the current conditions
+  private _getIconUrl(iconName: string, forForecast = false): string {
+    const pack = this._config?.icon_pack ?? 'default';
+    const adjusted = forForecast ? iconName.replace('-night', '-day') : iconName;
+
+    if (pack === 'default') {
+      const prefix = this._config?.option_static_icons ? 's-' : 'a-';
+      return new URL(prefix + adjusted + '.svg', import.meta.url).href;
+    }
+
+    const wccName = this._iconToWcc(adjusted);
+    if (pack === 'wcc-1') return `/hacsfiles/weather-chart-card/icons/${wccName}.svg`;
+    if (pack === 'wcc-2') return `/hacsfiles/weather-chart-card/icons2/${wccName}.svg`;
+    if (pack === 'custom' && this._config?.icon_pack_path)
+      return this._config.icon_pack_path.replace('{condition}', wccName);
+
+    // fallback to default
+    const prefix = this._config?.option_static_icons ? 's-' : 'a-';
+    return new URL(prefix + adjusted + '.svg', import.meta.url).href;
+  }
+
+  private _iconToWcc(iconName: string): string {
+    const map: { [key: string]: string } = {
+      'clear-day':            'clear-day',
+      'clear-night':          'clear-night',
+      'mostly-sunny':         'clear-day',
+      'partly-cloudy-day':    'partlycloudy-day',
+      'partly-cloudy-night':  'partlycloudy-night',
+      'cloudy':               'cloudy',
+      'fog':                  'fog',
+      'hazy':                 'fog',
+      'rain':                 'rain',
+      'light-rain':           'rain',
+      'showers':              'rain',
+      'light-showers':        'rain',
+      'heavy-showers':        'pouring',
+      'storm':                'lightning-rain',
+      'lightning':            'lightning',
+      'lightning-rainy':      'lightning-rain',
+      'snow':                 'snow',
+      'frost':                'snow',
+      'snow-rain':            'sleet',
+      'sleet':                'sleet',
+      'hail':                 'hail',
+      'windy':                'wind',
+      'windy-variant':        'wind',
+      'dust':                 'exceptional',
+      'cyclone':              'exceptional',
+      'unknown':              'exceptional',
+    };
+    return map[iconName] ?? 'exceptional';
+  }
+
   private _weatherIcon(conditions: string): string {
     switch (conditions) {
       case 'sunny':

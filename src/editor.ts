@@ -582,6 +582,14 @@ get _forecast_type(): string {
     return this._config?.option_show_gust_in_wind !== false; // default on
   }
 
+  get _icon_pack(): string {
+    return this._config?.icon_pack || 'default';
+  }
+
+  get _icon_pack_path(): string {
+    return this._config?.icon_pack_path || '';
+  }
+
   get _option_show_forecast_wind(): boolean {
     return this._config?.option_show_forecast_wind === true; // default off
   }
@@ -1332,6 +1340,24 @@ get _forecast_type(): string {
         </div>
         <div>
         </div>
+      </div>
+      <div class="side-by-side">
+        <div>
+          <label class="label">Icon Pack</label>
+          <select class='ha-select-compat' .configValue=${'icon_pack'} .value=${this._icon_pack} @change=${this._valueChanged}>
+            <option value='default'>Default (built-in animated)</option>
+            <option value='wcc-1'>Weather Chart Card — Pack 1</option>
+            <option value='wcc-2'>Weather Chart Card — Pack 2</option>
+            <option value='custom'>Custom path...</option>
+          </select>
+        </div>
+        ${this._icon_pack === 'custom' ? html`
+        <div>
+          <ha-input .label=${'Icon path'} .value=${this._icon_pack_path}
+            .configValue=${'icon_pack_path'} @change=${this._valueChanged}>
+          </ha-input>
+          <div class="help-text">Use {condition} as placeholder — e.g. /local/icons/{condition}.svg</div>
+        </div>` : html``}
       </div>
     `;
   }

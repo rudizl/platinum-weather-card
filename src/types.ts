@@ -134,6 +134,8 @@ export interface WeatherCardConfig extends LovelaceCardConfig {
   option_show_current_day?: boolean;
   option_show_temperature_chart?: boolean;
   option_show_precipitation_chart?: boolean;
+  icon_pack?: string;
+  icon_pack_path?: string;
   option_show_gust_in_wind?: boolean;
   option_show_forecast_wind?: boolean;
   option_show_forecast_pop?: boolean;
