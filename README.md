@@ -257,6 +257,31 @@ Up to 8 rows of data in 2 columns. The required entities update dynamically base
 | `empty` | Blank slot (preserves space) | |
 | `remove` | Remove slot entirely | |
 
+
+## Icon Packs
+
+The card supports multiple icon packs, selectable from the editor's **Icon Pack** dropdown.
+
+| Value | Description | Requirement |
+|---|---|---|
+| `default` | Built-in animated SVG icons (bundled with the card) | None |
+| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) — filled style, animated | Internet (jsDelivr CDN) |
+| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) — line style, animated | Internet (jsDelivr CDN) |
+| `wcc-1` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 1 | Install `rudizl/weather-chart-card` via HACS |
+| `wcc-2` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 2 | Install `rudizl/weather-chart-card` via HACS |
+| `custom` | Any icon set — set `icon_pack_path` with `{condition}` placeholder | User-provided |
+
+For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{condition}.svg`. The `{condition}` placeholder is replaced with the HA weather condition name (e.g. `clear-day`, `partlycloudy`, `rain`).
+
+### Third-party icon licenses
+
+| Icon pack | Author | License |
+|---|---|---|
+| [basmilius/weather-icons](https://github.com/basmilius/weather-icons) (Meteocons) | [Bas Milius](https://bas.dev) | [MIT](https://github.com/basmilius/weather-icons/blob/master/LICENSE) |
+| [rudizl/weather-chart-card](https://github.com/rudizl/weather-chart-card) icons | [Marc Lamberts](https://github.com/Yevgenium) (fork) / [Yevgeniy Prokopenko](https://github.com/Yevgenium) (original) | [MIT](https://github.com/rudizl/weather-chart-card/blob/master/LICENSE.md) |
+
+Both icon sets are MIT-licensed. The only requirement is that copyright notices are preserved in the source files — these are embedded in the icon SVGs themselves and are not affected by using the icons in a Lovelace card.
+
 ## Daily Forecast Section
 
 
@@ -402,6 +427,31 @@ double_tap_action:
 | `option_color_fire_danger` | Boolean | `true` | Colour fire danger by severity |
 
 Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressure`, l5=`sun_next`, l6–l8=`remove`, r1=`popforecast`, r2=`humidity`, r3=`uv_summary`, r4=`moon`, r5=`sun_following`, r6–r8=`remove`.
+
+
+## Icon Packs
+
+The card supports multiple icon packs, selectable from the editor's **Icon Pack** dropdown.
+
+| Value | Description | Requirement |
+|---|---|---|
+| `default` | Built-in animated SVG icons (bundled with the card) | None |
+| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) — filled style, animated | Internet (jsDelivr CDN) |
+| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) — line style, animated | Internet (jsDelivr CDN) |
+| `wcc-1` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 1 | Install `rudizl/weather-chart-card` via HACS |
+| `wcc-2` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 2 | Install `rudizl/weather-chart-card` via HACS |
+| `custom` | Any icon set — set `icon_pack_path` with `{condition}` placeholder | User-provided |
+
+For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{condition}.svg`. The `{condition}` placeholder is replaced with the HA weather condition name (e.g. `clear-day`, `partlycloudy`, `rain`).
+
+### Third-party icon licenses
+
+| Icon pack | Author | License |
+|---|---|---|
+| [basmilius/weather-icons](https://github.com/basmilius/weather-icons) (Meteocons) | [Bas Milius](https://bas.dev) | [MIT](https://github.com/basmilius/weather-icons/blob/master/LICENSE) |
+| [rudizl/weather-chart-card](https://github.com/rudizl/weather-chart-card) icons | [Marc Lamberts](https://github.com/Yevgenium) (fork) / [Yevgeniy Prokopenko](https://github.com/Yevgenium) (original) | [MIT](https://github.com/rudizl/weather-chart-card/blob/master/LICENSE.md) |
+
+Both icon sets are MIT-licensed. The only requirement is that copyright notices are preserved in the source files — these are embedded in the icon SVGs themselves and are not affected by using the icons in a Lovelace card.
 
 ## Daily Forecast Section
 
