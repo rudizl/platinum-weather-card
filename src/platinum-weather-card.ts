@@ -42,7 +42,7 @@ console.info(
   description: 'An fully customisable weather card with a GUI configuration',
   getEntitySuggestion: (_hass: any, entityId: string) => {
     if (entityId.split('.')[0] !== 'weather') return null;
-    return { type: 'custom:platinum-weather-card', weather_entity: entityId, forecast_type: 'daily' };
+    return { config: { type: 'custom:platinum-weather-card', weather_entity: entityId, forecast_type: 'daily' } };
   },
 });
 
