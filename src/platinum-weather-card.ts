@@ -117,14 +117,6 @@ export class PlatinumWeatherCard extends LitElement {
       throw new Error('Invalid configuration');
     }
 
-    // ── Required fields ────────────────────────────────────────────────────
-    if (!config.weather_entity) {
-      throw new Error(
-        'platinum-weather-card: weather_entity is required. ' +
-        'Please set a weather entity in the card configuration.'
-      );
-    }
-
     // ── Entity ID format: domain.object_id ─────────────────────────────────
     const entityIdPattern = /^[a-z0-9_]+\.[a-z0-9_]+$/;
     const entityFields = [
