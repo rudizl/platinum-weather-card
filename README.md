@@ -10,6 +10,19 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 <details>
 <summary><strong>Changelog — Stable releases</strong></summary>
 
+**v1.3.1**
+- Fix editor switch color for HA 2026.5 — replace removed MDC tokens with WebAwesome tokens (`--ha-switch-checked-background-color`, `--ha-switch-checked-thumb-background-color`)
+- Migrate all editor text inputs from deprecated `ha-textfield` to `ha-input` (HA 2026.5+ compatible)
+- Remove `resize-observer-polyfill` dependency (~30KB bundle saving)
+- Fix `fireDanger` variable scoping in vertical forecast layout
+- Show `---` instead of `NaN%` / `unknown mm` when a sensor entity returns `unknown` or `unavailable` — affects humidity, rainfall, pressure, visibility, wind speed/gust, and precipitation slots
+- Add `option_show_current_day` — **Include Today in Forecast** toggle in editor; when enabled, forecast strip starts from today instead of tomorrow
+- Fix false-positive entity errors for sensor names with numbers (e.g. `sensor.ivarna103_*`) — eliminates spurious `entity_pop+1=...not found` warnings
+- Add optional label for custom slots (`custom1_label` … `custom4_label`) — small secondary text shown before the entity value, configurable via editor
+- Hide `unknown`/`unavailable` raw text in the extended forecast section
+- Fix `forecast_type` default — `setConfig` now defaults to `daily` so existing configs without an explicit `forecast_type` work correctly in HA 2026.6
+- Remove `getEntitySuggestion` — the HA 2026.6 entity-picker suggestion flow adds a placeholder card instead of opening the editor directly, resulting in worse UX than the standard search workflow; direct card search (`+` → search "platinum" → click) opens the editor in one step and is unaffected
+
 **v1.3.0**
 - Fix all card editor dropdowns not showing saved values — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration when opening the editor
 - Fix rainy/pouring icon associations — pouring now shows a more intense icon than rainy
@@ -44,7 +57,9 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 </details>
 
 <details>
-<summary><strong>Changelog — Beta releases</strong></summary>
+<summary><strong>Changelog — Beta releases (archived)</strong></summary>
+
+_All v1.3.1 betas have been merged into the v1.3.1 stable release above._
 
 **v1.3.1-beta.13**
 - Hide `unknown`/`unavailable` state in the extended forecast section — was showing raw `unknown` text below the separator line when the entity was unavailable
