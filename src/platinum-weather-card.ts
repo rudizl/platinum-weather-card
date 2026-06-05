@@ -2643,7 +2643,6 @@ export class PlatinumWeatherCard extends LitElement {
     }
 
     const wccName = this._iconToWcc(adjusted);
-    if (pack === 'wcc-1') return `/hacsfiles/weather-chart-card/icons/${wccName}.svg`;
     if (pack === 'wcc-2') return `/hacsfiles/weather-chart-card/icons2/${wccName}.svg`;
     const metName = this._iconToMeteocons(adjusted);
     if (pack === 'meteocons-fill') return `https://cdn.jsdelivr.net/gh/basmilius/weather-icons/production/fill/all/${metName}.svg`;

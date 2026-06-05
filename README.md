@@ -265,11 +265,12 @@ The card supports multiple icon packs, selectable from the editor's **Icon Pack*
 | Value | Description | Requirement |
 |---|---|---|
 | `default` | Built-in animated SVG icons (bundled with the card) | None |
-| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) — filled style, animated | Internet (jsDelivr CDN) |
-| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) — line style, animated | Internet (jsDelivr CDN) |
-| `wcc-1` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 1 | Install `rudizl/weather-chart-card` via HACS |
-| `wcc-2` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 2 | Install `rudizl/weather-chart-card` via HACS |
+| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius — filled style | Internet (jsDelivr CDN) |
+| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius — line style | Internet (jsDelivr CDN) |
+| `wcc-2` | [ammap Weather Icons](https://www.ammap.com/) — included in `rudizl/weather-chart-card` | Install `rudizl/weather-chart-card` via HACS |
 | `custom` | Any icon set — set `icon_pack_path` with `{condition}` placeholder | User-provided |
+
+> **Note:** `wcc-1` has been removed — it was byte-for-byte identical to the Meteocons Fill pack. Use `meteocons-fill` instead.
 
 For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{condition}.svg`. The `{condition}` placeholder is replaced with the HA weather condition name (e.g. `clear-day`, `partlycloudy`, `rain`).
 
@@ -278,7 +279,9 @@ For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{
 | Icon pack | Author | License |
 |---|---|---|
 | [basmilius/weather-icons](https://github.com/basmilius/weather-icons) (Meteocons) | [Bas Milius](https://bas.dev) | [MIT](https://github.com/basmilius/weather-icons/blob/master/LICENSE) |
-| [rudizl/weather-chart-card](https://github.com/rudizl/weather-chart-card) icons | [Marc Lamberts](https://github.com/Yevgenium) (fork) / [Yevgeniy Prokopenko](https://github.com/Yevgenium) (original) | [MIT](https://github.com/rudizl/weather-chart-card/blob/master/LICENSE.md) |
+| [amCharts Weather Icons](https://www.amcharts.com/free-animated-svg-weather-icons/) (via `rudizl/weather-chart-card`, `wcc-2`) | amCharts / ammap.com | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — free including commercial use, attribution required |
+
+> **Note:** The card's **default built-in icons** are also based on amCharts weather icons, extended by [@makin-things](https://github.com/Makin-Things/weather-icons).
 
 Both icon sets are MIT-licensed. The only requirement is that copyright notices are preserved in the source files — these are embedded in the icon SVGs themselves and are not affected by using the icons in a Lovelace card.
 
@@ -436,11 +439,12 @@ The card supports multiple icon packs, selectable from the editor's **Icon Pack*
 | Value | Description | Requirement |
 |---|---|---|
 | `default` | Built-in animated SVG icons (bundled with the card) | None |
-| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) — filled style, animated | Internet (jsDelivr CDN) |
-| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) — line style, animated | Internet (jsDelivr CDN) |
-| `wcc-1` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 1 | Install `rudizl/weather-chart-card` via HACS |
-| `wcc-2` | [Weather Chart Card](https://github.com/rudizl/weather-chart-card) — Pack 2 | Install `rudizl/weather-chart-card` via HACS |
+| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius — filled style | Internet (jsDelivr CDN) |
+| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius — line style | Internet (jsDelivr CDN) |
+| `wcc-2` | [ammap Weather Icons](https://www.ammap.com/) — included in `rudizl/weather-chart-card` | Install `rudizl/weather-chart-card` via HACS |
 | `custom` | Any icon set — set `icon_pack_path` with `{condition}` placeholder | User-provided |
+
+> **Note:** `wcc-1` has been removed — it was byte-for-byte identical to the Meteocons Fill pack. Use `meteocons-fill` instead.
 
 For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{condition}.svg`. The `{condition}` placeholder is replaced with the HA weather condition name (e.g. `clear-day`, `partlycloudy`, `rain`).
 
@@ -449,7 +453,9 @@ For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{
 | Icon pack | Author | License |
 |---|---|---|
 | [basmilius/weather-icons](https://github.com/basmilius/weather-icons) (Meteocons) | [Bas Milius](https://bas.dev) | [MIT](https://github.com/basmilius/weather-icons/blob/master/LICENSE) |
-| [rudizl/weather-chart-card](https://github.com/rudizl/weather-chart-card) icons | [Marc Lamberts](https://github.com/Yevgenium) (fork) / [Yevgeniy Prokopenko](https://github.com/Yevgenium) (original) | [MIT](https://github.com/rudizl/weather-chart-card/blob/master/LICENSE.md) |
+| [amCharts Weather Icons](https://www.amcharts.com/free-animated-svg-weather-icons/) (via `rudizl/weather-chart-card`, `wcc-2`) | amCharts / ammap.com | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — free including commercial use, attribution required |
+
+> **Note:** The card's **default built-in icons** are also based on amCharts weather icons, extended by [@makin-things](https://github.com/Makin-Things/weather-icons).
 
 Both icon sets are MIT-licensed. The only requirement is that copyright notices are preserved in the source files — these are embedded in the icon SVGs themselves and are not affected by using the icons in a Lovelace card.
 
