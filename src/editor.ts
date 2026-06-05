@@ -747,232 +747,232 @@ get _forecast_type(): string {
     const entity_observed_max = entities.has("entity_observed_max") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_observed_max'} .value=${this._entity_observed_max} .includeDomains=${['sensor']}
-          name="entity_observed_max" label="Entity Observed Max" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_observed_max" label=${this._t("entity_observed_max")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_observed_min = entities.has("entity_observed_min") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_observed_min'} .value=${this._entity_observed_min} .includeDomains=${['sensor']}
-          name="entity_observed_min" label="Entity Observed Min" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_observed_min" label=${this._t("entity_observed_min")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_forecast_max = entities.has("entity_forecast_max") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_max'} .value=${this._entity_forecast_max} .includeDomains=${['sensor', 'weather']}
-          name="entity_forecast_max" label="Entity Forecast Max" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_forecast_max" label=${this._t("entity_forecast_max")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_forecast_min = entities.has("entity_forecast_min") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_min'} .value=${this._entity_forecast_min} .includeDomains=${['sensor', 'weather']}
-          name="entity_forecast_min" label="Entity Forecast Min" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_forecast_min" label=${this._t("entity_forecast_min")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_temp_next = entities.has("entity_temp_next") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_temp_next'} .value=${this._entity_temp_next} .includeDomains=${['sensor']}
-          name="entity_temp_next" label="Entity Temp Next" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_temp_next" label=${this._t("entity_temp_next")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_temp_next_label = entities.has("entity_temp_next_label") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_temp_next_label'} .value=${this._entity_temp_next_label} .includeDomains=${['sensor']}
-          name="entity_temp_next_label" label="Entity Temp Next Label" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_temp_next_label" label=${this._t("entity_temp_next_label")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_temp_following = entities.has("entity_temp_following") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_temp_following'} .value=${this._entity_temp_following} .includeDomains=${['sensor']}
-          name="entity_temp_following" label="Entity Temp Following" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_temp_following" label=${this._t("entity_temp_following")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_temp_following_label = entities.has("entity_temp_following_label") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_temp_following_label'} .value=${this._entity_temp_following_label} .includeDomains=${['sensor']}
-          name="entity_temp_following_label" label="Entity Temp Following Label" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_temp_following_label" label=${this._t("entity_temp_fol_label")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_wind_bearing = entities.has("entity_wind_bearing") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_wind_bearing'} .value=${this._entity_wind_bearing} .includeDomains=${['sensor', 'weather']}
-          name="entity_wind_bearing" label="Entity Wind Bearing" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_wind_bearing" label=${this._t("entity_wind_bearing")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_wind_speed = entities.has("entity_wind_speed") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_wind_speed'} .value=${this._entity_wind_speed} .includeDomains=${['sensor', 'weather']}
-          name="entity_wind_speed" label="Entity Wind Speed" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_wind_speed" label=${this._t("entity_wind_speed")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_wind_gust = entities.has("entity_wind_gust") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_wind_gust'} .value=${this._entity_wind_gust} .includeDomains=${['sensor', 'weather']}
-          name="entity_wind_gust" label="Entity Wind Gust" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_wind_gust" label=${this._t("entity_wind_gust")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_wind_speed_kt = entities.has("entity_wind_speed_kt") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_wind_speed_kt'} .value=${this._entity_wind_speed_kt} .includeDomains=${['sensor', 'weather']}
-          name="entity_wind_speed_kt" label="Entity Wind Speed Kt" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_wind_speed_kt" label=${this._t("entity_wind_speed_kt")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_wind_gust_kt = entities.has("entity_wind_gust_kt") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_wind_gust_kt'} .value=${this._entity_wind_gust_kt} .includeDomains=${['sensor']}
-          name="entity_wind_gust_kt" label="Entity Wind Gust Kt" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_wind_gust_kt" label=${this._t("entity_wind_gust_kt")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_visibility = entities.has("entity_visibility") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_visibility'} .value=${this._entity_visibility} .includeDomains=${['sensor', 'weather']}
-          name="entity_visibility" label="Entity Visibility" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_visibility" label=${this._t("entity_visibility")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_sun = entities.has("entity_sun") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_sun'} .value=${this._entity_sun} .includeDomains=${['sun', 'sensor']}
-          name="entity_sun" label="Entity Sun" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_sun" label=${this._t("entity_sun")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_moon = entities.has("entity_moon") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_moon'} .value=${this._entity_moon} .includeDomains=${['sensor']}
-          name="entity_moon" label="Moon Phase Entity" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_moon" label=${this._t("entity_moon")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_pop = entities.has("entity_pop") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_pop'} .value=${this._entity_pop} .includeDomains=${['sensor', 'weather']}
-          name="entity_pop" label="Chance of Rain" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_pop" label=${this._t("entity_pop")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_pos = entities.has("entity_pos") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_pos'} .value=${this._entity_pos} .includeDomains=${['sensor', 'weather']}
-          name="entity_pos" label="Possible Rain Today" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_pos" label=${this._t("entity_pos")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_possible_tomorrow = entities.has("entity_possible_tomorrow") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_possible_tomorrow'} .value=${this._entity_possible_tomorrow} .includeDomains=${['sensor', 'weather']}
-          name="entity_possible_tomorrow" label="Possible Rain Tomorrow" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_possible_tomorrow" label=${this._t("entity_2day_pos")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_humidity = entities.has("entity_humidity") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_humidity'} .value=${this._entity_humidity} .includeDomains=${['sensor', 'weather']}
-          name="entity_humidity" label="Humidity" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_humidity" label=${this._t("entity_humidity")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_pressure = entities.has("entity_pressure") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_pressure'} .value=${this._entity_pressure} .includeDomains=${['sensor', 'weather']}
-          name="entity_pressure" label="Atmospheric Pressure" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_pressure" label=${this._t("entity_pressure")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_uv_alert_summary = entities.has("entity_uv_alert_summary") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_uv_alert_summary'} .value=${this._entity_uv_alert_summary} .includeDomains=${['sensor']}
-          name="entity_uv_alert_summary" label="UV Alert Summary" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_uv_alert_summary" label=${this._t("entity_uv_summary")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_fire_danger = entities.has("entity_fire_danger") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_fire_danger'} .value=${this._entity_fire_danger} .includeDomains=${['sensor']}
-          name="entity_fire_danger" label="Fire Danger" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_fire_danger" label=${this._t("entity_fire_danger")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_rainfall = entities.has("entity_rainfall") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_rainfall'} .value=${this._entity_rainfall} .includeDomains=${['sensor']}
-          name="entity_rainfall" label="Todays Rain" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_rainfall" label=${this._t("entity_rainfall")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : '';
 
     const entity_custom1 = entities.has("custom1") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'custom1_value'} .value=${this._custom1_value} .includeDomains=${['sensor']}
-          name="custom1_value" label="Custom 1 Value" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="custom1_value" label=${this._t("custom1_value")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
         <div class="side-by-side">
           <ha-icon-picker .configValue=${'custom1_icon'} .value=${this._custom1_icon} name="custom1_icon"
-            label="Custom 1 Icon" @value-changed=${this._valueChanged}>
+            label=${this._t("custom1_icon")} @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-input label="Custom 1 Units" .value=${this._custom1_units} .configValue=${'custom1_units'} @input=${this._valueChanged}>
+          <ha-input label=${this._t("custom1_units")} .value=${this._custom1_units} .configValue=${'custom1_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
-        <ha-input label="Custom 1 Label (optional)" .value=${this._custom1_label} .configValue=${'custom1_label'} @input=${this._valueChanged}>
+        <ha-input label=${this._t("custom1_label")} .value=${this._custom1_label} .configValue=${'custom1_label'} @input=${this._valueChanged}>
         </ha-input>
       ` : '';
 
     const entity_custom2 = entities.has("custom2") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'custom2_value'} .value=${this._custom2_value} .includeDomains=${['sensor']}
-          name="custom2_value" label="Custom 2 Value" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="custom2_value" label=${this._t("custom2_value")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
         <div class="side-by-side">
           <ha-icon-picker .configValue=${'custom2_icon'} .value=${this._custom2_icon} name="custom2_icon"
-            label="Custom 2 Icon" @value-changed=${this._valueChanged}>
+            label=${this._t("custom2_icon")} @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-input label="Custom 2 Units" .value=${this._custom2_units} .configValue=${'custom2_units'} @input=${this._valueChanged}>
+          <ha-input label=${this._t("custom2_units")} .value=${this._custom2_units} .configValue=${'custom2_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
-        <ha-input label="Custom 2 Label (optional)" .value=${this._custom2_label} .configValue=${'custom2_label'} @input=${this._valueChanged}>
+        <ha-input label=${this._t("custom2_label")} .value=${this._custom2_label} .configValue=${'custom2_label'} @input=${this._valueChanged}>
         </ha-input>
       ` : '';
 
     const entity_custom3 = entities.has("custom3") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'custom3_value'} .value=${this._custom3_value} .includeDomains=${['sensor']}
-          name="custom3_value" label="Custom 3 Value" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="custom3_value" label=${this._t("custom3_value")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
         <div class="side-by-side">
           <ha-icon-picker .configValue=${'custom3_icon'} .value=${this._custom3_icon} name="custom3_icon"
-            label="Custom 3 Icon" @value-changed=${this._valueChanged}>
+            label=${this._t("custom3_icon")} @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-input label="Custom 3 Units" .value=${this._custom3_units} .configValue=${'custom3_units'} @input=${this._valueChanged}>
+          <ha-input label=${this._t("custom3_units")} .value=${this._custom3_units} .configValue=${'custom3_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
-        <ha-input label="Custom 3 Label (optional)" .value=${this._custom3_label} .configValue=${'custom3_label'} @input=${this._valueChanged}>
+        <ha-input label=${this._t("custom3_label")} .value=${this._custom3_label} .configValue=${'custom3_label'} @input=${this._valueChanged}>
         </ha-input>
       ` : '';
 
     const entity_custom4 = entities.has("custom4") ?
       html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'custom4_value'} .value=${this._custom4_value} .includeDomains=${['sensor']}
-          name="custom4_value" label="Custom 4 Value" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="custom4_value" label=${this._t("custom4_value")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
         <div class="side-by-side">
           <ha-icon-picker .configValue=${'custom4_icon'} .value=${this._custom4_icon} name="custom4_icon"
-            label="Custom 4 Icon" @value-changed=${this._valueChanged}>
+            label=${this._t("custom4_icon")} @value-changed=${this._valueChanged}>
           </ha-icon-picker>
-          <ha-input label="Custom 4 Units" .value=${this._custom4_units} .configValue=${'custom4_units'} @input=${this._valueChanged}>
+          <ha-input label=${this._t("custom4_units")} .value=${this._custom4_units} .configValue=${'custom4_units'} @input=${this._valueChanged}>
           </ha-input>
         </div>
-        <ha-input label="Custom 4 Label (optional)" .value=${this._custom4_label} .configValue=${'custom4_label'} @input=${this._valueChanged}>
+        <ha-input label=${this._t("custom4_label")} .value=${this._custom4_label} .configValue=${'custom4_label'} @input=${this._valueChanged}>
         </ha-input>
       ` : '';
 
@@ -1030,20 +1030,20 @@ get _forecast_type(): string {
   private _sectionOverviewEditor(): TemplateResult {
     //tjl added weather as an included domain for Apparent Temp
     return html`
-      <ha-input label="Card Title Text Line 1" .value=${this._text_card_title} .configValue=${'text_card_title'}
+      <ha-input label=${this._t("card_title_1")} .value=${this._text_card_title} .configValue=${'text_card_title'}
         @input=${this._valueChanged}>
       </ha-input>
-      <ha-input label="Card Title Text Line 2" .value=${this._text_card_title_2} .configValue=${'text_card_title_2'}
+      <ha-input label=${this._t("card_title_2")} .value=${this._text_card_title_2} .configValue=${'text_card_title_2'}
         @input=${this._valueChanged}>
       </ha-input>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_update_time'} .value=${this._entity_update_time} .includeDomains=${['sensor']}
-        name="entity_update_time" label="Entity Update Time" allow-custom-entity
+        name="entity_update_time" label=${this._t("entity_update_time")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       ${this._entity_update_time !== '' ? html`
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Use Attribute'}>
+          <ha-formfield .label=${this._t("use_attribute")}>
             <ha-switch .checked=${this._update_time_use_attr !== false} .configValue=${'update_time_use_attr'}
               @change=${this._valueChanged}>
             </ha-switch>
@@ -1051,29 +1051,29 @@ get _forecast_type(): string {
         </div>
         ${this._entity_update_time !== '' && this._update_time_use_attr === true ? html`<ha-selector .hass=${this.hass} .entityId=${this._entity_update_time}
           .selector = ${{ attribute: { entity_id: this._entity_update_time } }} .required=${false}
-          .configValue=${'update_time_name_attr'} .value=${this._update_time_name_attr} name="update_time_name_attr" label="Attribute"
+          .configValue=${'update_time_name_attr'} .value=${this._update_time_name_attr} name="update_time_name_attr" label=${this._t("attribute")}
           allow-custom-value
           @value-changed=${this._valueChangedPicker}>
         </ha-selector>` : html``}
       </div>` : html``}
-      <ha-input label="Update Time Prefix" .value=${this._text_update_time_prefix}
+      <ha-input label=${this._t("update_time_prefix")} .value=${this._text_update_time_prefix}
         .configValue=${'text_update_time_prefix'} @input=${this._valueChanged}>
       </ha-input>
       ${this._overview_layout !== 'forecast' ?
         html`<ha-entity-picker .hass=${this.hass} .configValue=${'entity_temperature'} .value=${this._entity_temperature} .includeDomains=${['sensor', 'weather']}
-          name="entity_temperature" label="Entity Current Temperature" allow-custom-entity
+          name="entity_temperature" label=${this._t("entity_temperature")} allow-custom-entity
           @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_apparent_temp'} .value=${this._entity_apparent_temp} .includeDomains=${['sensor', 'weather']}
-          name="entity_apparent_temp" label="Entity Apparent Temperature" allow-custom-entity
+          name="entity_apparent_temp" label=${this._t("entity_apparent_temp")} allow-custom-entity
           @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>` : html``}
       ${this._overview_layout !== 'observations' ?
         html`<ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_icon'} .value=${this._entity_forecast_icon} .includeDomains=${['sensor', 'weather']}
-          name="entity_forecast_icon" label="Entity Forecast Icon" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_forecast_icon" label=${this._t("entity_forecast_icon")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
           </ha-entity-picker>
           <ha-entity-picker .hass=${this.hass} .configValue=${'entity_summary'} .value=${this._entity_summary} .includeDomains=${['sensor', 'weather']}
-            name="entity_summary" label="Entity Forecast Summary" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+            name="entity_summary" label=${this._t("entity_summary")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
           </ha-entity-picker>` : html``}
     `;
   }
@@ -1081,7 +1081,7 @@ get _forecast_type(): string {
   private _optionOverviewEditor(): TemplateResult {
     return html`
       <div class="side-by-side">
-        <label class='mdc-label'>Overview Layout</label>
+        <label class='mdc-label'>${this._t('overview_layout')}</label>
         <select class='ha-select-compat' .configValue=${'overview_layout'} .value=${this._overview_layout} @change=${this._valueChanged}>
           <option value=""></option>
           <option value="complete">complete</option>
@@ -1093,14 +1093,14 @@ get _forecast_type(): string {
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Show temperature decimals'}>
+          <ha-formfield .label=${this._t("show_temp_decimals")}>
             <ha-switch .checked=${this._option_show_overview_decimals !== false} .configValue=${'option_show_overview_decimals'}
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
         </div>
         <div>
-          <ha-formfield .label=${'Show separator'}>
+          <ha-formfield .label=${this._t("show_separator")}>
             <ha-switch .checked=${this._option_show_overview_separator !== false} .configValue=${'option_show_overview_separator'}
               @change=${this._valueChanged}>
             </ha-switch>
@@ -1121,13 +1121,13 @@ get _forecast_type(): string {
 
     return html`
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_extended'} .value=${this._entity_extended} .includeDomains=${['sensor', 'weather']}
-        name="entity_extended" label="Entity Extended Forecast" allow-custom-entity
+        name="entity_extended" label=${this._t("entity_extended")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       ${this._entity_extended !== '' ? html`
         <div class="side-by-side">
           <div>
-            <ha-formfield .label=${'Use Attribute'}>
+            <ha-formfield .label=${this._t("use_attribute")}>
               <ha-switch .checked=${this._extended_use_attr !== false} .configValue=${'extended_use_attr'}
                 @change=${this._valueChanged}>
               </ha-switch>
@@ -1135,17 +1135,17 @@ get _forecast_type(): string {
           </div>
           ${this._entity_extended !== '' && this._extended_use_attr === true ? html`<ha-selector .hass=${this.hass} .entityId=${this._entity_extended}
             .selector = ${{ attribute: { entity_id: this._entity_extended } }} .required=${false}
-            .configValue=${'extended_name_attr'} .value=${this._extended_name_attr} name="extended_name_attr" label="Attribute"
+            .configValue=${'extended_name_attr'} .value=${this._extended_name_attr} name="extended_name_attr" label=${this._t("attribute")}
             allow-custom-value
             @value-changed=${this._valueChangedPicker}>
           </ha-selector>` : html``}
         </div>` : html``}
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_todays_uv_forecast'} .value=${this._entity_todays_uv_forecast} .includeDomains=${['sensor']}
-        name="entity_todays_uv_forecast" label="Entity Today's UV Forecast" allow-custom-entity
+        name="entity_todays_uv_forecast" label=${this._t("entity_uv_today")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_todays_fire_danger'} .value=${this._entity_todays_fire_danger} .includeDomains=${['sensor']}
-        name="entity_todays_fire_danger" label="Entity Today's Fire Danger" allow-custom-entity
+        name="entity_todays_fire_danger" label=${this._t("entity_fire_today")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
     `;
@@ -1191,81 +1191,81 @@ get _forecast_type(): string {
 
     return html`
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 1</label>
+        <label class='mdc-label'>${this._t('slot_l1')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l1'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l1)}
         </select>
-        <label class='mdc-label'>Slot Right 1</label>
+        <label class='mdc-label'>${this._t('slot_r1')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r1'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r1)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 2</label>
+        <label class='mdc-label'>${this._t('slot_l2')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l2'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l2)}
         </select>
-        <label class='mdc-label'>Slot Right 2</label>
+        <label class='mdc-label'>${this._t('slot_r2')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r2'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r2)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 3</label>
+        <label class='mdc-label'>${this._t('slot_l3')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l3'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l3)}
         </select>
-        <label class='mdc-label'>Slot Right 3</label>
+        <label class='mdc-label'>${this._t('slot_r3')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r3'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r3)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 4</label>
+        <label class='mdc-label'>${this._t('slot_l4')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l4'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l4)}
         </select>
-        <label class='mdc-label'>Slot Right 4</label>
+        <label class='mdc-label'>${this._t('slot_r4')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r4'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r4)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 5</label>
+        <label class='mdc-label'>${this._t('slot_l5')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l5'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l5)}
         </select>
-        <label class='mdc-label'>Slot Right 5</label>
+        <label class='mdc-label'>${this._t('slot_r5')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r5'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r5)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 6</label>
+        <label class='mdc-label'>${this._t('slot_l6')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l6'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l6)}
         </select>
-        <label class='mdc-label'>Slot Right 6</label>
+        <label class='mdc-label'>${this._t('slot_r6')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r6'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r6)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 7</label>
+        <label class='mdc-label'>${this._t('slot_l7')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l7'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l7)}
         </select>
-        <label class='mdc-label'>Slot Right 7</label>
+        <label class='mdc-label'>${this._t('slot_r7')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r7'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r7)}
         </select>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Slot Left 8</label>
+        <label class='mdc-label'>${this._t('slot_l8')}</label>
         <select class='ha-select-compat' .configValue=${'slot_l8'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_l8)}
         </select>
-        <label class='mdc-label'>Slot Right 8</label>
+        <label class='mdc-label'>${this._t('slot_r8')}</label>
         <select class='ha-select-compat' .configValue=${'slot_r8'} @change=${this._valueChanged}>
           ${this._slotOptions(this._slot_r8)}
         </select>
@@ -1278,13 +1278,13 @@ get _forecast_type(): string {
     return html`
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Todays Temperature Decimals'}>
+          <ha-formfield .label=${this._t("today_temp_decimals")}>
             <ha-switch .checked=${this._option_today_temperature_decimals !== false} .configValue=${'option_today_temperature_decimals'}
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
         </div>
-        <label class='mdc-label'>Pressure Decimals</label>
+        <label class='mdc-label'>${this._t('pressure_decimals')}</label>
         <select class='ha-select-compat' .configValue=${'option_pressure_decimals'} .value=${this._option_pressure_decimals !== null ? String(this._option_pressure_decimals) : ''} @change=${this._valueChanged}>
           <option value=""></option>
           <option value="0">0</option>
@@ -1295,14 +1295,14 @@ get _forecast_type(): string {
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Todays Rainfall Decimals'}>
+          <ha-formfield .label=${this._t("today_rain_decimals")}>
             <ha-switch .checked=${this._option_today_rainfall_decimals !== false} .configValue=${'option_today_rainfall_decimals'}
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
         </div>
         <div>
-          <ha-formfield .label=${'Forecast Temperature Decimals'}>
+          <ha-formfield .label=${this._t("forecast_temp_decimals")}>
             <ha-switch .checked=${this._option_forecast_decimals !== false} .configValue=${'option_forecast_decimals'}
               @change=${this._valueChanged}>
             </ha-switch>
@@ -1311,14 +1311,14 @@ get _forecast_type(): string {
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Show Precipitation Probability in Forecast'}>
+          <ha-formfield .label=${this._t("show_forecast_pop")}>
             <ha-switch .checked=${this._option_show_forecast_pop !== false} .configValue=${'option_show_forecast_pop'}
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
         </div>
         <div>
-          <ha-formfield .label=${'Show Wind in Forecast'}>
+          <ha-formfield .label=${this._t("show_forecast_wind")}>
             <ha-switch .checked=${this._option_show_forecast_wind === true} .configValue=${'option_show_forecast_wind'}
               @change=${this._valueChanged}>
             </ha-switch>
@@ -1327,14 +1327,14 @@ get _forecast_type(): string {
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Show Gust in Wind Slot'}>
+          <ha-formfield .label=${this._t("show_gust_in_wind")}>
             <ha-switch .checked=${this._option_show_gust_in_wind !== false} .configValue=${'option_show_gust_in_wind'}
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
         </div>
         <div>
-          <ha-formfield .label=${'Colour Fire Danger'}>
+          <ha-formfield .label=${this._t("colour_fire_danger")}>
             <ha-switch .checked=${this._option_color_fire_danger !== false} .configValue=${'option_color_fire_danger'}
               @change=${this._valueChanged}>
             </ha-switch>
@@ -1355,10 +1355,10 @@ get _forecast_type(): string {
 
     return html`
       <ha-entity-picker .hass=${this.hass} .configValue=${'weather_entity'} .value=${this._weather_entity} .includeDomains=${['weather']}
-        name="weather_entity" label="Weather Entity with Forecasts" allow-custom-entity
+        name="weather_entity" label=${this._t("weather_entity")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
-      <label class='mdc-label'>Forecast Type</label>
+      <label class='mdc-label'>${this._t('forecast_type')}</label>
       <select class='ha-select-compat' .configValue=${'forecast_type'} .value=${this._forecast_type} @change=${this._valueChanged}>
         <option value=""></option>
         <option value="daily">Daily</option>
@@ -1366,33 +1366,33 @@ get _forecast_type(): string {
         <option value="twice_daily">Twice Daily</option>
       </select>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_icon_1'} .value=${this._entity_forecast_icon_1} .includeDomains=${['sensor', 'weather']}
-        name="entity_forecast_icon_1" label="Entity Forecast Icon 1" allow-custom-entity
+        name="entity_forecast_icon_1" label=${this._t("entity_forecast_icon_1")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_summary_1'} .value=${this._entity_summary_1} .includeDomains=${['sensor', 'weather']}
-        name="entity_summary_1" label="Entity Forecast Summary 1" allow-custom-entity
+        name="entity_summary_1" label=${this._t("entity_summary_1")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_min_1'} .value=${this._entity_forecast_min_1} .includeDomains=${['sensor', 'weather']}
-        name="entity_forecast_min_1" label="Entity Forecast Min 1" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+        name="entity_forecast_min_1" label=${this._t("entity_forecast_min_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_max_1'} .value=${this._entity_forecast_max_1} .includeDomains=${['sensor', 'weather']}
-        name="entity_forecast_max_1" label="Entity Forecast Max 1" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+        name="entity_forecast_max_1" label=${this._t("entity_forecast_max_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_pop_1'} .value=${this._entity_pop_1}  .includeDomains=${['sensor', 'weather']}
-        name="entity_pop_1" label="Entity Forecast Chance of Rain 1" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+        name="entity_pop_1" label=${this._t("entity_pop_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_pos_1'} .value=${this._entity_pos_1}  .includeDomains=${['sensor', 'weather']}
-        name="entity_pos_1" label="Entity Forecast Possible Rain 1" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+        name="entity_pos_1" label=${this._t("entity_pos_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
       ${this._daily_forecast_layout === 'vertical' ? html`
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_extended_1'} .value=${this._entity_extended_1} .includeDomains=${['sensor', 'weather']}
-          name="entity_extended_1" label="Entity Extended Forecast 1" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_extended_1" label=${this._t("entity_extended_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
         ${this._entity_extended_1 !== '' ? html`
           <div class="side-by-side">
             <div>
-              <ha-formfield .label=${'Use Attribute'}>
+              <ha-formfield .label=${this._t("use_attribute")}>
                 <ha-switch .checked=${this._daily_extended_use_attr !== false} .configValue=${'daily_extended_use_attr'}
                   @change=${this._valueChanged}>
                 </ha-switch>
@@ -1401,11 +1401,11 @@ get _forecast_type(): string {
             ${this._entity_extended_1 !== '' && this._daily_extended_use_attr === true ? html`
               <ha-selector .hass=${this.hass} .entityId=${this._entity_extended_1} .configValue=${'daily_extended_name_attr'} .value=${this._daily_extended_name_attr} .includeDomains=${['sensor']}
                 .selector = ${{ attribute: { entity_id: this._entity_extended_1 } }} .required=${false}
-                name="daily_extended_name_attr" label="Attribute" allow-custom-value @value-changed=${this._valueChangedPicker}>
+                name="daily_extended_name_attr" label=${this._t("attribute")} allow-custom-value @value-changed=${this._valueChangedPicker}>
               </ha-selector>` : html``}
           </div>` : html``}
         <ha-entity-picker .hass=${this.hass} .configValue=${'entity_fire_danger_1'} .value=${this._entity_fire_danger_1} .includeDomains=${['sensor']}
-          name="entity_fire_danger_1" label="Entity Fire Danger 1" allow-custom-entity @value-changed=${this._valueChangedPicker}>
+          name="entity_fire_danger_1" label=${this._t("entity_fire_danger_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
         </ha-entity-picker>
       ` : ``}
     `;
@@ -1414,7 +1414,7 @@ get _forecast_type(): string {
   private _optionDailyForecastEditor(): TemplateResult {
     return html`
       <div class="side-by-side">
-        <label class='mdc-label'>Daily Forecast Layout</label>
+        <label class='mdc-label'>${this._t('daily_forecast_layout')}</label>
         <select class='ha-select-compat' .configValue=${'daily_forecast_layout'} .value=${this._daily_forecast_layout} @change=${this._valueChanged}>
           <option value=""></option>
           <option value="horizontal">horizontal</option>
@@ -1423,7 +1423,7 @@ get _forecast_type(): string {
         <div></div>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Daily Forecast Days</label>
+        <label class='mdc-label'>${this._t('daily_forecast_days')}</label>
         <select class='ha-select-compat' .configValue=${'daily_forecast_days'} .value=${this._daily_forecast_days !== null ? String(this._daily_forecast_days) : ''} @change=${this._valueChanged}>
           <option value=""></option>
           <option value="1">1</option>
@@ -1435,7 +1435,7 @@ get _forecast_type(): string {
             <option value="6">6</option>
             <option value="7">7</option>` : html``}
         </select>
-        ${this._daily_forecast_layout === 'vertical' ? html`<label class='mdc-label'>Daily Extended Days</label>
+        ${this._daily_forecast_layout === 'vertical' ? html`<label class='mdc-label'>${this._t('daily_extended_days')}</label>
           <select class='ha-select-compat' .configValue=${'daily_extended_forecast_days'} @change=${this._valueChangedNumber}>
           <option value=""></option>
           <option value="0">0</option>
@@ -1452,13 +1452,13 @@ get _forecast_type(): string {
         <div class="side-by-side">
           <div>
             ${this._daily_forecast_layout !== 'vertical' ? html`
-              <ha-formfield .label=${'Enable forecast tooltips'}>
+              <ha-formfield .label=${this._t("forecast_tooltips")}>
                 <ha-switch .checked = ${this._option_tooltips !== false} .configValue = ${'option_tooltips'} @change=${this._valueChanged}>
                 </ha-switch>
               </ha-formfield>` : html``}
           </div>
           <div>
-            <ha-formfield .label=${'Include Today in Forecast'}>
+            <ha-formfield .label=${this._t("include_today")}>
               <ha-switch .checked=${this._option_show_current_day === true} .configValue=${'option_show_current_day'}
                 @change=${this._valueChanged}>
               </ha-switch>
@@ -1467,14 +1467,14 @@ get _forecast_type(): string {
         </div>
         <div class="side-by-side">
           <div>
-            <ha-formfield .label=${'Show Temperature Chart'}>
+            <ha-formfield .label=${this._t("show_temp_chart")}>
               <ha-switch .checked=${this._option_show_temperature_chart === true} .configValue=${'option_show_temperature_chart'}
                 @change=${this._valueChanged}>
               </ha-switch>
             </ha-formfield>
           </div>
           <div>
-            <ha-formfield .label=${'Show Precipitation Chart'}>
+            <ha-formfield .label=${this._t("show_precip_chart")}>
               <ha-switch .checked=${this._option_show_precipitation_chart === true} .configValue=${'option_show_precipitation_chart'}
                 @change=${this._valueChanged}>
               </ha-switch>
@@ -1483,7 +1483,7 @@ get _forecast_type(): string {
         </div>
         <div class="side-by-side">
         ${this._daily_forecast_layout === 'vertical' ? html`<div>
-          <ha-formfield .label=${'Colour Fire Danger'}>
+          <ha-formfield .label=${this._t("colour_fire_danger")}>
             <ha-switch .checked=${this._option_daily_color_fire_danger !== false} .configValue=${'option_daily_color_fire_danger'}
               @change=${this._valueChanged}>
             </ha-switch>
@@ -1499,7 +1499,7 @@ get _forecast_type(): string {
     return html`
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${'Show Static Icons'}>
+          <ha-formfield .label=${this._t("show_static_icons")}>
             <ha-switch .checked=${this._option_static_icons !== false} .configValue=${'option_static_icons'} @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
@@ -1507,19 +1507,19 @@ get _forecast_type(): string {
         <div></div>
       </div>
       <div class="side-by-side">
-        <label class='mdc-label'>Time Format</label>
+        <label class='mdc-label'>${this._t('time_format')}</label>
         <select class='ha-select-compat' .configValue=${'option_time_format'} .value=${this._option_time_format ?? ''} @change=${this._valueChanged}>
           <option value=""></option>
           <option value="system">System</option>
           <option value="12hour">12 hour</option>
           <option value="24hour">24 hour</option>
         </select>
-        <ha-input label="Locale" .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
+        <ha-input label=${this._t("locale")} .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
         </ha-input>
       </div>
       <div class="side-by-side">
         <div>
-          <label class="label">Icon Pack</label>
+          <label class="label">${this._t("icon_pack")}</label>
           <select class='ha-select-compat' .configValue=${'icon_pack'} .value=${this._icon_pack} @change=${this._valueChanged}>
             <option value='default'>Default (built-in animated)</option>
             <option value='meteocons-fill'>Meteocons — Fill (CDN, basmilius)</option>
@@ -1530,7 +1530,7 @@ get _forecast_type(): string {
         </div>
         ${this._icon_pack === 'custom' ? html`
         <div>
-          <ha-input .label=${'Icon path'} .value=${this._icon_pack_path}
+          <ha-input .label=${this._t("icon_path")} .value=${this._icon_pack_path}
             .configValue=${'icon_pack_path'} @change=${this._valueChanged}>
           </ha-input>
           <div class="help-text">Use {condition} as placeholder — e.g. /local/icons/{condition}.svg</div>
@@ -1605,7 +1605,7 @@ get _forecast_type(): string {
       case 'overview':
         return html`
           <div class="section-flex edit-overview-section">
-            <ha-formfield .label=${`Overview Section`}>
+            <ha-formfield .label=${this._t("overview_section")}>
               <ha-switch .checked = ${this._show_section_overview !== false} .configValue = ${'show_section_overview'} @change=${this._valueChanged}>
               </ha-switch>
             </ha-formfield>
@@ -1624,7 +1624,7 @@ get _forecast_type(): string {
       case 'extended':
         return html`
           <div class="section-flex edit-extended-section">
-            <ha-formfield .label=${`Extended Section`}>
+            <ha-formfield .label=${this._t("extended_section")}>
               <ha-switch .checked=${this._show_section_extended !== false} .configValue=${'show_section_extended'} @change=${this._valueChanged}>
               </ha-switch>
             </ha-formfield>
@@ -1642,7 +1642,7 @@ get _forecast_type(): string {
       case 'slots':
         return html`
           <div class="section-flex edit-slots-section">
-            <ha-formfield .label=${`Slots Section`}>
+            <ha-formfield .label=${this._t("slots_section")}>
               <ha-switch .checked = ${this._show_section_slots !== false} .configValue = ${'show_section_slots'} @change=${this._valueChanged}>
               </ha-switch>
             </ha-formfield>
@@ -1661,7 +1661,7 @@ get _forecast_type(): string {
       case 'daily_forecast':
         return html`
           <div class="section-flex edit-daily-forecast-section">
-            <ha-formfield .label=${`Daily Forecast Section`}>
+            <ha-formfield .label=${this._t("daily_forecast_section")}>
               <ha-switch .checked=${this._show_section_daily_forecast !== false} .configValue=${'show_section_daily_forecast'} @change=${this._valueChanged}>
               </ha-switch>
             </ha-formfield>
@@ -1680,7 +1680,7 @@ get _forecast_type(): string {
       case 'global_options':
         return html`
           <div class="section-flex">
-            <ha-formfield class="no-switch" .label=${`Global Options`}>
+            <ha-formfield class="no-switch" .label=${this._t("global_options")}>
             </ha-formfield>
             <div>
               <div class="no-icon"></div>
@@ -1709,6 +1709,12 @@ get _forecast_type(): string {
     });
 
     return html`${htmlConfig}`;
+  }
+
+
+  private _t(key: string): string {
+    const lang = resolveLanguage(this.hass?.language || 'en');
+    return translations[lang]?.[key] ?? translations['en'][key] ?? key;
   }
 
   private _initialize(): void {
