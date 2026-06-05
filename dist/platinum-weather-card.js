@@ -2417,7 +2417,7 @@ const Tn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
       `];switch(this._subElementEditor){case"section_overview":t.push(this._sectionOverviewEditor());break;case"option_overview":t.push(this._optionOverviewEditor());break;case"section_extended":t.push(this._sectionExtendedEditor());break;case"section_slots":t.push(this._sectionSlotsEditor());break;case"option_slots":t.push(this._optionSlotsEditor());break;case"section_daily_forecast":t.push(this._sectionDailyForecastEditor());break;case"option_daily_forecast":t.push(this._optionDailyForecastEditor());break;case"option_global_options":t.push(this._optionGlobalOptionsEditor())}return B`${t}`}_goBack(){this._subElementEditor=void 0}get _show_section_overview(){var t;return!1!==(null===(t=this._config)||void 0===t?void 0:t.show_section_overview)}get _show_section_extended(){var t;return!1!==(null===(t=this._config)||void 0===t?void 0:t.show_section_extended)}get _show_section_slots(){var t;return!1!==(null===(t=this._config)||void 0===t?void 0:t.show_section_slots)}get _show_section_daily_forecast(){var t;return!1!==(null===(t=this._config)||void 0===t?void 0:t.show_section_daily_forecast)}getConfigBlock(t,e,i){switch(t){case"overview":return B`
           <div class="section-flex edit-overview-section">
             <div class="section-label">
-              <ha-icon-button class=${!1!==this._show_section_overview?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_overview?Oe:Fe} .value=${"show_section_overview"} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${!1!==this._show_section_overview?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_overview?Oe:Fe} .value=${"show_section_overview"} .checked=${!1!==this._show_section_overview} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:eye-outline"></ha-icon>
               <span class="section-title">${this._t("overview_section")}</span>
@@ -2436,7 +2436,7 @@ const Tn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         `;case"extended":return B`
           <div class="section-flex edit-extended-section">
             <div class="section-label">
-              <ha-icon-button class=${!1!==this._show_section_extended?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_extended?Oe:Fe} .value=${"show_section_extended"} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${!1!==this._show_section_extended?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_extended?Oe:Fe} .value=${"show_section_extended"} .checked=${!1!==this._show_section_extended} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:text-box-outline"></ha-icon>
               <span class="section-title">${this._t("extended_section")}</span>
@@ -2454,7 +2454,7 @@ const Tn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         `;case"slots":return B`
           <div class="section-flex edit-slots-section">
             <div class="section-label">
-              <ha-icon-button class=${!1!==this._show_section_slots?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_slots?Oe:Fe} .value=${"show_section_slots"} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${!1!==this._show_section_slots?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_slots?Oe:Fe} .value=${"show_section_slots"} .checked=${!1!==this._show_section_slots} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:view-grid-outline"></ha-icon>
               <span class="section-title">${this._t("slots_section")}</span>
@@ -2473,7 +2473,7 @@ const Tn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         `;case"daily_forecast":return B`
           <div class="section-flex edit-daily-forecast-section">
             <div class="section-label">
-              <ha-icon-button class=${!1!==this._show_section_daily_forecast?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_daily_forecast?Oe:Fe} .value=${"show_section_daily_forecast"} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${!1!==this._show_section_daily_forecast?"visibility-toggle active":"visibility-toggle"} .path=${!1!==this._show_section_daily_forecast?Oe:Fe} .value=${"show_section_daily_forecast"} .checked=${!1!==this._show_section_daily_forecast} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:calendar-week"></ha-icon>
               <span class="section-title">${this._t("daily_forecast_section")}</span>

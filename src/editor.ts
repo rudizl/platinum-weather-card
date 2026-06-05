@@ -1590,7 +1590,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-overview-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_overview !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_overview !== false ? mdiEye : mdiEyeOff} .value=${'show_section_overview'} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_overview !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_overview !== false ? mdiEye : mdiEyeOff} .value=${'show_section_overview'} .checked=${this._show_section_overview !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:eye-outline"></ha-icon>
               <span class="section-title">${this._t("overview_section")}</span>
@@ -1611,7 +1611,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-extended-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_extended !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_extended !== false ? mdiEye : mdiEyeOff} .value=${'show_section_extended'} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_extended !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_extended !== false ? mdiEye : mdiEyeOff} .value=${'show_section_extended'} .checked=${this._show_section_extended !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:text-box-outline"></ha-icon>
               <span class="section-title">${this._t("extended_section")}</span>
@@ -1631,7 +1631,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-slots-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_slots !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_slots !== false ? mdiEye : mdiEyeOff} .value=${'show_section_slots'} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_slots !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_slots !== false ? mdiEye : mdiEyeOff} .value=${'show_section_slots'} .checked=${this._show_section_slots !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:view-grid-outline"></ha-icon>
               <span class="section-title">${this._t("slots_section")}</span>
@@ -1652,7 +1652,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-daily-forecast-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_daily_forecast !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_daily_forecast !== false ? mdiEye : mdiEyeOff} .value=${'show_section_daily_forecast'} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_daily_forecast !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_daily_forecast !== false ? mdiEye : mdiEyeOff} .value=${'show_section_daily_forecast'} .checked=${this._show_section_daily_forecast !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:calendar-week"></ha-icon>
               <span class="section-title">${this._t("daily_forecast_section")}</span>
