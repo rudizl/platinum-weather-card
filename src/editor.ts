@@ -1043,11 +1043,10 @@ get _forecast_type(): string {
       ${this._entity_update_time !== '' ? html`
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("use_attribute")}>
-            <ha-switch .checked=${this._update_time_use_attr !== false} .configValue=${'update_time_use_attr'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._update_time_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._update_time_use_attr !== false ? mdiEye : mdiEyeOff} .value=${'update_time_use_attr'} .checked=${this._update_time_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("use_attribute")}</span>
+            </div>
         </div>
         ${this._entity_update_time !== '' && this._update_time_use_attr === true ? html`<ha-selector .hass=${this.hass} .entityId=${this._entity_update_time}
           .selector = ${{ attribute: { entity_id: this._entity_update_time } }} .required=${false}
@@ -1093,18 +1092,16 @@ get _forecast_type(): string {
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("show_temp_decimals")}>
-            <ha-switch .checked=${this._option_show_overview_decimals !== false} .configValue=${'option_show_overview_decimals'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_overview_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_overview_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_show_overview_decimals'} .checked=${this._option_show_overview_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_temp_decimals")}</span>
+            </div>
         </div>
         <div>
-          <ha-formfield .label=${this._t("show_separator")}>
-            <ha-switch .checked=${this._option_show_overview_separator !== false} .configValue=${'option_show_overview_separator'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_overview_separator !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_overview_separator !== false ? mdiEye : mdiEyeOff} .value=${'option_show_overview_separator'} .checked=${this._option_show_overview_separator !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_separator")}</span>
+            </div>
         </div>
       </div>
     `;
@@ -1127,11 +1124,10 @@ get _forecast_type(): string {
       ${this._entity_extended !== '' ? html`
         <div class="side-by-side">
           <div>
-            <ha-formfield .label=${this._t("use_attribute")}>
-              <ha-switch .checked=${this._extended_use_attr !== false} .configValue=${'extended_use_attr'}
-                @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="toggle-row">
+              <ha-icon-button class=${this._extended_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._extended_use_attr !== false ? mdiEye : mdiEyeOff} .value=${'extended_use_attr'} .checked=${this._extended_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("use_attribute")}</span>
+            </div>
           </div>
           ${this._entity_extended !== '' && this._extended_use_attr === true ? html`<ha-selector .hass=${this.hass} .entityId=${this._entity_extended}
             .selector = ${{ attribute: { entity_id: this._entity_extended } }} .required=${false}
@@ -1278,11 +1274,10 @@ get _forecast_type(): string {
     return html`
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("today_temp_decimals")}>
-            <ha-switch .checked=${this._option_today_temperature_decimals !== false} .configValue=${'option_today_temperature_decimals'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_today_temperature_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_today_temperature_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_today_temperature_decimals'} .checked=${this._option_today_temperature_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("today_temp_decimals")}</span>
+            </div>
         </div>
         <label class='mdc-label'>${this._t('pressure_decimals')}</label>
         <select class='ha-select-compat' .configValue=${'option_pressure_decimals'} .value=${this._option_pressure_decimals !== null ? String(this._option_pressure_decimals) : ''} @change=${this._valueChanged}>
@@ -1295,50 +1290,44 @@ get _forecast_type(): string {
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("today_rain_decimals")}>
-            <ha-switch .checked=${this._option_today_rainfall_decimals !== false} .configValue=${'option_today_rainfall_decimals'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_today_rainfall_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_today_rainfall_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_today_rainfall_decimals'} .checked=${this._option_today_rainfall_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("today_rain_decimals")}</span>
+            </div>
         </div>
         <div>
-          <ha-formfield .label=${this._t("forecast_temp_decimals")}>
-            <ha-switch .checked=${this._option_forecast_decimals !== false} .configValue=${'option_forecast_decimals'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_forecast_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_forecast_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_forecast_decimals'} .checked=${this._option_forecast_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("forecast_temp_decimals")}</span>
+            </div>
         </div>
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("show_forecast_pop")}>
-            <ha-switch .checked=${this._option_show_forecast_pop !== false} .configValue=${'option_show_forecast_pop'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_forecast_pop !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_forecast_pop !== false ? mdiEye : mdiEyeOff} .value=${'option_show_forecast_pop'} .checked=${this._option_show_forecast_pop !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_forecast_pop")}</span>
+            </div>
         </div>
         <div>
-          <ha-formfield .label=${this._t("show_forecast_wind")}>
-            <ha-switch .checked=${this._option_show_forecast_wind === true} .configValue=${'option_show_forecast_wind'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_forecast_wind === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_forecast_wind === true ? mdiEye : mdiEyeOff} .value=${'option_show_forecast_wind'} .checked=${this._option_show_forecast_wind === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_forecast_wind")}</span>
+            </div>
         </div>
       </div>
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("show_gust_in_wind")}>
-            <ha-switch .checked=${this._option_show_gust_in_wind !== false} .configValue=${'option_show_gust_in_wind'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_gust_in_wind !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_gust_in_wind !== false ? mdiEye : mdiEyeOff} .value=${'option_show_gust_in_wind'} .checked=${this._option_show_gust_in_wind !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_gust_in_wind")}</span>
+            </div>
         </div>
         <div>
-          <ha-formfield .label=${this._t("colour_fire_danger")}>
-            <ha-switch .checked=${this._option_color_fire_danger !== false} .configValue=${'option_color_fire_danger'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_color_fire_danger !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_color_fire_danger !== false ? mdiEye : mdiEyeOff} .value=${'option_color_fire_danger'} .checked=${this._option_color_fire_danger !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("colour_fire_danger")}</span>
+            </div>
         </div>
       </div>
     `;
@@ -1392,11 +1381,10 @@ get _forecast_type(): string {
         ${this._entity_extended_1 !== '' ? html`
           <div class="side-by-side">
             <div>
-              <ha-formfield .label=${this._t("use_attribute")}>
-                <ha-switch .checked=${this._daily_extended_use_attr !== false} .configValue=${'daily_extended_use_attr'}
-                  @change=${this._valueChanged}>
-                </ha-switch>
-              </ha-formfield>
+              <div class="toggle-row">
+              <ha-icon-button class=${this._daily_extended_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._daily_extended_use_attr !== false ? mdiEye : mdiEyeOff} .value=${'daily_extended_use_attr'} .checked=${this._daily_extended_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("use_attribute")}</span>
+            </div>
             </div>
             ${this._entity_extended_1 !== '' && this._daily_extended_use_attr === true ? html`
               <ha-selector .hass=${this.hass} .entityId=${this._entity_extended_1} .configValue=${'daily_extended_name_attr'} .value=${this._daily_extended_name_attr} .includeDomains=${['sensor']}
@@ -1452,42 +1440,38 @@ get _forecast_type(): string {
         <div class="side-by-side">
           <div>
             ${this._daily_forecast_layout !== 'vertical' ? html`
-              <ha-formfield .label=${this._t("forecast_tooltips")}>
-                <ha-switch .checked = ${this._option_tooltips !== false} .configValue = ${'option_tooltips'} @change=${this._valueChanged}>
-                </ha-switch>
-              </ha-formfield>` : html``}
+              <div class="toggle-row">
+              <ha-icon-button class=${this._option_tooltips !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_tooltips !== false ? mdiEye : mdiEyeOff} .value=${'option_tooltips'} .checked=${this._option_tooltips !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("forecast_tooltips")}</span>
+            </div>` : html``}
           </div>
           <div>
-            <ha-formfield .label=${this._t("include_today")}>
-              <ha-switch .checked=${this._option_show_current_day === true} .configValue=${'option_show_current_day'}
-                @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_current_day === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_current_day === true ? mdiEye : mdiEyeOff} .value=${'option_show_current_day'} .checked=${this._option_show_current_day === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("include_today")}</span>
+            </div>
           </div>
         </div>
         <div class="side-by-side">
           <div>
-            <ha-formfield .label=${this._t("show_temp_chart")}>
-              <ha-switch .checked=${this._option_show_temperature_chart === true} .configValue=${'option_show_temperature_chart'}
-                @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_temperature_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_temperature_chart === true ? mdiEye : mdiEyeOff} .value=${'option_show_temperature_chart'} .checked=${this._option_show_temperature_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_temp_chart")}</span>
+            </div>
           </div>
           <div>
-            <ha-formfield .label=${this._t("show_precip_chart")}>
-              <ha-switch .checked=${this._option_show_precipitation_chart === true} .configValue=${'option_show_precipitation_chart'}
-                @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="toggle-row">
+              <ha-icon-button class=${this._option_show_precipitation_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_precipitation_chart === true ? mdiEye : mdiEyeOff} .value=${'option_show_precipitation_chart'} .checked=${this._option_show_precipitation_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_precip_chart")}</span>
+            </div>
           </div>
         </div>
         <div class="side-by-side">
         ${this._daily_forecast_layout === 'vertical' ? html`<div>
-          <ha-formfield .label=${this._t("colour_fire_danger")}>
-            <ha-switch .checked=${this._option_daily_color_fire_danger !== false} .configValue=${'option_daily_color_fire_danger'}
-              @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_daily_color_fire_danger !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_daily_color_fire_danger !== false ? mdiEye : mdiEyeOff} .value=${'option_daily_color_fire_danger'} .checked=${this._option_daily_color_fire_danger !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("colour_fire_danger")}</span>
+            </div>
         </div>` : html``}
         <div>
         </div>
@@ -1499,10 +1483,10 @@ get _forecast_type(): string {
     return html`
       <div class="side-by-side">
         <div>
-          <ha-formfield .label=${this._t("show_static_icons")}>
-            <ha-switch .checked=${this._option_static_icons !== false} .configValue=${'option_static_icons'} @change=${this._valueChanged}>
-            </ha-switch>
-          </ha-formfield>
+          <div class="toggle-row">
+              <ha-icon-button class=${this._option_static_icons !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_static_icons !== false ? mdiEye : mdiEyeOff} .value=${'option_static_icons'} .checked=${this._option_static_icons !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("show_static_icons")}</span>
+            </div>
         </div>
         <div></div>
       </div>
@@ -1689,9 +1673,9 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex">
             <div class="section-label">
+              <div class="visibility-spacer"></div>
               <ha-icon class="section-icon" icon="mdi:cog"></ha-icon>
-              <ha-formfield class="no-switch" .label=${this._t("global_options")}>
-              </ha-formfield>
+              <span class="section-title">${this._t("global_options")}</span>
             </div>
             <div>
               <div class="no-icon"></div>
@@ -1841,9 +1825,9 @@ get _forecast_type(): string {
   private _toggleVisibility(ev: Event): void {
     const btn = ev.currentTarget as any;
     const key = btn.value as string;
-    const current = this._config?.[key as keyof typeof this._config];
-    const newVal = current === false;  // false→true, anything else→false
-    this._config = { ...this._config, [key]: newVal };
+    // .checked is set by the template binding and reflects the current display state
+    const currentlyActive: boolean = btn.checked === true;
+    this._config = { ...this._config, [key]: !currentlyActive };
     fireEvent(this, 'config-changed', { config: this.sortObjectByKeys(this._config) });
   }
 
@@ -1970,6 +1954,10 @@ get _forecast_type(): string {
       align-items: center;
       gap: 2px;
     }
+    .visibility-spacer {
+      width: 32px;
+      flex-shrink: 0;
+    }
     .section-title {
       font-size: 14px;
       font-weight: 500;
@@ -1982,6 +1970,15 @@ get _forecast_type(): string {
       opacity: 0.9;
       flex-shrink: 0;
       margin-right: 2px;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .toggle-label {
+      font-size: 13px;
+      color: var(--primary-text-color);
     }
     .visibility-toggle {
       --mdc-icon-button-size: 32px;
