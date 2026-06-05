@@ -1714,7 +1714,7 @@ get _forecast_type(): string {
 
   private _t(key: string): string {
     const lang = (this.hass?.language || 'en').split('-')[0].toLowerCase();
-    const t = PlatinumWeatherCardEditor._translations;
+    const t = (this.constructor as unknown as {_translations: Record<string, Record<string, string>>})._translations;
     return (t[lang] && t[lang][key]) ? t[lang][key] : (t['en'][key] ?? key);
   }
 
