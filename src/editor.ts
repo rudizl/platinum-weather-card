@@ -4,7 +4,7 @@ import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helper
 
 import { keys } from 'ts-transformer-keys';
 
-import { mdiPencil, mdiArrowDown, mdiArrowUp, mdiApplicationEditOutline, mdiEye, mdiEyeOff } from '@mdi/js';
+import { mdiPencil, mdiArrowDown, mdiArrowUp, mdiApplicationEditOutline, mdiLockOpenVariant, mdiLock } from '@mdi/js';
 
 //import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
 import { WeatherCardConfig, layoutOverview, layoutOrientation, layoutDays, extendedDays, sectionType, timeFormat, sectionNames, pressureDecimals, HassCustomElement } from './types';
@@ -1044,7 +1044,7 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._update_time_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._update_time_use_attr !== false ? mdiEye : mdiEyeOff} .value=${'update_time_use_attr'} .checked=${this._update_time_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._update_time_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._update_time_use_attr !== false ? mdiLockOpenVariant : mdiLock} .value=${'update_time_use_attr'} .checked=${this._update_time_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("use_attribute")}</span>
             </div>
         </div>
@@ -1093,13 +1093,13 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_overview_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_overview_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_show_overview_decimals'} .checked=${this._option_show_overview_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_overview_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_overview_decimals !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_show_overview_decimals'} .checked=${this._option_show_overview_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_temp_decimals")}</span>
             </div>
         </div>
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_overview_separator !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_overview_separator !== false ? mdiEye : mdiEyeOff} .value=${'option_show_overview_separator'} .checked=${this._option_show_overview_separator !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_overview_separator !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_overview_separator !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_show_overview_separator'} .checked=${this._option_show_overview_separator !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_separator")}</span>
             </div>
         </div>
@@ -1125,7 +1125,7 @@ get _forecast_type(): string {
         <div class="side-by-side">
           <div>
             <div class="toggle-row">
-              <ha-icon-button class=${this._extended_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._extended_use_attr !== false ? mdiEye : mdiEyeOff} .value=${'extended_use_attr'} .checked=${this._extended_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._extended_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._extended_use_attr !== false ? mdiLockOpenVariant : mdiLock} .value=${'extended_use_attr'} .checked=${this._extended_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("use_attribute")}</span>
             </div>
           </div>
@@ -1275,7 +1275,7 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_today_temperature_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_today_temperature_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_today_temperature_decimals'} .checked=${this._option_today_temperature_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_today_temperature_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_today_temperature_decimals !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_today_temperature_decimals'} .checked=${this._option_today_temperature_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("today_temp_decimals")}</span>
             </div>
         </div>
@@ -1291,13 +1291,13 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_today_rainfall_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_today_rainfall_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_today_rainfall_decimals'} .checked=${this._option_today_rainfall_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_today_rainfall_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_today_rainfall_decimals !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_today_rainfall_decimals'} .checked=${this._option_today_rainfall_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("today_rain_decimals")}</span>
             </div>
         </div>
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_forecast_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_forecast_decimals !== false ? mdiEye : mdiEyeOff} .value=${'option_forecast_decimals'} .checked=${this._option_forecast_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_forecast_decimals !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_forecast_decimals !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_forecast_decimals'} .checked=${this._option_forecast_decimals !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("forecast_temp_decimals")}</span>
             </div>
         </div>
@@ -1305,13 +1305,13 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_forecast_pop !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_forecast_pop !== false ? mdiEye : mdiEyeOff} .value=${'option_show_forecast_pop'} .checked=${this._option_show_forecast_pop !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_forecast_pop !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_forecast_pop !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_show_forecast_pop'} .checked=${this._option_show_forecast_pop !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_forecast_pop")}</span>
             </div>
         </div>
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_forecast_wind === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_forecast_wind === true ? mdiEye : mdiEyeOff} .value=${'option_show_forecast_wind'} .checked=${this._option_show_forecast_wind === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_forecast_wind === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_forecast_wind === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_forecast_wind'} .checked=${this._option_show_forecast_wind === true} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_forecast_wind")}</span>
             </div>
         </div>
@@ -1319,13 +1319,13 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_gust_in_wind !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_gust_in_wind !== false ? mdiEye : mdiEyeOff} .value=${'option_show_gust_in_wind'} .checked=${this._option_show_gust_in_wind !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_gust_in_wind !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_gust_in_wind !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_show_gust_in_wind'} .checked=${this._option_show_gust_in_wind !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_gust_in_wind")}</span>
             </div>
         </div>
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_color_fire_danger !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_color_fire_danger !== false ? mdiEye : mdiEyeOff} .value=${'option_color_fire_danger'} .checked=${this._option_color_fire_danger !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_color_fire_danger !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_color_fire_danger !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_color_fire_danger'} .checked=${this._option_color_fire_danger !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("colour_fire_danger")}</span>
             </div>
         </div>
@@ -1382,7 +1382,7 @@ get _forecast_type(): string {
           <div class="side-by-side">
             <div>
               <div class="toggle-row">
-              <ha-icon-button class=${this._daily_extended_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._daily_extended_use_attr !== false ? mdiEye : mdiEyeOff} .value=${'daily_extended_use_attr'} .checked=${this._daily_extended_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._daily_extended_use_attr !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._daily_extended_use_attr !== false ? mdiLockOpenVariant : mdiLock} .value=${'daily_extended_use_attr'} .checked=${this._daily_extended_use_attr !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("use_attribute")}</span>
             </div>
             </div>
@@ -1441,13 +1441,13 @@ get _forecast_type(): string {
           <div>
             ${this._daily_forecast_layout !== 'vertical' ? html`
               <div class="toggle-row">
-              <ha-icon-button class=${this._option_tooltips !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_tooltips !== false ? mdiEye : mdiEyeOff} .value=${'option_tooltips'} .checked=${this._option_tooltips !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_tooltips !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_tooltips !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_tooltips'} .checked=${this._option_tooltips !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("forecast_tooltips")}</span>
             </div>` : html``}
           </div>
           <div>
             <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_current_day === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_current_day === true ? mdiEye : mdiEyeOff} .value=${'option_show_current_day'} .checked=${this._option_show_current_day === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_current_day === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_current_day === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_current_day'} .checked=${this._option_show_current_day === true} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("include_today")}</span>
             </div>
           </div>
@@ -1455,13 +1455,13 @@ get _forecast_type(): string {
         <div class="side-by-side">
           <div>
             <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_temperature_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_temperature_chart === true ? mdiEye : mdiEyeOff} .value=${'option_show_temperature_chart'} .checked=${this._option_show_temperature_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_temperature_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_temperature_chart === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_temperature_chart'} .checked=${this._option_show_temperature_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_temp_chart")}</span>
             </div>
           </div>
           <div>
             <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_precipitation_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_precipitation_chart === true ? mdiEye : mdiEyeOff} .value=${'option_show_precipitation_chart'} .checked=${this._option_show_precipitation_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_show_precipitation_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_precipitation_chart === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_precipitation_chart'} .checked=${this._option_show_precipitation_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_precip_chart")}</span>
             </div>
           </div>
@@ -1469,7 +1469,7 @@ get _forecast_type(): string {
         <div class="side-by-side">
         ${this._daily_forecast_layout === 'vertical' ? html`<div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_daily_color_fire_danger !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_daily_color_fire_danger !== false ? mdiEye : mdiEyeOff} .value=${'option_daily_color_fire_danger'} .checked=${this._option_daily_color_fire_danger !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_daily_color_fire_danger !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_daily_color_fire_danger !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_daily_color_fire_danger'} .checked=${this._option_daily_color_fire_danger !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("colour_fire_danger")}</span>
             </div>
         </div>` : html``}
@@ -1484,7 +1484,7 @@ get _forecast_type(): string {
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
-              <ha-icon-button class=${this._option_static_icons !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_static_icons !== false ? mdiEye : mdiEyeOff} .value=${'option_static_icons'} .checked=${this._option_static_icons !== false} @click=${this._toggleVisibility}></ha-icon-button>
+              <ha-icon-button class=${this._option_static_icons !== false ? "eye-toggle active" : "eye-toggle"} .path=${this._option_static_icons !== false ? mdiLockOpenVariant : mdiLock} .value=${'option_static_icons'} .checked=${this._option_static_icons !== false} @click=${this._toggleVisibility}></ha-icon-button>
               <span class="toggle-label">${this._t("show_static_icons")}</span>
             </div>
         </div>
@@ -1590,7 +1590,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-overview-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_overview !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_overview !== false ? mdiEye : mdiEyeOff} .value=${'show_section_overview'} .checked=${this._show_section_overview !== false} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_overview !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_overview !== false ? mdiLockOpenVariant : mdiLock} .value=${'show_section_overview'} .checked=${this._show_section_overview !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:eye-outline"></ha-icon>
               <span class="section-title">${this._t("overview_section")}</span>
@@ -1611,7 +1611,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-extended-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_extended !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_extended !== false ? mdiEye : mdiEyeOff} .value=${'show_section_extended'} .checked=${this._show_section_extended !== false} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_extended !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_extended !== false ? mdiLockOpenVariant : mdiLock} .value=${'show_section_extended'} .checked=${this._show_section_extended !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:text-box-outline"></ha-icon>
               <span class="section-title">${this._t("extended_section")}</span>
@@ -1631,7 +1631,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-slots-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_slots !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_slots !== false ? mdiEye : mdiEyeOff} .value=${'show_section_slots'} .checked=${this._show_section_slots !== false} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_slots !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_slots !== false ? mdiLockOpenVariant : mdiLock} .value=${'show_section_slots'} .checked=${this._show_section_slots !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:view-grid-outline"></ha-icon>
               <span class="section-title">${this._t("slots_section")}</span>
@@ -1652,7 +1652,7 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-daily-forecast-section">
             <div class="section-label">
-              <ha-icon-button class=${this._show_section_daily_forecast !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_daily_forecast !== false ? mdiEye : mdiEyeOff} .value=${'show_section_daily_forecast'} .checked=${this._show_section_daily_forecast !== false} @click=${this._toggleVisibility}>
+              <ha-icon-button class=${this._show_section_daily_forecast !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_daily_forecast !== false ? mdiLockOpenVariant : mdiLock} .value=${'show_section_daily_forecast'} .checked=${this._show_section_daily_forecast !== false} @click=${this._toggleVisibility}>
               </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:calendar-week"></ha-icon>
               <span class="section-title">${this._t("daily_forecast_section")}</span>
