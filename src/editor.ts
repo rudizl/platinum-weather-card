@@ -4,7 +4,7 @@ import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helper
 
 import { keys } from 'ts-transformer-keys';
 
-import { mdiPencil, mdiArrowDown, mdiArrowUp, mdiApplicationEditOutline } from '@mdi/js';
+import { mdiPencil, mdiArrowDown, mdiArrowUp, mdiApplicationEditOutline, mdiEye, mdiEyeOff } from '@mdi/js';
 
 //import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
 import { WeatherCardConfig, layoutOverview, layoutOrientation, layoutDays, extendedDays, sectionType, timeFormat, sectionNames, pressureDecimals, HassCustomElement } from './types';
@@ -1606,11 +1606,10 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-overview-section">
             <div class="section-label">
+              <ha-icon-button class="visibility-toggle" .path=${this._show_section_overview !== false ? mdiEye : mdiEyeOff} .value=${'show_section_overview'} .checked=${this._show_section_overview !== false} @click=${this._toggleVisibility}>
+              </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:eye-outline"></ha-icon>
-              <ha-formfield .label=${this._t("overview_section")}>
-                <ha-switch .checked = ${this._show_section_overview !== false} .configValue = ${'show_section_overview'} @change=${this._valueChanged}>
-                </ha-switch>
-              </ha-formfield>
+              <span class="section-title">${this._t("overview_section")}</span>
             </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'overview'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
@@ -1628,11 +1627,10 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-extended-section">
             <div class="section-label">
+              <ha-icon-button class="visibility-toggle" .path=${this._show_section_extended !== false ? mdiEye : mdiEyeOff} .value=${'show_section_extended'} .checked=${this._show_section_extended !== false} @click=${this._toggleVisibility}>
+              </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:text-box-outline"></ha-icon>
-              <ha-formfield .label=${this._t("extended_section")}>
-                <ha-switch .checked=${this._show_section_extended !== false} .configValue=${'show_section_extended'} @change=${this._valueChanged}>
-                </ha-switch>
-              </ha-formfield>
+              <span class="section-title">${this._t("extended_section")}</span>
             </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'extended'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
@@ -1649,11 +1647,10 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-slots-section">
             <div class="section-label">
+              <ha-icon-button class="visibility-toggle" .path=${this._show_section_slots !== false ? mdiEye : mdiEyeOff} .value=${'show_section_slots'} .checked=${this._show_section_slots !== false} @click=${this._toggleVisibility}>
+              </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:view-grid-outline"></ha-icon>
-              <ha-formfield .label=${this._t("slots_section")}>
-                <ha-switch .checked = ${this._show_section_slots !== false} .configValue = ${'show_section_slots'} @change=${this._valueChanged}>
-                </ha-switch>
-              </ha-formfield>
+              <span class="section-title">${this._t("slots_section")}</span>
             </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'slots'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
@@ -1671,11 +1668,10 @@ get _forecast_type(): string {
         return html`
           <div class="section-flex edit-daily-forecast-section">
             <div class="section-label">
+              <ha-icon-button class="visibility-toggle" .path=${this._show_section_daily_forecast !== false ? mdiEye : mdiEyeOff} .value=${'show_section_daily_forecast'} .checked=${this._show_section_daily_forecast !== false} @click=${this._toggleVisibility}>
+              </ha-icon-button>
               <ha-icon class="section-icon" icon="mdi:calendar-week"></ha-icon>
-              <ha-formfield .label=${this._t("daily_forecast_section")}>
-                <ha-switch .checked=${this._show_section_daily_forecast !== false} .configValue=${'show_section_daily_forecast'} @change=${this._valueChanged}>
-                </ha-switch>
-              </ha-formfield>
+              <span class="section-title">${this._t("daily_forecast_section")}</span>
             </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'daily_forecast'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
@@ -1962,13 +1958,25 @@ get _forecast_type(): string {
     .section-label {
       display: flex;
       align-items: center;
+      gap: 2px;
+    }
+    .section-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--primary-text-color);
+      margin-left: 2px;
     }
     .section-icon {
-      --mdc-icon-size: 18px;
-      color: var(--primary-color);
-      margin-right: 4px;
-      opacity: 0.75;
+      --mdc-icon-size: 20px;
+      color: var(--secondary-text-color);
+      opacity: 0.9;
       flex-shrink: 0;
+      margin-right: 2px;
+    }
+    .visibility-toggle {
+      --mdc-icon-button-size: 32px;
+      --mdc-icon-size: 18px;
+      color: var(--secondary-text-color);
     }
     .side-by-side {
       display: flex;
