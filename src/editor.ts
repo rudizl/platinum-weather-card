@@ -1324,6 +1324,8 @@ get _forecast_type(): string {
             </ha-switch>
           </ha-formfield>
         </div>
+      </div>
+      <div class="side-by-side">
         <div>
           <ha-formfield .label=${'Show Gust in Wind Slot'}>
             <ha-switch .checked=${this._option_show_gust_in_wind !== false} .configValue=${'option_show_gust_in_wind'}
@@ -1337,8 +1339,6 @@ get _forecast_type(): string {
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
-        </div>
-        <div>
         </div>
       </div>
     `;

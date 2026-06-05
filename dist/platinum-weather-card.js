@@ -2230,6 +2230,8 @@ const In=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
             </ha-switch>
           </ha-formfield>
         </div>
+      </div>
+      <div class="side-by-side">
         <div>
           <ha-formfield .label=${"Show Gust in Wind Slot"}>
             <ha-switch .checked=${!1!==this._option_show_gust_in_wind} .configValue=${"option_show_gust_in_wind"}
@@ -2243,8 +2245,6 @@ const In=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
               @change=${this._valueChanged}>
             </ha-switch>
           </ha-formfield>
-        </div>
-        <div>
         </div>
       </div>
     `}_sectionDailyForecastEditor(){return!0===this._daily_extended_use_attr&&(void 0===this.hass||void 0===this.hass.states[this._entity_extended_1]||this.hass.states[this._entity_extended_1].attributes),B`
