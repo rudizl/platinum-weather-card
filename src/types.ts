@@ -20,7 +20,7 @@ export interface HassCustomElement extends CustomElementConstructor {
   getConfigElement(): Promise<unknown>;
 }
 
-export const sectionNames = ['overview', 'extended', 'slots', 'daily_forecast'];
+export const sectionNames = ['overview', 'extended', 'slots', 'daily_forecast', 'charts'];
 export type sectionType = typeof sectionNames[number];
 
 export type layoutOverview = "complete" | "observations" | "forecast" | "title only";

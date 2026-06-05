@@ -1399,6 +1399,25 @@ get _forecast_type(): string {
     `;
   }
 
+  private _optionChartsEditor(): TemplateResult {
+    return html`
+      <div class="side-by-side">
+        <div>
+          <div class="toggle-row">
+            <ha-icon-button class=${this._option_show_temperature_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_temperature_chart === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_temperature_chart'} .checked=${this._option_show_temperature_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
+            <span class="toggle-label">${this._t("show_temp_chart")}</span>
+          </div>
+        </div>
+        <div>
+          <div class="toggle-row">
+            <ha-icon-button class=${this._option_show_precipitation_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_precipitation_chart === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_precipitation_chart'} .checked=${this._option_show_precipitation_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
+            <span class="toggle-label">${this._t("show_precip_chart")}</span>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
   private _optionDailyForecastEditor(): TemplateResult {
     return html`
       <div class="side-by-side">
@@ -1452,20 +1471,7 @@ get _forecast_type(): string {
             </div>
           </div>
         </div>
-        <div class="side-by-side">
-          <div>
-            <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_temperature_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_temperature_chart === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_temperature_chart'} .checked=${this._option_show_temperature_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
-              <span class="toggle-label">${this._t("show_temp_chart")}</span>
-            </div>
-          </div>
-          <div>
-            <div class="toggle-row">
-              <ha-icon-button class=${this._option_show_precipitation_chart === true ? "eye-toggle active" : "eye-toggle"} .path=${this._option_show_precipitation_chart === true ? mdiLockOpenVariant : mdiLock} .value=${'option_show_precipitation_chart'} .checked=${this._option_show_precipitation_chart === true} @click=${this._toggleVisibility}></ha-icon-button>
-              <span class="toggle-label">${this._t("show_precip_chart")}</span>
-            </div>
-          </div>
-        </div>
+
         <div class="side-by-side">
         ${this._daily_forecast_layout === 'vertical' ? html`<div>
           <div class="toggle-row">
@@ -1557,6 +1563,9 @@ get _forecast_type(): string {
       case 'option_daily_forecast':
         subel.push(this._optionDailyForecastEditor());
         break;
+      case 'option_charts':
+        subel.push(this._optionChartsEditor());
+        break;
       case 'option_global_options':
         subel.push(this._optionGlobalOptionsEditor());
         break;
@@ -1582,6 +1591,10 @@ get _forecast_type(): string {
 
   get _show_section_daily_forecast(): boolean {
     return this._config?.show_section_daily_forecast !== false; //default on
+  }
+
+  get _show_section_charts(): boolean {
+    return this._config?.show_section_charts !== false; //default on
   }
 
   private getConfigBlock(block: string, first: boolean, last: boolean): TemplateResult {
@@ -1669,6 +1682,26 @@ get _forecast_type(): string {
             </div>
           </div>
         `;
+      case 'charts':
+        return html`
+          <div class="section-flex edit-charts-section">
+            <div class="section-label">
+              <ha-icon-button class=${this._show_section_charts !== false ? "visibility-toggle active" : "visibility-toggle"} .path=${this._show_section_charts !== false ? mdiLockOpenVariant : mdiLock} .value=${'show_section_charts'} .checked=${this._show_section_charts !== false} @click=${this._toggleVisibility}>
+              </ha-icon-button>
+              <ha-icon class="section-icon" icon="mdi:chart-line"></ha-icon>
+              <span class="section-title">${this._t("charts_section")}</span>
+            </div>
+            <div>
+              <ha-icon-button class="down-icon" .value=${'charts'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
+              </ha-icon-button>
+              <ha-icon-button class="up-icon" .value=${'charts'} .path=${mdiArrowUp} .disabled=${first} @click="${this._moveUp}">
+              </ha-icon-button>
+              <div class="no-icon"></div>
+              <ha-icon-button class="option-icon" .value=${'option_charts'} .path=${mdiApplicationEditOutline} @click="${this._editSubmenu}">
+              </ha-icon-button>
+            </div>
+          </div>
+        `;
       case 'global_options':
         return html`
           <div class="section-flex">
@@ -1723,7 +1756,7 @@ get _forecast_type(): string {
       today_temp_decimals:'Todays Temperature Decimals',today_rain_decimals:'Todays Rainfall Decimals',forecast_temp_decimals:'Forecast Temperature Decimals',pressure_decimals:'Pressure Decimals',show_separator:'Show separator',show_temp_decimals:'Show temperature decimals',
       entity_humidity:'Humidity',entity_pressure:'Atmospheric Pressure',entity_pop:'Chance of Rain',entity_pos:'Possible Rain Today',entity_2day_pos:'Possible Rain Tomorrow',entity_rainfall:'Todays Rain',entity_fire_danger:'Fire Danger',entity_uv_summary:'UV Alert Summary',entity_sun:'Entity Sun',entity_moon:'Moon Phase Entity',entity_visibility:'Entity Visibility',entity_wind_speed:'Entity Wind Speed',entity_wind_bearing:'Entity Wind Bearing',entity_wind_gust:'Entity Wind Gust',entity_wind_speed_kt:'Entity Wind Speed Kt',entity_wind_gust_kt:'Entity Wind Gust Kt',entity_update_time:'Entity Update Time',update_time_prefix:'Update Time Prefix',entity_uv_today:"Entity Today's UV Forecast",entity_fire_today:"Entity Today's Fire Danger",entity_observed_max:'Entity Observed Max',entity_observed_min:'Entity Observed Min',entity_forecast_max:'Entity Forecast Max',entity_forecast_max_1:'Entity Forecast Max 1',entity_forecast_min:'Entity Forecast Min',entity_forecast_min_1:'Entity Forecast Min 1',entity_temp_next:'Entity Temp Next',entity_temp_next_label:'Entity Temp Next Label',entity_temp_following:'Entity Temp Following',entity_temp_fol_label:'Entity Temp Following Label',entity_fire_danger_1:'Entity Fire Danger 1',entity_pop_1:'Entity Forecast Chance of Rain 1',entity_pos_1:'Entity Forecast Possible Rain 1',
       custom1_value:'Custom 1 Value',custom2_value:'Custom 2 Value',custom3_value:'Custom 3 Value',custom4_value:'Custom 4 Value',custom1_icon:'Custom 1 Icon',custom2_icon:'Custom 2 Icon',custom3_icon:'Custom 3 Icon',custom4_icon:'Custom 4 Icon',custom1_units:'Custom 1 Units',custom2_units:'Custom 2 Units',custom3_units:'Custom 3 Units',custom4_units:'Custom 4 Units',custom1_label:'Custom 1 Label (optional)',custom2_label:'Custom 2 Label (optional)',custom3_label:'Custom 3 Label (optional)',custom4_label:'Custom 4 Label (optional)',
-      weather_entity:'Weather Entity with Forecasts',forecast_type:'Forecast Type',daily_forecast_layout:'Daily Forecast Layout',daily_forecast_days:'Daily Forecast Days',daily_extended_days:'Daily Extended Days',show_forecast_pop:'Show Precipitation Probability in Forecast',show_forecast_wind:'Show Wind in Forecast',show_gust_in_wind:'Show Gust in Wind Slot',colour_fire_danger:'Colour Fire Danger',include_today:'Include Today in Forecast',show_temp_chart:'Show Temperature Chart',show_precip_chart:'Show Precipitation Chart',forecast_tooltips:'Enable forecast tooltips',
+      weather_entity:'Weather Entity with Forecasts',forecast_type:'Forecast Type',daily_forecast_layout:'Daily Forecast Layout',daily_forecast_days:'Daily Forecast Days',daily_extended_days:'Daily Extended Days',show_forecast_pop:'Show Precipitation Probability in Forecast',show_forecast_wind:'Show Wind in Forecast',show_gust_in_wind:'Show Gust in Wind Slot',colour_fire_danger:'Colour Fire Danger',include_today:'Include Today in Forecast',show_temp_chart:'Show Temperature Chart',show_precip_chart:'Show Precipitation Chart',forecast_tooltips:'Enable forecast tooltips',charts_section:'Charts Section',
       opt_daily:'Daily',opt_hourly:'Hourly',opt_twice_daily:'Twice Daily',opt_horizontal:'Horizontal',opt_vertical:'Vertical',opt_complete:'Complete',opt_observations:'Observations',opt_forecast:'Forecast',opt_title_only:'Title only',opt_system:'System',opt_12hour:'12 hour',opt_24hour:'24 hour',
     },
     bg: {
@@ -1735,7 +1768,7 @@ get _forecast_type(): string {
       today_temp_decimals:'Десетични за текуща темп.',today_rain_decimals:'Десетични за валежи',forecast_temp_decimals:'Десетични за прогнозна темп.',pressure_decimals:'Десетични за налягане',show_separator:'Показвай разделител',show_temp_decimals:'Показвай десетични',
       entity_humidity:'Влажност',entity_pressure:'Атмосферно налягане',entity_pop:'Вероятност за дъжд',entity_pos:'Възможен дъжд днес',entity_2day_pos:'Възможен дъжд утре',entity_rainfall:'Дъжд днес',entity_fire_danger:'Опасност от пожар',entity_uv_summary:'UV сигнал',entity_sun:'Слънце',entity_moon:'Фаза на луната',entity_visibility:'Видимост',entity_wind_speed:'Скорост на вятъра',entity_wind_bearing:'Посока на вятъра',entity_wind_gust:'Пориви',entity_wind_speed_kt:'Скорост (kn)',entity_wind_gust_kt:'Пориви (kn)',entity_update_time:'Час на обновяване',update_time_prefix:'Префикс за час',entity_uv_today:'UV прогноза (днес)',entity_fire_today:'Опасност от пожар (днес)',entity_observed_max:'Макс. наблюдавана',entity_observed_min:'Мин. наблюдавана',entity_forecast_max:'Макс. прогноза',entity_forecast_max_1:'Макс. прогноза 1',entity_forecast_min:'Мин. прогноза',entity_forecast_min_1:'Мин. прогноза 1',entity_temp_next:'Следваща темп.',entity_temp_next_label:'Етикет следваща темп.',entity_temp_following:'Трета темп.',entity_temp_fol_label:'Етикет трета темп.',entity_fire_danger_1:'Опасност от пожар 1',entity_pop_1:'Вероятност за дъжд 1',entity_pos_1:'Възможни валежи 1',
       custom1_value:'Перс. 1 стойност',custom2_value:'Перс. 2 стойност',custom3_value:'Перс. 3 стойност',custom4_value:'Перс. 4 стойност',custom1_icon:'Перс. 1 икона',custom2_icon:'Перс. 2 икона',custom3_icon:'Перс. 3 икона',custom4_icon:'Перс. 4 икона',custom1_units:'Перс. 1 единица',custom2_units:'Перс. 2 единица',custom3_units:'Перс. 3 единица',custom4_units:'Перс. 4 единица',custom1_label:'Перс. 1 етикет',custom2_label:'Перс. 2 етикет',custom3_label:'Перс. 3 етикет',custom4_label:'Перс. 4 етикет',
-      weather_entity:'Ентити за прогноза',forecast_type:'Тип прогноза',daily_forecast_layout:'Оформление на прогнозата',daily_forecast_days:'Дни в прогнозата',daily_extended_days:'Дни разширена прогноза',show_forecast_pop:'Вероятност за валежи в прогнозата',show_forecast_wind:'Вятър в прогнозата',show_gust_in_wind:'Пориви в слота за вятър',colour_fire_danger:'Оцветяване — опасност от пожар',include_today:'Включи днес в прогнозата',show_temp_chart:'Покажи температурен чарт',show_precip_chart:'Покажи чарт за валежи',forecast_tooltips:'Tooltip-ове в прогнозата',
+      weather_entity:'Ентити за прогноза',forecast_type:'Тип прогноза',daily_forecast_layout:'Оформление на прогнозата',daily_forecast_days:'Дни в прогнозата',daily_extended_days:'Дни разширена прогноза',show_forecast_pop:'Вероятност за валежи в прогнозата',show_forecast_wind:'Вятър в прогнозата',show_gust_in_wind:'Пориви в слота за вятър',colour_fire_danger:'Оцветяване — опасност от пожар',include_today:'Включи днес в прогнозата',show_temp_chart:'Покажи температурен чарт',show_precip_chart:'Покажи чарт за валежи',forecast_tooltips:'Tooltip-ове в прогнозата',charts_section:'Секция Чартове',
       opt_daily:'Дневна',opt_hourly:'Почасова',opt_twice_daily:'Два пъти дневно',opt_horizontal:'Хоризонтална',opt_vertical:'Вертикална',opt_complete:'Пълно',opt_observations:'Наблюдения',opt_forecast:'Прогноза',opt_title_only:'Само заглавие',opt_system:'Системен',opt_12hour:'12-часов',opt_24hour:'24-часов',
     },
   };
