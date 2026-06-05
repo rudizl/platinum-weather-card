@@ -1341,25 +1341,6 @@ get _forecast_type(): string {
         <div>
         </div>
       </div>
-      <div class="side-by-side">
-        <div>
-          <label class="label">Icon Pack</label>
-          <select class='ha-select-compat' .configValue=${'icon_pack'} .value=${this._icon_pack} @change=${this._valueChanged}>
-            <option value='default'>Default (built-in animated)</option>
-            <option value='meteocons-fill'>Meteocons — Fill (CDN, basmilius)</option>
-            <option value='meteocons-line'>Meteocons — Line (CDN, basmilius)</option>
-            <option value='wcc-2'>ammap Weather Icons (requires weather-chart-card)</option>
-            <option value='custom'>Custom path...</option>
-          </select>
-        </div>
-        ${this._icon_pack === 'custom' ? html`
-        <div>
-          <ha-input .label=${'Icon path'} .value=${this._icon_pack_path}
-            .configValue=${'icon_pack_path'} @change=${this._valueChanged}>
-          </ha-input>
-          <div class="help-text">Use {condition} as placeholder — e.g. /local/icons/{condition}.svg</div>
-        </div>` : html``}
-      </div>
     `;
   }
 
@@ -1536,6 +1517,25 @@ get _forecast_type(): string {
         <ha-input label="Locale" .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
         </ha-input>
       </div>
+      <div class="side-by-side">
+        <div>
+          <label class="label">Icon Pack</label>
+          <select class='ha-select-compat' .configValue=${'icon_pack'} .value=${this._icon_pack} @change=${this._valueChanged}>
+            <option value='default'>Default (built-in animated)</option>
+            <option value='meteocons-fill'>Meteocons — Fill (CDN, basmilius)</option>
+            <option value='meteocons-line'>Meteocons — Line (CDN, basmilius)</option>
+            <option value='wcc-2'>ammap Weather Icons (requires weather-chart-card)</option>
+            <option value='custom'>Custom path...</option>
+          </select>
+        </div>
+        ${this._icon_pack === 'custom' ? html`
+        <div>
+          <ha-input .label=${'Icon path'} .value=${this._icon_pack_path}
+            .configValue=${'icon_pack_path'} @change=${this._valueChanged}>
+          </ha-input>
+          <div class="help-text">Use {condition} as placeholder — e.g. /local/icons/{condition}.svg</div>
+        </div>` : html``}
+      </div>
     `;
   }
 
@@ -1703,10 +1703,10 @@ get _forecast_type(): string {
     const htmlConfig: TemplateResult[] = [];
     const slots = this._section_order || [];
 
+    htmlConfig.push(this.getConfigBlock('global_options', false, false));
     slots.forEach((slot, index) => {
       htmlConfig.push(this.getConfigBlock(slot, index === 0, index + 1 === slots.length));
     });
-    htmlConfig.push(this.getConfigBlock('global_options', false, false));
 
     return html`${htmlConfig}`;
   }

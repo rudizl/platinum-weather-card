@@ -2247,25 +2247,6 @@ const In=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         <div>
         </div>
       </div>
-      <div class="side-by-side">
-        <div>
-          <label class="label">Icon Pack</label>
-          <select class='ha-select-compat' .configValue=${"icon_pack"} .value=${this._icon_pack} @change=${this._valueChanged}>
-            <option value='default'>Default (built-in animated)</option>
-            <option value='meteocons-fill'>Meteocons — Fill (CDN, basmilius)</option>
-            <option value='meteocons-line'>Meteocons — Line (CDN, basmilius)</option>
-            <option value='wcc-2'>ammap Weather Icons (requires weather-chart-card)</option>
-            <option value='custom'>Custom path...</option>
-          </select>
-        </div>
-        ${"custom"===this._icon_pack?B`
-        <div>
-          <ha-input .label=${"Icon path"} .value=${this._icon_pack_path}
-            .configValue=${"icon_pack_path"} @change=${this._valueChanged}>
-          </ha-input>
-          <div class="help-text">Use {condition} as placeholder — e.g. /local/icons/{condition}.svg</div>
-        </div>`:B``}
-      </div>
     `}_sectionDailyForecastEditor(){return!0===this._daily_extended_use_attr&&(void 0===this.hass||void 0===this.hass.states[this._entity_extended_1]||this.hass.states[this._entity_extended_1].attributes),B`
       <ha-entity-picker .hass=${this.hass} .configValue=${"weather_entity"} .value=${this._weather_entity} .includeDomains=${["weather"]}
         name="weather_entity" label="Weather Entity with Forecasts" allow-custom-entity
@@ -2422,6 +2403,25 @@ const In=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         <ha-input label="Locale" .value=${this._option_locale} .configValue=${"option_locale"} @input=${this._valueChanged}>
         </ha-input>
       </div>
+      <div class="side-by-side">
+        <div>
+          <label class="label">Icon Pack</label>
+          <select class='ha-select-compat' .configValue=${"icon_pack"} .value=${this._icon_pack} @change=${this._valueChanged}>
+            <option value='default'>Default (built-in animated)</option>
+            <option value='meteocons-fill'>Meteocons — Fill (CDN, basmilius)</option>
+            <option value='meteocons-line'>Meteocons — Line (CDN, basmilius)</option>
+            <option value='wcc-2'>ammap Weather Icons (requires weather-chart-card)</option>
+            <option value='custom'>Custom path...</option>
+          </select>
+        </div>
+        ${"custom"===this._icon_pack?B`
+        <div>
+          <ha-input .label=${"Icon path"} .value=${this._icon_pack_path}
+            .configValue=${"icon_pack_path"} @change=${this._valueChanged}>
+          </ha-input>
+          <div class="help-text">Use {condition} as placeholder — e.g. /local/icons/{condition}.svg</div>
+        </div>`:B``}
+      </div>
     `}_renderSubElementEditor(){const t=[B`
         <div class="header">
           <div class="back-title">
@@ -2507,7 +2507,7 @@ const In=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
               </ha-icon-button>
             </div>
           </div>
-        `}return B``}render(){if(!this.hass||!this._helpers)return B``;if(this._subElementEditor)return this._renderSubElementEditor();const t=[],e=this._section_order||[];return e.forEach((i,o)=>{t.push(this.getConfigBlock(i,0===o,o+1===e.length))}),t.push(this.getConfigBlock("global_options",!1,!1)),B`${t}`}_initialize(){void 0!==this.hass&&void 0!==this._config&&void 0!==this._helpers&&(this._initialized=!0)}async loadCardHelpers(){this._helpers=await window.loadCardHelpers()}_valueChangedPicker(t){if(!this._config||!this.hass)return;const e=t.target,i=t.detail.value;this[`_${e.configValue}`]!==i&&(e.configValue&&(i?this._config=Object.assign(Object.assign({},this._config),{[e.configValue]:i}):(this._config=Object.assign({},this._config),delete this._config[e.configValue])),Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)}))}_editSubmenu(t){if(t.currentTarget){const e=t.currentTarget;this._subElementEditor=e.value}}_moveUp(t){if(this._config&&this.hass){if(t.currentTarget){const e=t.currentTarget;if(this._config.section_order){const t=this._config.section_order.findIndex(t=>t===e.value),i=[...this._config.section_order];[i[t],i[t-1]]=[this._config.section_order[t-1],this._config.section_order[t]],this._config=Object.assign(Object.assign({},this._config),{section_order:i})}}Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)})}}_moveDown(t){if(this._config&&this.hass){if(t.currentTarget){const e=t.currentTarget;if(this._config.section_order){const t=this._config.section_order.findIndex(t=>t===e.value),i=[...this._config.section_order];[i[t],i[t+1]]=[this._config.section_order[t+1],this._config.section_order[t]],this._config=Object.assign(Object.assign({},this._config),{section_order:i})}}Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)})}}_valueChanged(t){var e;if(!this._config||!this.hass)return;const i=t.target,o=void 0!==(null===(e=t.detail)||void 0===e?void 0:e.value)?t.detail.value:void 0!==i.checked?i.checked:i.value;if(this[`_${i.configValue}`]!==o){if(i.configValue)if(""===o){const t=Object.assign({},this._config);delete t[i.configValue],this._config=t}else this._config=Object.assign(Object.assign({},this._config),{[i.configValue]:o});Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)})}}_valueChangedNumber(t){if(!this._config||!this.hass)return;const e=t.target;this[`_${e.configValue}`]!==e.value&&(e.configValue&&(""===e.value||null===e.value?delete this._config[e.configValue]:this._config=Object.assign(Object.assign({},this._config),{[e.configValue]:Number(e.value)})),Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)}))}};Tn.elementDefinitions=Object.assign(Object.assign(Object.assign(Object.assign({"ha-card":customElements.get("ha-card")},An),an),mn),Qe),Tn.styles=ht`
+        `}return B``}render(){if(!this.hass||!this._helpers)return B``;if(this._subElementEditor)return this._renderSubElementEditor();const t=[],e=this._section_order||[];return t.push(this.getConfigBlock("global_options",!1,!1)),e.forEach((i,o)=>{t.push(this.getConfigBlock(i,0===o,o+1===e.length))}),B`${t}`}_initialize(){void 0!==this.hass&&void 0!==this._config&&void 0!==this._helpers&&(this._initialized=!0)}async loadCardHelpers(){this._helpers=await window.loadCardHelpers()}_valueChangedPicker(t){if(!this._config||!this.hass)return;const e=t.target,i=t.detail.value;this[`_${e.configValue}`]!==i&&(e.configValue&&(i?this._config=Object.assign(Object.assign({},this._config),{[e.configValue]:i}):(this._config=Object.assign({},this._config),delete this._config[e.configValue])),Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)}))}_editSubmenu(t){if(t.currentTarget){const e=t.currentTarget;this._subElementEditor=e.value}}_moveUp(t){if(this._config&&this.hass){if(t.currentTarget){const e=t.currentTarget;if(this._config.section_order){const t=this._config.section_order.findIndex(t=>t===e.value),i=[...this._config.section_order];[i[t],i[t-1]]=[this._config.section_order[t-1],this._config.section_order[t]],this._config=Object.assign(Object.assign({},this._config),{section_order:i})}}Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)})}}_moveDown(t){if(this._config&&this.hass){if(t.currentTarget){const e=t.currentTarget;if(this._config.section_order){const t=this._config.section_order.findIndex(t=>t===e.value),i=[...this._config.section_order];[i[t],i[t+1]]=[this._config.section_order[t+1],this._config.section_order[t]],this._config=Object.assign(Object.assign({},this._config),{section_order:i})}}Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)})}}_valueChanged(t){var e;if(!this._config||!this.hass)return;const i=t.target,o=void 0!==(null===(e=t.detail)||void 0===e?void 0:e.value)?t.detail.value:void 0!==i.checked?i.checked:i.value;if(this[`_${i.configValue}`]!==o){if(i.configValue)if(""===o){const t=Object.assign({},this._config);delete t[i.configValue],this._config=t}else this._config=Object.assign(Object.assign({},this._config),{[i.configValue]:o});Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)})}}_valueChangedNumber(t){if(!this._config||!this.hass)return;const e=t.target;this[`_${e.configValue}`]!==e.value&&(e.configValue&&(""===e.value||null===e.value?delete this._config[e.configValue]:this._config=Object.assign(Object.assign({},this._config),{[e.configValue]:Number(e.value)})),Bt(this,"config-changed",{config:this.sortObjectByKeys(this._config)}))}};Tn.elementDefinitions=Object.assign(Object.assign(Object.assign(Object.assign({"ha-card":customElements.get("ha-card")},An),an),mn),Qe),Tn.styles=ht`
     :host {
       display: block;
               /* --mdc-menu-min-width: var(--parentWidth); */
