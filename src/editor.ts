@@ -1084,10 +1084,10 @@ get _forecast_type(): string {
         <label class='mdc-label'>${this._t('overview_layout')}</label>
         <select class='ha-select-compat' .configValue=${'overview_layout'} .value=${this._overview_layout} @change=${this._valueChanged}>
           <option value=""></option>
-          <option value="complete">complete</option>
-          <option value="observations">observations</option>
-          <option value="forecast">forecast</option>
-          <option value="title only">title only</option>
+          <option value="complete">${this._t("opt_complete")}</option>
+          <option value="observations">${this._t("opt_observations")}</option>
+          <option value="forecast">${this._t("opt_forecast")}</option>
+          <option value="title only">${this._t("opt_title_only")}</option>
         </select>
         <div></div>
       </div>
@@ -1361,9 +1361,9 @@ get _forecast_type(): string {
       <label class='mdc-label'>${this._t('forecast_type')}</label>
       <select class='ha-select-compat' .configValue=${'forecast_type'} .value=${this._forecast_type} @change=${this._valueChanged}>
         <option value=""></option>
-        <option value="daily">Daily</option>
-        <option value="hourly">Hourly</option>
-        <option value="twice_daily">Twice Daily</option>
+        <option value="daily">${this._t("opt_daily")}</option>
+        <option value="hourly">${this._t("opt_hourly")}</option>
+        <option value="twice_daily">${this._t("opt_twice_daily")}</option>
       </select>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_icon_1'} .value=${this._entity_forecast_icon_1} .includeDomains=${['sensor', 'weather']}
         name="entity_forecast_icon_1" label=${this._t("entity_forecast_icon_1")} allow-custom-entity
@@ -1417,8 +1417,8 @@ get _forecast_type(): string {
         <label class='mdc-label'>${this._t('daily_forecast_layout')}</label>
         <select class='ha-select-compat' .configValue=${'daily_forecast_layout'} .value=${this._daily_forecast_layout} @change=${this._valueChanged}>
           <option value=""></option>
-          <option value="horizontal">horizontal</option>
-          <option value="vertical">vertical</option>
+          <option value="horizontal">${this._t("opt_horizontal")}</option>
+          <option value="vertical">${this._t("opt_vertical")}</option>
         </select>
         <div></div>
       </div>
@@ -1510,9 +1510,9 @@ get _forecast_type(): string {
         <label class='mdc-label'>${this._t('time_format')}</label>
         <select class='ha-select-compat' .configValue=${'option_time_format'} .value=${this._option_time_format ?? ''} @change=${this._valueChanged}>
           <option value=""></option>
-          <option value="system">System</option>
-          <option value="12hour">12 hour</option>
-          <option value="24hour">24 hour</option>
+          <option value="system">${this._t("opt_system")}</option>
+          <option value="12hour">${this._t("opt_12hour")}</option>
+          <option value="24hour">${this._t("opt_24hour")}</option>
         </select>
         <ha-input label=${this._t("locale")} .value=${this._option_locale} .configValue=${'option_locale'} @input=${this._valueChanged}>
         </ha-input>
@@ -1605,10 +1605,13 @@ get _forecast_type(): string {
       case 'overview':
         return html`
           <div class="section-flex edit-overview-section">
-            <ha-formfield .label=${this._t("overview_section")}>
-              <ha-switch .checked = ${this._show_section_overview !== false} .configValue = ${'show_section_overview'} @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="section-label">
+              <ha-icon class="section-icon" icon="mdi:eye-outline"></ha-icon>
+              <ha-formfield .label=${this._t("overview_section")}>
+                <ha-switch .checked = ${this._show_section_overview !== false} .configValue = ${'show_section_overview'} @change=${this._valueChanged}>
+                </ha-switch>
+              </ha-formfield>
+            </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'overview'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
               </ha-icon-button>
@@ -1624,10 +1627,13 @@ get _forecast_type(): string {
       case 'extended':
         return html`
           <div class="section-flex edit-extended-section">
-            <ha-formfield .label=${this._t("extended_section")}>
-              <ha-switch .checked=${this._show_section_extended !== false} .configValue=${'show_section_extended'} @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="section-label">
+              <ha-icon class="section-icon" icon="mdi:text-box-outline"></ha-icon>
+              <ha-formfield .label=${this._t("extended_section")}>
+                <ha-switch .checked=${this._show_section_extended !== false} .configValue=${'show_section_extended'} @change=${this._valueChanged}>
+                </ha-switch>
+              </ha-formfield>
+            </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'extended'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
               </ha-icon-button>
@@ -1642,10 +1648,13 @@ get _forecast_type(): string {
       case 'slots':
         return html`
           <div class="section-flex edit-slots-section">
-            <ha-formfield .label=${this._t("slots_section")}>
-              <ha-switch .checked = ${this._show_section_slots !== false} .configValue = ${'show_section_slots'} @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="section-label">
+              <ha-icon class="section-icon" icon="mdi:view-grid-outline"></ha-icon>
+              <ha-formfield .label=${this._t("slots_section")}>
+                <ha-switch .checked = ${this._show_section_slots !== false} .configValue = ${'show_section_slots'} @change=${this._valueChanged}>
+                </ha-switch>
+              </ha-formfield>
+            </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'slots'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
               </ha-icon-button>
@@ -1661,10 +1670,13 @@ get _forecast_type(): string {
       case 'daily_forecast':
         return html`
           <div class="section-flex edit-daily-forecast-section">
-            <ha-formfield .label=${this._t("daily_forecast_section")}>
-              <ha-switch .checked=${this._show_section_daily_forecast !== false} .configValue=${'show_section_daily_forecast'} @change=${this._valueChanged}>
-              </ha-switch>
-            </ha-formfield>
+            <div class="section-label">
+              <ha-icon class="section-icon" icon="mdi:calendar-week"></ha-icon>
+              <ha-formfield .label=${this._t("daily_forecast_section")}>
+                <ha-switch .checked=${this._show_section_daily_forecast !== false} .configValue=${'show_section_daily_forecast'} @change=${this._valueChanged}>
+                </ha-switch>
+              </ha-formfield>
+            </div>
             <div>
               <ha-icon-button class="down-icon" .value=${'daily_forecast'} .path=${mdiArrowDown} .disabled=${last} @click="${this._moveDown}">
               </ha-icon-button>
@@ -1680,8 +1692,11 @@ get _forecast_type(): string {
       case 'global_options':
         return html`
           <div class="section-flex">
-            <ha-formfield class="no-switch" .label=${this._t("global_options")}>
-            </ha-formfield>
+            <div class="section-label">
+              <ha-icon class="section-icon" icon="mdi:cog"></ha-icon>
+              <ha-formfield class="no-switch" .label=${this._t("global_options")}>
+              </ha-formfield>
+            </div>
             <div>
               <div class="no-icon"></div>
               <ha-icon-button class="edit-icon" .value=${'option_global_options'} .path=${mdiApplicationEditOutline} @click="${this._editSubmenu}">
@@ -1729,6 +1744,7 @@ get _forecast_type(): string {
       entity_humidity:'Humidity',entity_pressure:'Atmospheric Pressure',entity_pop:'Chance of Rain',entity_pos:'Possible Rain Today',entity_2day_pos:'Possible Rain Tomorrow',entity_rainfall:'Todays Rain',entity_fire_danger:'Fire Danger',entity_uv_summary:'UV Alert Summary',entity_sun:'Entity Sun',entity_moon:'Moon Phase Entity',entity_visibility:'Entity Visibility',entity_wind_speed:'Entity Wind Speed',entity_wind_bearing:'Entity Wind Bearing',entity_wind_gust:'Entity Wind Gust',entity_wind_speed_kt:'Entity Wind Speed Kt',entity_wind_gust_kt:'Entity Wind Gust Kt',entity_update_time:'Entity Update Time',update_time_prefix:'Update Time Prefix',entity_uv_today:"Entity Today's UV Forecast",entity_fire_today:"Entity Today's Fire Danger",entity_observed_max:'Entity Observed Max',entity_observed_min:'Entity Observed Min',entity_forecast_max:'Entity Forecast Max',entity_forecast_max_1:'Entity Forecast Max 1',entity_forecast_min:'Entity Forecast Min',entity_forecast_min_1:'Entity Forecast Min 1',entity_temp_next:'Entity Temp Next',entity_temp_next_label:'Entity Temp Next Label',entity_temp_following:'Entity Temp Following',entity_temp_fol_label:'Entity Temp Following Label',entity_fire_danger_1:'Entity Fire Danger 1',entity_pop_1:'Entity Forecast Chance of Rain 1',entity_pos_1:'Entity Forecast Possible Rain 1',
       custom1_value:'Custom 1 Value',custom2_value:'Custom 2 Value',custom3_value:'Custom 3 Value',custom4_value:'Custom 4 Value',custom1_icon:'Custom 1 Icon',custom2_icon:'Custom 2 Icon',custom3_icon:'Custom 3 Icon',custom4_icon:'Custom 4 Icon',custom1_units:'Custom 1 Units',custom2_units:'Custom 2 Units',custom3_units:'Custom 3 Units',custom4_units:'Custom 4 Units',custom1_label:'Custom 1 Label (optional)',custom2_label:'Custom 2 Label (optional)',custom3_label:'Custom 3 Label (optional)',custom4_label:'Custom 4 Label (optional)',
       weather_entity:'Weather Entity with Forecasts',forecast_type:'Forecast Type',daily_forecast_layout:'Daily Forecast Layout',daily_forecast_days:'Daily Forecast Days',daily_extended_days:'Daily Extended Days',show_forecast_pop:'Show Precipitation Probability in Forecast',show_forecast_wind:'Show Wind in Forecast',show_gust_in_wind:'Show Gust in Wind Slot',colour_fire_danger:'Colour Fire Danger',include_today:'Include Today in Forecast',show_temp_chart:'Show Temperature Chart',show_precip_chart:'Show Precipitation Chart',forecast_tooltips:'Enable forecast tooltips',
+      opt_daily:'Daily',opt_hourly:'Hourly',opt_twice_daily:'Twice Daily',opt_horizontal:'Horizontal',opt_vertical:'Vertical',opt_complete:'Complete',opt_observations:'Observations',opt_forecast:'Forecast',opt_title_only:'Title only',opt_system:'System',opt_12hour:'12 hour',opt_24hour:'24 hour',
     },
     bg: {
       global_options:'Глобални настройки',overview_section:'Секция Преглед',extended_section:'Разширена секция',slots_section:'Секция Слотове',daily_forecast_section:'Секция Прогноза',
@@ -1740,6 +1756,7 @@ get _forecast_type(): string {
       entity_humidity:'Влажност',entity_pressure:'Атмосферно налягане',entity_pop:'Вероятност за дъжд',entity_pos:'Възможен дъжд днес',entity_2day_pos:'Възможен дъжд утре',entity_rainfall:'Дъжд днес',entity_fire_danger:'Опасност от пожар',entity_uv_summary:'UV сигнал',entity_sun:'Слънце',entity_moon:'Фаза на луната',entity_visibility:'Видимост',entity_wind_speed:'Скорост на вятъра',entity_wind_bearing:'Посока на вятъра',entity_wind_gust:'Пориви',entity_wind_speed_kt:'Скорост (kn)',entity_wind_gust_kt:'Пориви (kn)',entity_update_time:'Час на обновяване',update_time_prefix:'Префикс за час',entity_uv_today:'UV прогноза (днес)',entity_fire_today:'Опасност от пожар (днес)',entity_observed_max:'Макс. наблюдавана',entity_observed_min:'Мин. наблюдавана',entity_forecast_max:'Макс. прогноза',entity_forecast_max_1:'Макс. прогноза 1',entity_forecast_min:'Мин. прогноза',entity_forecast_min_1:'Мин. прогноза 1',entity_temp_next:'Следваща темп.',entity_temp_next_label:'Етикет следваща темп.',entity_temp_following:'Трета темп.',entity_temp_fol_label:'Етикет трета темп.',entity_fire_danger_1:'Опасност от пожар 1',entity_pop_1:'Вероятност за дъжд 1',entity_pos_1:'Възможни валежи 1',
       custom1_value:'Перс. 1 стойност',custom2_value:'Перс. 2 стойност',custom3_value:'Перс. 3 стойност',custom4_value:'Перс. 4 стойност',custom1_icon:'Перс. 1 икона',custom2_icon:'Перс. 2 икона',custom3_icon:'Перс. 3 икона',custom4_icon:'Перс. 4 икона',custom1_units:'Перс. 1 единица',custom2_units:'Перс. 2 единица',custom3_units:'Перс. 3 единица',custom4_units:'Перс. 4 единица',custom1_label:'Перс. 1 етикет',custom2_label:'Перс. 2 етикет',custom3_label:'Перс. 3 етикет',custom4_label:'Перс. 4 етикет',
       weather_entity:'Ентити за прогноза',forecast_type:'Тип прогноза',daily_forecast_layout:'Оформление на прогнозата',daily_forecast_days:'Дни в прогнозата',daily_extended_days:'Дни разширена прогноза',show_forecast_pop:'Вероятност за валежи в прогнозата',show_forecast_wind:'Вятър в прогнозата',show_gust_in_wind:'Пориви в слота за вятър',colour_fire_danger:'Оцветяване — опасност от пожар',include_today:'Включи днес в прогнозата',show_temp_chart:'Покажи температурен чарт',show_precip_chart:'Покажи чарт за валежи',forecast_tooltips:'Tooltip-ове в прогнозата',
+      opt_daily:'Дневна',opt_hourly:'Почасова',opt_twice_daily:'Два пъти дневно',opt_horizontal:'Хоризонтална',opt_vertical:'Вертикална',opt_complete:'Пълно',opt_observations:'Наблюдения',opt_forecast:'Прогноза',opt_title_only:'Само заглавие',opt_system:'Системен',opt_12hour:'12-часов',opt_24hour:'24-часов',
     },
   };
 
@@ -1941,6 +1958,17 @@ get _forecast_type(): string {
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+    .section-label {
+      display: flex;
+      align-items: center;
+    }
+    .section-icon {
+      --mdc-icon-size: 18px;
+      color: var(--primary-color);
+      margin-right: 4px;
+      opacity: 0.75;
+      flex-shrink: 0;
     }
     .side-by-side {
       display: flex;
