@@ -1858,8 +1858,7 @@ get _forecast_type(): string {
   private _toggleVisibility(ev: Event): void {
     const btn = ev.currentTarget as any;
     const key = btn.value as string;
-    // .checked is set by the template binding and reflects the current display state
-    const currentlyActive: boolean = btn.checked === true;
+    const currentlyActive: boolean = btn.classList.contains('active');
     this._config = { ...this._config, [key]: !currentlyActive };
     fireEvent(this, 'config-changed', { config: this.sortObjectByKeys(this._config) });
   }
