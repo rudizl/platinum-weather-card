@@ -1259,6 +1259,7 @@ export class PlatinumWeatherCard extends LitElement {
 
 
   private _renderChartSection(): TemplateResult {
+    if (this._config.show_section_charts === false) return html``;
     const showTemp   = this._config.option_show_temperature_chart === true;
     const showPrecip = this._config.option_show_precipitation_chart === true;
     if (!showTemp && !showPrecip) return html``;
