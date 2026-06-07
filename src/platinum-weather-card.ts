@@ -1431,6 +1431,8 @@ export class PlatinumWeatherCard extends LitElement {
             break;
           case 'daily_forecast':
             sections.push(this._renderDailyForecastSection());
+            break;
+          case 'charts':
             sections.push(this._renderChartSection());
             break;
         }
