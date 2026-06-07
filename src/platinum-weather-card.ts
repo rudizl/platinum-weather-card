@@ -78,7 +78,7 @@ export class PlatinumWeatherCard extends LitElement {
   @state() private _cardWidth = 492;
 
   private _error: string[] = [];
-  @state() private _chartTooltipIdx: number | null = null;
+  
 
   //tjl added. 
   //  forecast1 is THE entity to subscribe for weather forecast events
@@ -1268,6 +1268,7 @@ export class PlatinumWeatherCard extends LitElement {
 
     const days     = Math.min(this._config.daily_forecast_days || 5, this.forecast1.length);
     const startIdx = this._config.option_show_current_day ? 0 : 1;
+    const locale   = this._config.option_locale || 'bg';
 
     const data: { maxT: number; minT: number; precip: number; datetime: string }[] = [];
     for (let i = 0; i < days; i++) {
@@ -1282,52 +1283,60 @@ export class PlatinumWeatherCard extends LitElement {
     }
     if (data.length === 0) return html``;
 
-    const tempH   = showTemp ? 75 : 52;
-    const totalH  = tempH + (showPrecip ? 16 : 0);
+    const tempH  = showTemp ? 75 : 52;
+    const totalH = tempH + (showPrecip ? 16 : 0);
     const BH = 13;
     const MIN_SEP = BH + 5;
 
-    const tAll = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
+    const tAll  = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
     const tMax2 = showTemp ? Math.max(...tAll) : 0;
     const tMin2 = showTemp ? Math.min(...tAll) : 0;
     const tRng2 = tMax2 - tMin2 || 1;
-    const tTop2 = 16;
-    const tBot2 = tempH - 16;
+    const tTop2 = 16, tBot2 = tempH - 16;
     const tyRaw = (t: number) => tTop2 + (tMax2 - t) / tRng2 * (tBot2 - tTop2);
 
-    const tempYs: { maxY: number; minY: number }[] = data.map(d => {
-      let maxY = tyRaw(d.maxT);
-      let minY = tyRaw(d.minT);
+    const tempYs = data.map(d => {
+      let maxY = tyRaw(d.maxT), minY = tyRaw(d.minT);
       const sep = minY - maxY;
-      if (sep < MIN_SEP) {
-        const push = (MIN_SEP - sep) / 2;
-        maxY -= push;
-        minY += push;
-      }
+      if (sep < MIN_SEP) { const p = (MIN_SEP - sep) / 2; maxY -= p; minY += p; }
       return { maxY, minY };
     });
 
     const n = data.length;
     const cw = 100 / n;
     const cx2 = (i: number) => (i + 0.5) * cw;
-    const linesSvg = showTemp ? (() => {
-      const maxPts = tempYs.map((y, i) => `${cx2(i)},${y.maxY}`).join(' ');
-      const minPts = tempYs.map((y, i) => `${cx2(i)},${y.minY}`).join(' ');
-      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${totalH}" preserveAspectRatio="none"` +
-        ` style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
-        `<polyline points="${maxPts}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
-        `<polyline points="${minPts}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
-        (showPrecip ? `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>` : '') +
-        `</svg>`;
-    })() : '';
 
-    const locale = this._config.option_locale || 'bg';
-    const pMax   = showPrecip ? Math.max(...data.map(x => x.precip), 0.1) : 1;
+    const linesSvg = showTemp ? (
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${totalH}" preserveAspectRatio="none"` +
+      ` style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
+      `<polyline points="${tempYs.map((y, i) => `${cx2(i)},${y.maxY}`).join(' ')}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
+      `<polyline points="${tempYs.map((y, i) => `${cx2(i)},${y.minY}`).join(' ')}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
+      (showPrecip ? `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>` : '') +
+      `</svg>`
+    ) : '';
 
-    const colTemplates = data.map((d, i) => {
-      const isActive = this._chartTooltipIdx === i;
+    const pMax = showPrecip ? Math.max(...data.map(x => x.precip), 0.1) : 1;
 
-      // Build inner HTML (same as before)
+    // Register a global tooltip handler (pure DOM, no Lit reactivity needed)
+    const handlerId = 'pwcChartClick_' + Math.random().toString(36).slice(2);
+    (window as any)[handlerId] = (el: HTMLElement, idx: number) => {
+      const section = el.closest('.pwc-chart-wrap') as HTMLElement;
+      if (!section) return;
+      const all = section.querySelectorAll('.pwc-tip');
+      let isOpen = false;
+      all.forEach((t: Element) => {
+        if (parseInt((t as HTMLElement).dataset.tipIdx || '-1') === idx) {
+          isOpen = (t as HTMLElement).style.display !== 'none';
+        }
+        (t as HTMLElement).style.display = 'none';
+      });
+      if (!isOpen) {
+        const tip = section.querySelector(`.pwc-tip[data-tip-idx="${idx}"]`) as HTMLElement;
+        if (tip) tip.style.display = 'block';
+      }
+    };
+
+    const colsHtml = data.map((d, i) => {
       let colHtml = '';
       if (showTemp) {
         const maxTop = tempYs[i].maxY - BH / 2;
@@ -1338,7 +1347,7 @@ export class PlatinumWeatherCard extends LitElement {
       if (showPrecip) {
         const maxBarH = tempH * 0.85;
         if (d.precip > 0) {
-          const bH   = Math.max((d.precip / pMax) * maxBarH, 2);
+          const bH = Math.max((d.precip / pMax) * maxBarH, 2);
           const bTop = tempH - bH;
           const label = (d.precip % 1 === 0 ? String(d.precip) : d.precip.toFixed(1)) + ' мм';
           colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
@@ -1348,35 +1357,28 @@ export class PlatinumWeatherCard extends LitElement {
         }
       }
 
-      // Tooltip
+      // Tooltip HTML (initially hidden)
       const dateLabel = d.datetime
         ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' })
         : '';
-      const flipLeft = i >= n - 2;
-      const tooltipAlign = flipLeft ? 'right:0;left:auto;' : (i <= 1 ? 'left:0;' : 'left:50%;transform:translateX(-50%);');
-      const tooltip = isActive ? html`<div style="position:absolute;bottom:${totalH + 6}px;${tooltipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:20;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">
-          <div style="font-size:10px;color:rgba(180,180,180,0.85);margin-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:4px;">${dateLabel}</div>
-          ${showTemp ? html`
-            <div style="font-size:12px;color:rgba(255,165,0,1);margin-bottom:2px;">↑ ${Math.round(d.maxT)}°</div>
-            <div style="font-size:12px;color:rgba(120,180,230,1);">↓ ${Math.round(d.minT)}°</div>
-          ` : html``}
-          ${showPrecip ? html`
-            <div style="font-size:12px;color:rgba(151,230,255,1);margin-top:${showTemp ? 4 : 0}px;">💧 ${d.precip.toFixed(1)} мм</div>
-          ` : html``}
-        </div>` : html``;
+      const flipLeft  = i >= n - 2;
+      const tipAlign  = flipLeft
+        ? 'right:0;'
+        : (i <= 1 ? 'left:0;' : 'left:50%;transform:translateX(-50%);');
+      const tipContent = [
+        `<div style="font-size:10px;color:rgba(180,180,180,0.85);border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:4px;margin-bottom:5px;">${dateLabel}</div>`,
+        showTemp  ? `<div style="font-size:12px;color:rgba(255,165,0,1);">↑ ${Math.round(d.maxT)}°</div><div style="font-size:12px;color:rgba(120,180,230,1);margin-bottom:${showPrecip ? 3 : 0}px;">↓ ${Math.round(d.minT)}°</div>` : '',
+        showPrecip ? `<div style="font-size:12px;color:rgba(151,230,255,1);">💧 ${d.precip.toFixed(1)} мм</div>` : '',
+      ].join('');
 
-      return html`<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;"
-          @click=${(ev: Event) => { ev.stopPropagation(); this._chartTooltipIdx = isActive ? null : i; }}>
-        ${unsafeHTML(colHtml)}
-        ${tooltip}
-      </div>`;
-    });
+      const tipHtml = `<div class="pwc-tip" data-tip-idx="${i}" style="display:none;position:absolute;bottom:${totalH + 6}px;${tipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">${tipContent}</div>`;
 
-    return html`<div class="daily-forecast-horiz-section section"
-        style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;"
-        @click=${() => { this._chartTooltipIdx = null; }}>
-      ${unsafeHTML(linesSvg)}
-      ${colTemplates}
+      return `<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;" onclick="window['${handlerId}'](this,${i})">${colHtml}${tipHtml}</div>`;
+    }).join('');
+
+    return html`<div class="pwc-chart-wrap daily-forecast-horiz-section section"
+        style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;">
+      ${unsafeHTML(linesSvg + colsHtml)}
     </div>`;
   }
 
