@@ -80,47 +80,6 @@ export class PlatinumWeatherCard extends LitElement {
   private _error: string[] = [];
   @state() private _chartTooltipIdx = -1;
 
-  private _handleChartClick = (ev: Event) => {
-    ev.stopPropagation();
-    if (ev.cancelable) ev.preventDefault();
-    let target: Element | null = null;
-    if (ev.type === 'touchend') {
-      const te = ev as TouchEvent;
-      if (te.changedTouches.length > 0) {
-        const t = te.changedTouches[0];
-        target = this.shadowRoot?.elementFromPoint
-          ? null
-          : document.elementFromPoint(t.clientX, t.clientY);
-        if (!target) target = document.elementFromPoint(t.clientX, t.clientY);
-      }
-    }
-    if (!target) target = ev.target as Element;
-    const col = target?.closest('[data-day-idx]') as HTMLElement | null;
-    if (!col) return;
-    const idx = parseInt(col.dataset.dayIdx || '-1', 10);
-    if (idx < 0) return;
-    const current: number = (window as any)._pwcActiveTip ?? -1;
-    const next = current === idx ? -1 : idx;
-    (window as any)._pwcActiveTip = next;
-    const section = col.closest('.pwc-chart-wrap') as HTMLElement;
-    if (!section) return;
-    section.querySelectorAll('.pwc-tip').forEach((t: Element) => {
-      const ti = parseInt((t as HTMLElement).dataset.tipIdx || '-1');
-      (t as HTMLElement).style.display = ti === next ? 'block' : 'none';
-    });
-  };
-
-  private _setupChartListeners(): void {
-    const section = this.shadowRoot?.querySelector('.pwc-chart-wrap');
-    if (!section) return;
-    // Use capture=true to fire BEFORE ha-card's actionHandler consumes the event
-    section.removeEventListener('touchend', this._handleChartClick, true);
-    section.removeEventListener('click',    this._handleChartClick, true);
-    section.addEventListener('touchend', this._handleChartClick, { capture: true, passive: false });
-    section.addEventListener('click',    this._handleChartClick, { capture: true });
-  }
-  
-
   //tjl added. 
   //  forecast1 is THE entity to subscribe for weather forecast events
   private forecast1!: ForecastAttribute[] | undefined;
@@ -367,7 +326,6 @@ export class PlatinumWeatherCard extends LitElement {
     if (changedProps.has("_config") || !this._subscribed) {
       this._subscribeForecastEvents();
     }
-    this._setupChartListeners();
   }
 
   protected firstUpdated(): void {
@@ -1354,6 +1312,7 @@ export class PlatinumWeatherCard extends LitElement {
       const c = (window as any)._pwcCard;
       if (!c) return;
       c._chartTooltipIdx = (c._chartTooltipIdx === idx) ? -1 : idx;
+      c.requestUpdate();
     };
 
     const colsHtml = rawData.map((d, i) => {
