@@ -1274,21 +1274,15 @@ export class PlatinumWeatherCard extends LitElement {
     for (let i = 0; i < days; i++) {
       const f = this.forecast1[startIdx + i];
       if (!f) break;
-      data.push({
-        maxT:     Number(f.temperature   ?? 0),
-        minT:     Number(f.templow       ?? f.temperature ?? 0),
-        precip:   Number(f.precipitation ?? 0),
-        datetime: String(f.datetime ?? ''),
-      });
+      data.push({ maxT: Number(f.temperature ?? 0), minT: Number(f.templow ?? f.temperature ?? 0), precip: Number(f.precipitation ?? 0), datetime: String(f.datetime ?? '') });
     }
     if (data.length === 0) return html``;
 
     const tempH  = showTemp ? 75 : 52;
     const totalH = tempH + (showPrecip ? 16 : 0);
-    const BH = 13;
-    const MIN_SEP = BH + 5;
+    const BH = 13, MIN_SEP = BH + 5;
 
-    const tAll  = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
+    const tAll = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
     const tMax2 = showTemp ? Math.max(...tAll) : 0;
     const tMin2 = showTemp ? Math.min(...tAll) : 0;
     const tRng2 = tMax2 - tMin2 || 1;
@@ -1317,24 +1311,24 @@ export class PlatinumWeatherCard extends LitElement {
 
     const pMax = showPrecip ? Math.max(...data.map(x => x.precip), 0.1) : 1;
 
-    // Register a global tooltip handler (pure DOM, no Lit reactivity needed)
-    const handlerId = 'pwcChartClick_' + Math.random().toString(36).slice(2);
-    (window as any)[handlerId] = (el: HTMLElement, idx: number) => {
+    // Stable global state — persists across LitElement re-renders
+    if (!(window as any)._pwcActiveTip) (window as any)._pwcActiveTip = -1;
+
+    // Register click handler once (idempotent)
+    (window as any)._pwcTipClick = (el: HTMLElement, idx: number, ev: Event) => {
+      ev.stopPropagation();
       const section = el.closest('.pwc-chart-wrap') as HTMLElement;
       if (!section) return;
-      const all = section.querySelectorAll('.pwc-tip');
-      let isOpen = false;
-      all.forEach((t: Element) => {
-        if (parseInt((t as HTMLElement).dataset.tipIdx || '-1') === idx) {
-          isOpen = (t as HTMLElement).style.display !== 'none';
-        }
-        (t as HTMLElement).style.display = 'none';
+      const current = (window as any)._pwcActiveTip;
+      const next = current === idx ? -1 : idx;
+      (window as any)._pwcActiveTip = next;
+      section.querySelectorAll('.pwc-tip').forEach((t: Element) => {
+        const ti = parseInt((t as HTMLElement).dataset.tipIdx || '-1');
+        (t as HTMLElement).style.display = ti === next ? 'block' : 'none';
       });
-      if (!isOpen) {
-        const tip = section.querySelector(`.pwc-tip[data-tip-idx="${idx}"]`) as HTMLElement;
-        if (tip) tip.style.display = 'block';
-      }
     };
+
+    const activeDay = (window as any)._pwcActiveTip as number;
 
     const colsHtml = data.map((d, i) => {
       let colHtml = '';
@@ -1357,23 +1351,20 @@ export class PlatinumWeatherCard extends LitElement {
         }
       }
 
-      // Tooltip HTML (initially hidden)
-      const dateLabel = d.datetime
-        ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' })
-        : '';
+      const dateLabel = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
       const flipLeft  = i >= n - 2;
-      const tipAlign  = flipLeft
-        ? 'right:0;'
-        : (i <= 1 ? 'left:0;' : 'left:50%;transform:translateX(-50%);');
+      const tipAlign  = flipLeft ? 'right:0;' : (i <= 1 ? 'left:0;' : 'left:50%;transform:translateX(-50%);');
+      const tipDisplay = activeDay === i ? 'block' : 'none';
+
       const tipContent = [
         `<div style="font-size:10px;color:rgba(180,180,180,0.85);border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:4px;margin-bottom:5px;">${dateLabel}</div>`,
         showTemp  ? `<div style="font-size:12px;color:rgba(255,165,0,1);">↑ ${Math.round(d.maxT)}°</div><div style="font-size:12px;color:rgba(120,180,230,1);margin-bottom:${showPrecip ? 3 : 0}px;">↓ ${Math.round(d.minT)}°</div>` : '',
         showPrecip ? `<div style="font-size:12px;color:rgba(151,230,255,1);">💧 ${d.precip.toFixed(1)} мм</div>` : '',
       ].join('');
 
-      const tipHtml = `<div class="pwc-tip" data-tip-idx="${i}" style="display:none;position:absolute;bottom:${totalH + 6}px;${tipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">${tipContent}</div>`;
+      const tipHtml = `<div class="pwc-tip" data-tip-idx="${i}" style="display:${tipDisplay};position:absolute;bottom:${totalH + 6}px;${tipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">${tipContent}</div>`;
 
-      return `<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;" onclick="window['${handlerId}'](this,${i})">${colHtml}${tipHtml}</div>`;
+      return `<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;" onclick="window._pwcTipClick(this,${i},event)">${colHtml}${tipHtml}</div>`;
     }).join('');
 
     return html`<div class="pwc-chart-wrap daily-forecast-horiz-section section"
