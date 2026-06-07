@@ -78,6 +78,30 @@ export class PlatinumWeatherCard extends LitElement {
   @state() private _cardWidth = 492;
 
   private _error: string[] = [];
+
+  private _handleChartClick = (ev: Event) => {
+    const col = (ev.target as HTMLElement).closest('[data-day-idx]') as HTMLElement;
+    if (!col) return;
+    ev.stopPropagation();
+    const idx = parseInt(col.dataset.dayIdx || '-1', 10);
+    if (idx < 0) return;
+    const current: number = (window as any)._pwcActiveTip ?? -1;
+    const next = current === idx ? -1 : idx;
+    (window as any)._pwcActiveTip = next;
+    const section = col.closest('.pwc-chart-wrap') as HTMLElement;
+    if (!section) return;
+    section.querySelectorAll('.pwc-tip').forEach((t: Element) => {
+      const ti = parseInt((t as HTMLElement).dataset.tipIdx || '-1');
+      (t as HTMLElement).style.display = ti === next ? 'block' : 'none';
+    });
+  };
+
+  private _setupChartListeners(): void {
+    const section = this.shadowRoot?.querySelector('.pwc-chart-wrap');
+    if (!section) return;
+    section.removeEventListener('click', this._handleChartClick);
+    section.addEventListener('click', this._handleChartClick);
+  }
   
 
   //tjl added. 
@@ -326,6 +350,7 @@ export class PlatinumWeatherCard extends LitElement {
     if (changedProps.has("_config") || !this._subscribed) {
       this._subscribeForecastEvents();
     }
+    this._setupChartListeners();
   }
 
   protected firstUpdated(): void {
@@ -1311,23 +1336,7 @@ export class PlatinumWeatherCard extends LitElement {
 
     const pMax = showPrecip ? Math.max(...data.map(x => x.precip), 0.1) : 1;
 
-    // Stable global state — persists across LitElement re-renders
-    if (!(window as any)._pwcActiveTip) (window as any)._pwcActiveTip = -1;
-
-    // Register click handler once (idempotent)
-    (window as any)._pwcTipClick = (el: HTMLElement, idx: number, ev: Event) => {
-      ev.stopPropagation();
-      const section = el.closest('.pwc-chart-wrap') as HTMLElement;
-      if (!section) return;
-      const current = (window as any)._pwcActiveTip;
-      const next = current === idx ? -1 : idx;
-      (window as any)._pwcActiveTip = next;
-      section.querySelectorAll('.pwc-tip').forEach((t: Element) => {
-        const ti = parseInt((t as HTMLElement).dataset.tipIdx || '-1');
-        (t as HTMLElement).style.display = ti === next ? 'block' : 'none';
-      });
-    };
-
+    if ((window as any)._pwcActiveTip === undefined) (window as any)._pwcActiveTip = -1;
     const activeDay = (window as any)._pwcActiveTip as number;
 
     const colsHtml = data.map((d, i) => {
@@ -1364,7 +1373,7 @@ export class PlatinumWeatherCard extends LitElement {
 
       const tipHtml = `<div class="pwc-tip" data-tip-idx="${i}" style="display:${tipDisplay};position:absolute;bottom:${totalH + 6}px;${tipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">${tipContent}</div>`;
 
-      return `<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;" onclick="window._pwcTipClick(this,${i},event)">${colHtml}${tipHtml}</div>`;
+      return `<div class="day-horiz" data-day-idx="${i}" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;">${colHtml}${tipHtml}</div>`;
     }).join('');
 
     return html`<div class="pwc-chart-wrap daily-forecast-horiz-section section"
