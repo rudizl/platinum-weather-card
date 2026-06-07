@@ -78,7 +78,7 @@ export class PlatinumWeatherCard extends LitElement {
   @state() private _cardWidth = 492;
 
   private _error: string[] = [];
-  private _chartTooltipIdx: number | null = null;
+  @state() private _chartTooltipIdx: number | null = null;
 
   //tjl added. 
   //  forecast1 is THE entity to subscribe for weather forecast events
@@ -1366,7 +1366,7 @@ export class PlatinumWeatherCard extends LitElement {
         </div>` : html``;
 
       return html`<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;"
-          @click=${(ev: Event) => { ev.stopPropagation(); this._chartTooltipIdx = isActive ? null : i; this.requestUpdate(); }}>
+          @click=${(ev: Event) => { ev.stopPropagation(); this._chartTooltipIdx = isActive ? null : i; }}>
         ${unsafeHTML(colHtml)}
         ${tooltip}
       </div>`;
@@ -1374,7 +1374,7 @@ export class PlatinumWeatherCard extends LitElement {
 
     return html`<div class="daily-forecast-horiz-section section"
         style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;"
-        @click=${() => { this._chartTooltipIdx = null; this.requestUpdate(); }}>
+        @click=${() => { this._chartTooltipIdx = null; }}>
       ${unsafeHTML(linesSvg)}
       ${colTemplates}
     </div>`;
