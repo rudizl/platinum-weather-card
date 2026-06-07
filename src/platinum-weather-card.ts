@@ -80,9 +80,22 @@ export class PlatinumWeatherCard extends LitElement {
   private _error: string[] = [];
 
   private _handleChartClick = (ev: Event) => {
-    const col = (ev.target as HTMLElement).closest('[data-day-idx]') as HTMLElement;
-    if (!col) return;
     ev.stopPropagation();
+    if (ev.cancelable) ev.preventDefault();
+    let target: Element | null = null;
+    if (ev.type === 'touchend') {
+      const te = ev as TouchEvent;
+      if (te.changedTouches.length > 0) {
+        const t = te.changedTouches[0];
+        target = this.shadowRoot?.elementFromPoint
+          ? null
+          : document.elementFromPoint(t.clientX, t.clientY);
+        if (!target) target = document.elementFromPoint(t.clientX, t.clientY);
+      }
+    }
+    if (!target) target = ev.target as Element;
+    const col = target?.closest('[data-day-idx]') as HTMLElement | null;
+    if (!col) return;
     const idx = parseInt(col.dataset.dayIdx || '-1', 10);
     if (idx < 0) return;
     const current: number = (window as any)._pwcActiveTip ?? -1;
@@ -99,8 +112,11 @@ export class PlatinumWeatherCard extends LitElement {
   private _setupChartListeners(): void {
     const section = this.shadowRoot?.querySelector('.pwc-chart-wrap');
     if (!section) return;
-    section.removeEventListener('click', this._handleChartClick);
-    section.addEventListener('click', this._handleChartClick);
+    // Use capture=true to fire BEFORE ha-card's actionHandler consumes the event
+    section.removeEventListener('touchend', this._handleChartClick, true);
+    section.removeEventListener('click',    this._handleChartClick, true);
+    section.addEventListener('touchend', this._handleChartClick, { capture: true, passive: false });
+    section.addEventListener('click',    this._handleChartClick, { capture: true });
   }
   
 
