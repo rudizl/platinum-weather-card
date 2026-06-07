@@ -78,6 +78,7 @@ export class PlatinumWeatherCard extends LitElement {
   @state() private _cardWidth = 492;
 
   private _error: string[] = [];
+  @state() private _chartTooltipIdx = -1;
 
   private _handleChartClick = (ev: Event) => {
     ev.stopPropagation();
@@ -1311,90 +1312,85 @@ export class PlatinumWeatherCard extends LitElement {
     const startIdx = this._config.option_show_current_day ? 0 : 1;
     const locale   = this._config.option_locale || 'bg';
 
-    const data: { maxT: number; minT: number; precip: number; datetime: string }[] = [];
+    const rawData: { maxT: number; minT: number; precip: number; datetime: string }[] = [];
     for (let i = 0; i < days; i++) {
       const f = this.forecast1[startIdx + i];
       if (!f) break;
-      data.push({ maxT: Number(f.temperature ?? 0), minT: Number(f.templow ?? f.temperature ?? 0), precip: Number(f.precipitation ?? 0), datetime: String(f.datetime ?? '') });
+      rawData.push({ maxT: Number(f.temperature ?? 0), minT: Number(f.templow ?? f.temperature ?? 0), precip: Number(f.precipitation ?? 0), datetime: String(f.datetime ?? '') });
     }
-    if (data.length === 0) return html``;
+    if (rawData.length === 0) return html``;
 
     const tempH  = showTemp ? 75 : 52;
     const totalH = tempH + (showPrecip ? 16 : 0);
     const BH = 13, MIN_SEP = BH + 5;
 
-    const tAll = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
+    const tAll = showTemp ? rawData.flatMap(d => [d.maxT, d.minT]) : [];
     const tMax2 = showTemp ? Math.max(...tAll) : 0;
-    const tMin2 = showTemp ? Math.min(...tAll) : 0;
-    const tRng2 = tMax2 - tMin2 || 1;
+    const tRng2 = showTemp ? (tMax2 - Math.min(...tAll) || 1) : 1;
     const tTop2 = 16, tBot2 = tempH - 16;
     const tyRaw = (t: number) => tTop2 + (tMax2 - t) / tRng2 * (tBot2 - tTop2);
 
-    const tempYs = data.map(d => {
+    const tempYs = rawData.map(d => {
       let maxY = tyRaw(d.maxT), minY = tyRaw(d.minT);
       const sep = minY - maxY;
       if (sep < MIN_SEP) { const p = (MIN_SEP - sep) / 2; maxY -= p; minY += p; }
       return { maxY, minY };
     });
 
-    const n = data.length;
-    const cw = 100 / n;
-    const cx2 = (i: number) => (i + 0.5) * cw;
-
+    const n = rawData.length;
+    const cx2 = (i: number) => (i + 0.5) * 100 / n;
     const linesSvg = showTemp ? (
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${totalH}" preserveAspectRatio="none"` +
-      ` style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
+      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${totalH}" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
       `<polyline points="${tempYs.map((y, i) => `${cx2(i)},${y.maxY}`).join(' ')}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
       `<polyline points="${tempYs.map((y, i) => `${cx2(i)},${y.minY}`).join(' ')}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
       (showPrecip ? `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>` : '') +
-      `</svg>`
-    ) : '';
+      `</svg>`) : '';
 
-    const pMax = showPrecip ? Math.max(...data.map(x => x.precip), 0.1) : 1;
+    const pMax = showPrecip ? Math.max(...rawData.map(x => x.precip), 0.1) : 1;
 
-    if ((window as any)._pwcActiveTip === undefined) (window as any)._pwcActiveTip = -1;
-    const activeDay = (window as any)._pwcActiveTip as number;
+    // Register global click handler — onclick is reliable on both desktop and mobile
+    (window as any)._pwcCard = this;
+    (window as any)._pwcTC = (idx: number) => {
+      const c = (window as any)._pwcCard;
+      if (!c) return;
+      c._chartTooltipIdx = (c._chartTooltipIdx === idx) ? -1 : idx;
+    };
 
-    const colsHtml = data.map((d, i) => {
-      let colHtml = '';
+    const colsHtml = rawData.map((d, i) => {
+      let inner = '';
       if (showTemp) {
-        const maxTop = tempYs[i].maxY - BH / 2;
-        const minTop = tempYs[i].minY - BH / 2;
-        colHtml += `<div style="position:absolute;top:${maxTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(255,152,0,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(255,165,0,1);white-space:nowrap;">${Math.round(d.maxT)}°</div>`;
-        colHtml += `<div style="position:absolute;top:${minTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(120,180,230,1);white-space:nowrap;">${Math.round(d.minT)}°</div>`;
+        inner += `<div style="position:absolute;top:${tempYs[i].maxY - BH/2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(255,152,0,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(255,165,0,1);white-space:nowrap;">${Math.round(d.maxT)}°</div>`;
+        inner += `<div style="position:absolute;top:${tempYs[i].minY - BH/2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(120,180,230,1);white-space:nowrap;">${Math.round(d.minT)}°</div>`;
       }
-      if (showPrecip) {
-        const maxBarH = tempH * 0.85;
-        if (d.precip > 0) {
-          const bH = Math.max((d.precip / pMax) * maxBarH, 2);
-          const bTop = tempH - bH;
-          const label = (d.precip % 1 === 0 ? String(d.precip) : d.precip.toFixed(1)) + ' мм';
-          colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
-          colHtml += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
-        } else {
-          colHtml += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
-        }
+      if (showPrecip && d.precip > 0) {
+        const bH = Math.max((d.precip / pMax) * tempH * 0.85, 2);
+        inner = `<div style="position:absolute;top:${tempH - bH}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;"></div>` + inner;
+        inner += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${d.precip.toFixed(1)} мм</div>`;
+      } else if (showPrecip) {
+        inner += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
       }
-
-      const dateLabel = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
-      const flipLeft  = i >= n - 2;
-      const tipAlign  = flipLeft ? 'right:0;' : (i <= 1 ? 'left:0;' : 'left:50%;transform:translateX(-50%);');
-      const tipDisplay = activeDay === i ? 'block' : 'none';
-
-      const tipContent = [
-        `<div style="font-size:10px;color:rgba(180,180,180,0.85);border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:4px;margin-bottom:5px;">${dateLabel}</div>`,
-        showTemp  ? `<div style="font-size:12px;color:rgba(255,165,0,1);">↑ ${Math.round(d.maxT)}°</div><div style="font-size:12px;color:rgba(120,180,230,1);margin-bottom:${showPrecip ? 3 : 0}px;">↓ ${Math.round(d.minT)}°</div>` : '',
-        showPrecip ? `<div style="font-size:12px;color:rgba(151,230,255,1);">💧 ${d.precip.toFixed(1)} мм</div>` : '',
-      ].join('');
-
-      const tipHtml = `<div class="pwc-tip" data-tip-idx="${i}" style="display:${tipDisplay};position:absolute;bottom:${totalH + 6}px;${tipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">${tipContent}</div>`;
-
-      return `<div class="day-horiz" data-day-idx="${i}" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;">${colHtml}${tipHtml}</div>`;
+      return `<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;" onclick="window._pwcTC(${i})">${inner}</div>`;
     }).join('');
 
-    return html`<div class="pwc-chart-wrap daily-forecast-horiz-section section"
-        style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;">
+    // Tooltip rendered by Lit (not unsafeHTML) — survives re-renders
+    const tipIdx = this._chartTooltipIdx;
+    const tipTemplate = (tipIdx >= 0 && tipIdx < rawData.length) ? (() => {
+      const d = rawData[tipIdx];
+      const dateLabel = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+      const flipLeft  = tipIdx >= n - 2;
+      const pos       = flipLeft ? 'right:0' : (tipIdx <= 1 ? 'left:0' : 'left:50%;transform:translateX(-50%)');
+      const colWidth  = 100 / n;
+      const leftPct   = tipIdx * colWidth + colWidth / 2;
+      return html`<div style="position:absolute;bottom:${totalH + 6}px;left:${leftPct}%;${flipLeft ? 'transform:translateX(-100%)' : tipIdx <= 1 ? '' : 'transform:translateX(-50%)'};background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;pointer-events:none;">
+        <div style="font-size:10px;color:rgba(180,180,180,0.85);border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:4px;margin-bottom:5px;">${dateLabel}</div>
+        ${showTemp ? html`<div style="font-size:12px;color:rgba(255,165,0,1);">↑ ${Math.round(d.maxT)}°</div><div style="font-size:12px;color:rgba(120,180,230,1);">↓ ${Math.round(d.minT)}°</div>` : html``}
+        ${showPrecip ? html`<div style="font-size:12px;color:rgba(151,230,255,1);margin-top:3px;">💧 ${d.precip.toFixed(1)} мм</div>` : html``}
+      </div>`;
+    })() : html``;
+
+    return html`<div class="pwc-chart-wrap daily-forecast-horiz-section section" style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;">
       ${unsafeHTML(linesSvg + colsHtml)}
+      ${tipTemplate}
     </div>`;
   }
 
