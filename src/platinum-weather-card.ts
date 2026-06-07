@@ -78,6 +78,7 @@ export class PlatinumWeatherCard extends LitElement {
   @state() private _cardWidth = 492;
 
   private _error: string[] = [];
+  private _chartTooltipIdx: number | null = null;
 
   //tjl added. 
   //  forecast1 is THE entity to subscribe for weather forecast events
@@ -1268,26 +1269,24 @@ export class PlatinumWeatherCard extends LitElement {
     const days     = Math.min(this._config.daily_forecast_days || 5, this.forecast1.length);
     const startIdx = this._config.option_show_current_day ? 0 : 1;
 
-    const data: { maxT: number; minT: number; precip: number }[] = [];
+    const data: { maxT: number; minT: number; precip: number; datetime: string }[] = [];
     for (let i = 0; i < days; i++) {
       const f = this.forecast1[startIdx + i];
       if (!f) break;
       data.push({
-        maxT:   Number(f.temperature   ?? 0),
-        minT:   Number(f.templow       ?? f.temperature ?? 0),
-        precip: Number(f.precipitation ?? 0),
+        maxT:     Number(f.temperature   ?? 0),
+        minT:     Number(f.templow       ?? f.temperature ?? 0),
+        precip:   Number(f.precipitation ?? 0),
+        datetime: String(f.datetime ?? ''),
       });
     }
     if (data.length === 0) return html``;
 
-    const tempH   = showTemp   ? 75 : 52;
-    const precipH = 0; // bars now live INSIDE the temp area — no separate section
-    const gap     = 0;
-    const totalH  = tempH + (showPrecip ? 16 : 0); // 16px label strip below if precip enabled
+    const tempH   = showTemp ? 75 : 52;
+    const totalH  = tempH + (showPrecip ? 16 : 0);
     const BH = 13;
     const MIN_SEP = BH + 5;
 
-    // ── Pre-calculate y positions with min separation ──────────────────────
     const tAll = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
     const tMax2 = showTemp ? Math.max(...tAll) : 0;
     const tMin2 = showTemp ? Math.min(...tAll) : 0;
@@ -1308,7 +1307,6 @@ export class PlatinumWeatherCard extends LitElement {
       return { maxY, minY };
     });
 
-    // ── SVG overlay for temperature lines ─────────────────────────────────
     const n = data.length;
     const cw = 100 / n;
     const cx2 = (i: number) => (i + 0.5) * cw;
@@ -1319,15 +1317,17 @@ export class PlatinumWeatherCard extends LitElement {
         ` style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
         `<polyline points="${maxPts}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
         `<polyline points="${minPts}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
-        (showPrecip ? (() => {
-          // baseline at bottom of temp area
-          return `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>`;
-        })() : '') +
+        (showPrecip ? `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>` : '') +
         `</svg>`;
     })() : '';
 
-    // ── Per-column HTML ────────────────────────────────────────────────────
-    const colItems = data.map((d, i) => {
+    const locale = this._config.option_locale || 'bg';
+    const pMax   = showPrecip ? Math.max(...data.map(x => x.precip), 0.1) : 1;
+
+    const colTemplates = data.map((d, i) => {
+      const isActive = this._chartTooltipIdx === i;
+
+      // Build inner HTML (same as before)
       let colHtml = '';
       if (showTemp) {
         const maxTop = tempYs[i].maxY - BH / 2;
@@ -1336,30 +1336,50 @@ export class PlatinumWeatherCard extends LitElement {
         colHtml += `<div style="position:absolute;top:${minTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(120,180,230,1);white-space:nowrap;">${Math.round(d.minT)}°</div>`;
       }
       if (showPrecip) {
-        const pMax  = Math.max(...data.map(x => x.precip), 0.1);
-        const maxBarH = tempH * 0.85; // bars use up to 85% of the temp area height
+        const maxBarH = tempH * 0.85;
         if (d.precip > 0) {
-          const bH    = Math.max((d.precip / pMax) * maxBarH, 2);
-          const bTop  = tempH - bH;
+          const bH   = Math.max((d.precip / pMax) * maxBarH, 2);
+          const bTop = tempH - bH;
           const label = (d.precip % 1 === 0 ? String(d.precip) : d.precip.toFixed(1)) + ' мм';
-          // Bar behind everything (z-index 0), rising from bottom of temp area
           colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
-          // Label centered ON the baseline
           colHtml += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
         } else {
-          // 0mm: subtle dash at baseline
           colHtml += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
         }
       }
-      const colDivH = totalH;
-      return `<div class="day-horiz" style="position:relative;height:${colDivH}px;overflow:visible;">${colHtml}</div>`;
-    }).join('');
+
+      // Tooltip
+      const dateLabel = d.datetime
+        ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' })
+        : '';
+      const flipLeft = i >= n - 2;
+      const tooltipAlign = flipLeft ? 'right:0;left:auto;' : (i <= 1 ? 'left:0;' : 'left:50%;transform:translateX(-50%);');
+      const tooltip = isActive ? html`<div style="position:absolute;bottom:${totalH + 6}px;${tooltipAlign}background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:20;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;">
+          <div style="font-size:10px;color:rgba(180,180,180,0.85);margin-bottom:5px;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:4px;">${dateLabel}</div>
+          ${showTemp ? html`
+            <div style="font-size:12px;color:rgba(255,165,0,1);margin-bottom:2px;">↑ ${Math.round(d.maxT)}°</div>
+            <div style="font-size:12px;color:rgba(120,180,230,1);">↓ ${Math.round(d.minT)}°</div>
+          ` : html``}
+          ${showPrecip ? html`
+            <div style="font-size:12px;color:rgba(151,230,255,1);margin-top:${showTemp ? 4 : 0}px;">💧 ${d.precip.toFixed(1)} мм</div>
+          ` : html``}
+        </div>` : html``;
+
+      return html`<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;"
+          @click=${(ev: Event) => { ev.stopPropagation(); this._chartTooltipIdx = isActive ? null : i; this.requestUpdate(); }}>
+        ${unsafeHTML(colHtml)}
+        ${tooltip}
+      </div>`;
+    });
 
     return html`<div class="daily-forecast-horiz-section section"
-        style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;">
-      ${unsafeHTML(linesSvg + colItems)}
+        style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;"
+        @click=${() => { this._chartTooltipIdx = null; this.requestUpdate(); }}>
+      ${unsafeHTML(linesSvg)}
+      ${colTemplates}
     </div>`;
   }
+
 
      private _renderDailyForecastSection(): TemplateResult {
     if (this._config?.show_section_daily_forecast === false) return html``;
