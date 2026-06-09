@@ -78,7 +78,6 @@ export class PlatinumWeatherCard extends LitElement {
   @state() private _cardWidth = 492;
 
   private _error: string[] = [];
-  @state() private _chartTooltipIdx = -1;
 
   //tjl added. 
   //  forecast1 is THE entity to subscribe for weather forecast events
@@ -932,15 +931,37 @@ export class PlatinumWeatherCard extends LitElement {
           tooltipData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
         }
       //const tooltipData = this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'condition');
-        tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : "---"}</div>
+        { const fi = (this._config.option_show_current_day ? 0 : 1) + i;
+          const fe = this.forecast1 && this.forecast1[fi];
+          const ttMaxT = fe?.temperature !== undefined ? Math.round(Number(fe.temperature)) + '°' : '';
+          const ttMinT = fe?.templow !== undefined ? Math.round(Number(fe.templow)) + '°' : '';
+          const ttPrecip = fe?.precipitation !== undefined ? Number(fe.precipitation).toFixed(1) + ' ' + this.getUOM('precipitation') : '';
+          const ttWind = fe?.wind_speed !== undefined ? Math.round(Number(fe.wind_speed)) + ' ' + this.getUOM('wind_speed') : '';
+          const compassMap: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+          const wbRaw = fe?.wind_bearing;
+          let wbDeg: number | null = null;
+          if (wbRaw !== undefined && wbRaw !== null) { const n = Number(wbRaw); wbDeg = !isNaN(n) ? n : (compassMap[String(wbRaw).toUpperCase().trim()] ?? null); }
+          const wbArrow = wbDeg !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(wbDeg+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
+          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : "---"}</div>${ttMaxT || ttMinT ? html`<div class="fcasttooltiptext" style="margin-top:3px;">↑${ttMaxT} ↓${ttMinT}</div>` : html``}${ttPrecip ? html`<div class="fcasttooltiptext">💧 ${ttPrecip}</div>` : html``}${ttWind ? html`<div class="fcasttooltiptext">${unsafeHTML(wbArrow)}${ttWind}</div>` : html``}
             <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
-          </div>`;
+          </div>`; }
       } else {
         start = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
         const tooltipEntity = start && this._config.entity_summary_1 ? this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
-        tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this._config.option_tooltips && tooltipEntity ? this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : "---" : ""}</div>
+        { const fi2 = (this._config.option_show_current_day ? 0 : 1) + i;
+          const fe2 = this.forecast1 && this.forecast1[fi2];
+          const ttMaxT2 = fe2?.temperature !== undefined ? Math.round(Number(fe2.temperature)) + '°' : '';
+          const ttMinT2 = fe2?.templow !== undefined ? Math.round(Number(fe2.templow)) + '°' : '';
+          const ttPrecip2 = fe2?.precipitation !== undefined ? Number(fe2.precipitation).toFixed(1) + ' ' + this.getUOM('precipitation') : '';
+          const ttWind2 = fe2?.wind_speed !== undefined ? Math.round(Number(fe2.wind_speed)) + ' ' + this.getUOM('wind_speed') : '';
+          const compassMap2: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+          const wbRaw2 = fe2?.wind_bearing;
+          let wbDeg2: number | null = null;
+          if (wbRaw2 !== undefined && wbRaw2 !== null) { const n2 = Number(wbRaw2); wbDeg2 = !isNaN(n2) ? n2 : (compassMap2[String(wbRaw2).toUpperCase().trim()] ?? null); }
+          const wbArrow2 = wbDeg2 !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(wbDeg2+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
+          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this._config.option_tooltips && tooltipEntity ? this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : "---" : ""}</div>${ttMaxT2 || ttMinT2 ? html`<div class="fcasttooltiptext" style="margin-top:3px;">↑${ttMaxT2} ↓${ttMinT2}</div>` : html``}${ttPrecip2 ? html`<div class="fcasttooltiptext">💧 ${ttPrecip2}</div>` : html``}${ttWind2 ? html`<div class="fcasttooltiptext">${unsafeHTML(wbArrow2)}${ttWind2}</div>` : html``}
             <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
-          </div>`;
+          </div>`; }
       }
 
       htmlDays.push(html`
@@ -1268,91 +1289,118 @@ export class PlatinumWeatherCard extends LitElement {
 
     const days     = Math.min(this._config.daily_forecast_days || 5, this.forecast1.length);
     const startIdx = this._config.option_show_current_day ? 0 : 1;
-    const locale   = this._config.option_locale || 'bg';
 
-    const rawData: { maxT: number; minT: number; precip: number; datetime: string }[] = [];
+    const compassMapC: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+    const data: { maxT: number; minT: number; precip: number; windSpeed: number | null; windBear: number | null; datetime: string }[] = [];
     for (let i = 0; i < days; i++) {
       const f = this.forecast1[startIdx + i];
       if (!f) break;
-      rawData.push({ maxT: Number(f.temperature ?? 0), minT: Number(f.templow ?? f.temperature ?? 0), precip: Number(f.precipitation ?? 0), datetime: String(f.datetime ?? '') });
+      const wbRawC = f.wind_bearing;
+      let wbDegC: number | null = null;
+      if (wbRawC !== undefined && wbRawC !== null) { const nc = Number(wbRawC); wbDegC = !isNaN(nc) ? nc : (compassMapC[String(wbRawC).toUpperCase().trim()] ?? null); }
+      data.push({
+        maxT:      Number(f.temperature   ?? 0),
+        minT:      Number(f.templow       ?? f.temperature ?? 0),
+        precip:    Number(f.precipitation ?? 0),
+        windSpeed: f.wind_speed !== undefined ? Math.round(Number(f.wind_speed)) : null,
+        windBear:  wbDegC,
+        datetime:  String(f.datetime ?? ''),
+      });
     }
-    if (rawData.length === 0) return html``;
+    if (data.length === 0) return html``;
 
-    const tempH  = showTemp ? 75 : 52;
-    const totalH = tempH + (showPrecip ? 16 : 0);
-    const BH = 13, MIN_SEP = BH + 5;
+    const tempH   = showTemp   ? 75 : 52;
+    const precipH = 0; // bars now live INSIDE the temp area — no separate section
+    const gap     = 0;
+    const totalH  = tempH + (showPrecip ? 16 : 0); // 16px label strip below if precip enabled
+    const BH = 13;
+    const MIN_SEP = BH + 5;
 
-    const tAll = showTemp ? rawData.flatMap(d => [d.maxT, d.minT]) : [];
+    // ── Pre-calculate y positions with min separation ──────────────────────
+    const tAll = showTemp ? data.flatMap(d => [d.maxT, d.minT]) : [];
     const tMax2 = showTemp ? Math.max(...tAll) : 0;
-    const tRng2 = showTemp ? (tMax2 - Math.min(...tAll) || 1) : 1;
-    const tTop2 = 16, tBot2 = tempH - 16;
+    const tMin2 = showTemp ? Math.min(...tAll) : 0;
+    const tRng2 = tMax2 - tMin2 || 1;
+    const tTop2 = 16;
+    const tBot2 = tempH - 16;
     const tyRaw = (t: number) => tTop2 + (tMax2 - t) / tRng2 * (tBot2 - tTop2);
 
-    const tempYs = rawData.map(d => {
-      let maxY = tyRaw(d.maxT), minY = tyRaw(d.minT);
+    const tempYs: { maxY: number; minY: number }[] = data.map(d => {
+      let maxY = tyRaw(d.maxT);
+      let minY = tyRaw(d.minT);
       const sep = minY - maxY;
-      if (sep < MIN_SEP) { const p = (MIN_SEP - sep) / 2; maxY -= p; minY += p; }
+      if (sep < MIN_SEP) {
+        const push = (MIN_SEP - sep) / 2;
+        maxY -= push;
+        minY += push;
+      }
       return { maxY, minY };
     });
 
-    const n = rawData.length;
-    const cx2 = (i: number) => (i + 0.5) * 100 / n;
-    const linesSvg = showTemp ? (
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${totalH}" preserveAspectRatio="none" style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
-      `<polyline points="${tempYs.map((y, i) => `${cx2(i)},${y.maxY}`).join(' ')}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
-      `<polyline points="${tempYs.map((y, i) => `${cx2(i)},${y.minY}`).join(' ')}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
-      (showPrecip ? `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>` : '') +
-      `</svg>`) : '';
+    // ── SVG overlay for temperature lines ─────────────────────────────────
+    const n = data.length;
+    const cw = 100 / n;
+    const cx2 = (i: number) => (i + 0.5) * cw;
+    const linesSvg = showTemp ? (() => {
+      const maxPts = tempYs.map((y, i) => `${cx2(i)},${y.maxY}`).join(' ');
+      const minPts = tempYs.map((y, i) => `${cx2(i)},${y.minY}`).join(' ');
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 ${totalH}" preserveAspectRatio="none"` +
+        ` style="position:absolute;top:0;left:0;width:100%;height:${totalH}px;overflow:visible;pointer-events:none;">` +
+        `<polyline points="${maxPts}" fill="none" stroke="rgba(255,152,0,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
+        `<polyline points="${minPts}" fill="none" stroke="rgba(90,150,210,0.9)" stroke-width="1.5" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>` +
+        (showPrecip ? (() => {
+          // baseline at bottom of temp area
+          return `<line x1="0" y1="${tempH}" x2="100" y2="${tempH}" stroke="rgba(115,198,239,0.2)" stroke-width="0.5" vector-effect="non-scaling-stroke"/>`;
+        })() : '') +
+        `</svg>`;
+    })() : '';
 
-    const pMax = showPrecip ? Math.max(...rawData.map(x => x.precip), 0.1) : 1;
-
-    // Register global click handler — onclick is reliable on both desktop and mobile
-    (window as any)._pwcCard = this;
-    (window as any)._pwcTC = (idx: number) => {
-      const c = (window as any)._pwcCard;
-      if (!c) return;
-      c._chartTooltipIdx = (c._chartTooltipIdx === idx) ? -1 : idx;
-      c.requestUpdate();
-    };
-
-    const colsHtml = rawData.map((d, i) => {
-      let inner = '';
+    // ── Per-column HTML ────────────────────────────────────────────────────
+    const colItems = data.map((d, i) => {
+      let colHtml = '';
       if (showTemp) {
-        inner += `<div style="position:absolute;top:${tempYs[i].maxY - BH/2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(255,152,0,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(255,165,0,1);white-space:nowrap;">${Math.round(d.maxT)}°</div>`;
-        inner += `<div style="position:absolute;top:${tempYs[i].minY - BH/2}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(120,180,230,1);white-space:nowrap;">${Math.round(d.minT)}°</div>`;
+        const maxTop = tempYs[i].maxY - BH / 2;
+        const minTop = tempYs[i].minY - BH / 2;
+        colHtml += `<div style="position:absolute;top:${maxTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(255,152,0,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(255,165,0,1);white-space:nowrap;">${Math.round(d.maxT)}°</div>`;
+        colHtml += `<div style="position:absolute;top:${minTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(120,180,230,1);white-space:nowrap;">${Math.round(d.minT)}°</div>`;
       }
-      if (showPrecip && d.precip > 0) {
-        const bH = Math.max((d.precip / pMax) * tempH * 0.85, 2);
-        inner = `<div style="position:absolute;top:${tempH - bH}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;"></div>` + inner;
-        inner += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${d.precip.toFixed(1)} мм</div>`;
-      } else if (showPrecip) {
-        inner += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
+      if (showPrecip) {
+        const pMax  = Math.max(...data.map(x => x.precip), 0.1);
+        const maxBarH = tempH * 0.85; // bars use up to 85% of the temp area height
+        if (d.precip > 0) {
+          const bH    = Math.max((d.precip / pMax) * maxBarH, 2);
+          const bTop  = tempH - bH;
+          const label = (d.precip % 1 === 0 ? String(d.precip) : d.precip.toFixed(1)) + ' мм';
+          // Bar behind everything (z-index 0), rising from bottom of temp area
+          colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
+          // Label centered ON the baseline
+          colHtml += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
+        } else {
+          // 0mm: subtle dash at baseline
+          colHtml += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
+        }
       }
-      return `<div class="day-horiz" style="position:relative;height:${totalH}px;overflow:visible;cursor:pointer;" onclick="window._pwcTC(${i})">${inner}</div>`;
+      const colDivH = totalH;
+      // Hover tooltip (same CSS mechanism as forecast section)
+      const locale = this._config.option_locale || 'bg';
+      const ttDate = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+      const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
+      const ttWindStr = d.windSpeed !== null ? `${d.windSpeed} ${this.getUOM('wind_speed')}` : '';
+      const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;white-space:nowrap;">`
+        + (ttDate ? `<div class="fcasttooltiptext" style="font-weight:500;">${ttDate}</div>` : '')
+        + (showTemp ? `<div class="fcasttooltiptext">↑${Math.round(d.maxT)}° ↓${Math.round(d.minT)}°</div>` : '')
+        + (d.precip > 0 ? `<div class="fcasttooltiptext">💧 ${d.precip.toFixed(1)} ${this.getUOM('precipitation')}</div>` : '')
+        + (ttWindStr ? `<div class="fcasttooltiptext">${ttWbArrow}${ttWindStr}</div>` : '')
+        + `<span style="position:absolute;top:100%;left:${(100/data.length/2)+i*(100/data.length)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>`
+        + `</div>`;
+      return `<div class="day-horiz fcasttooltip" style="position:relative;height:${colDivH}px;overflow:visible;">${tooltipHtml}${colHtml}</div>`;
     }).join('');
 
-    // Tooltip rendered by Lit (not unsafeHTML) — survives re-renders
-    const tipIdx = this._chartTooltipIdx;
-    const tipTemplate = (tipIdx >= 0 && tipIdx < rawData.length) ? (() => {
-      const d = rawData[tipIdx];
-      const dateLabel = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
-      const flipLeft  = tipIdx >= n - 2;
-      const pos       = flipLeft ? 'right:0' : (tipIdx <= 1 ? 'left:0' : 'left:50%;transform:translateX(-50%)');
-      const colWidth  = 100 / n;
-      const leftPct   = tipIdx * colWidth + colWidth / 2;
-      return html`<div style="position:absolute;bottom:${totalH + 6}px;left:${leftPct}%;${flipLeft ? 'transform:translateX(-100%)' : tipIdx <= 1 ? '' : 'transform:translateX(-50%)'};background:rgba(10,14,24,0.96);border:1px solid rgba(255,255,255,0.18);border-radius:6px;padding:7px 11px;z-index:30;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.5);min-width:90px;pointer-events:none;">
-        <div style="font-size:10px;color:rgba(180,180,180,0.85);border-bottom:1px solid rgba(255,255,255,0.12);padding-bottom:4px;margin-bottom:5px;">${dateLabel}</div>
-        ${showTemp ? html`<div style="font-size:12px;color:rgba(255,165,0,1);">↑ ${Math.round(d.maxT)}°</div><div style="font-size:12px;color:rgba(120,180,230,1);">↓ ${Math.round(d.minT)}°</div>` : html``}
-        ${showPrecip ? html`<div style="font-size:12px;color:rgba(151,230,255,1);margin-top:3px;">💧 ${d.precip.toFixed(1)} мм</div>` : html``}
-      </div>`;
-    })() : html``;
-
-    return html`<div class="pwc-chart-wrap daily-forecast-horiz-section section" style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;">
-      ${unsafeHTML(linesSvg + colsHtml)}
-      ${tipTemplate}
+    return html`<div class="daily-forecast-horiz-section section"
+        style="position:relative;margin-top:4px;margin-bottom:4px;padding-top:0;padding-bottom:0;">
+      ${unsafeHTML(linesSvg + colItems)}
     </div>`;
   }
-
 
      private _renderDailyForecastSection(): TemplateResult {
     if (this._config?.show_section_daily_forecast === false) return html``;
@@ -1404,8 +1452,6 @@ export class PlatinumWeatherCard extends LitElement {
             break;
           case 'daily_forecast':
             sections.push(this._renderDailyForecastSection());
-            break;
-          case 'charts':
             sections.push(this._renderChartSection());
             break;
         }
