@@ -1429,7 +1429,7 @@ export class PlatinumWeatherCard extends LitElement {
         _chartCond = this.hass.states[_summaryEntity] ? this.hass.states[_summaryEntity].state : '';
       }
       const ttRows3 = this._buildTooltipRows({ date: ttDate, condition: _chartCond, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
-      const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;white-space:nowrap;">`
+      const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;max-width:220px;white-space:normal;word-wrap:break-word;">`
         + ttRows3
         + `<span style="position:absolute;top:100%;left:${(100/data.length/2)+i*(100/data.length)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>`
         + `</div>`;
