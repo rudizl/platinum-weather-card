@@ -1298,7 +1298,7 @@ export class PlatinumWeatherCard extends LitElement {
       rows += `<div class="fcasttooltiptext" style="color:#fff;margin-bottom:2px;">${condition}</div>`;
     }
     if (maxT !== undefined && maxT !== null) {
-      rows += `<div class="fcasttooltiptext" style="color:#fff;margin-top:2px;"><b style="color:#ef5350;">↑ ${Math.round(maxT)}°</b>&nbsp;&nbsp;<b style="color:#42a5f5;">↓ ${minT !== undefined && minT !== null ? Math.round(minT) + '°' : '---'}</b></div>`;
+      rows += `<div class="fcasttooltiptext" style="color:#fff;margin-top:2px;"><b style="color:#ef5350;">↑ ${Math.round(maxT)}°</b>&nbsp;&nbsp;<b style="color:#90caf9;">↓ ${minT !== undefined && minT !== null ? Math.round(minT) + '°' : '---'}</b></div>`;
     }
     if (precip !== undefined && precip !== null && precip > 0) {
       rows += `<div class="fcasttooltiptext" style="color:#fff;">💧 ${precip.toFixed(1)} ${uomPrecip}</div>`;
@@ -1419,7 +1419,9 @@ export class PlatinumWeatherCard extends LitElement {
       const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
       const ttWindStr = d.windSpeed !== null ? `${d.windSpeed} ${this.getUOM('wind_speed')}` : '';
       const _chartForecast = this.forecast1 && this.forecast1[startIdx + i];
-      const _chartCond = _chartForecast?.condition ? String(_chartForecast.condition) : '';
+      const _chartCond = _chartForecast
+        ? (String(_chartForecast.detailed_description ?? _chartForecast.condition ?? ''))
+        : '';
       const ttRows3 = this._buildTooltipRows({ date: ttDate, condition: _chartCond, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
       const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;white-space:nowrap;">`
         + ttRows3
@@ -3660,7 +3662,7 @@ export class PlatinumWeatherCard extends LitElement {
       }
       .fcasttooltip .fcasttooltipblock {
         visibility: hidden;
-        background-color: #4B9BEF;
+        background-color: rgba(10, 20, 40, 0.96);
         color: #FFFFFF;
         text-align: center;
         border-radius: 6px;
