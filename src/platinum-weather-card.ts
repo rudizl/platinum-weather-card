@@ -931,15 +931,29 @@ export class PlatinumWeatherCard extends LitElement {
           tooltipData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
         }
       //const tooltipData = this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'condition');
-        tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : "---"}</div>
-            <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
-          </div>`;
+          const _fi = (this._config.option_show_current_day ? 0 : 1) + i;
+          const _fe = this.forecast1 && this.forecast1[_fi];
+          const _cMapW: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+          const _wbRawW = _fe?.wind_bearing;
+          let _wbDegW: number | null = null;
+          if (_wbRawW !== undefined && _wbRawW !== null) { const _nW = Number(_wbRawW); _wbDegW = !isNaN(_nW) ? _nW : (_cMapW[String(_wbRawW).toUpperCase().trim()] ?? null); }
+          const _fdate = forecastDate ? forecastDate.toLocaleDateString(this.locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+          const _cond = this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : '';
+          const _rows = this._buildTooltipRows({ date: _fdate, condition: _cond, maxT: _fe?.temperature !== undefined ? Number(_fe.temperature) : null, minT: _fe?.templow !== undefined ? Number(_fe.templow) : null, precip: _fe?.precipitation !== undefined ? Number(_fe.precipitation) : null, windSpeed: _fe?.wind_speed !== undefined ? Math.round(Number(_fe.wind_speed)) : null, windBearDeg: _wbDegW, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
+          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;">${unsafeHTML(_rows)}<span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span></div>`;
       } else {
         start = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
         const tooltipEntity = start && this._config.entity_summary_1 ? this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
-        tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this._config.option_tooltips && tooltipEntity ? this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : "---" : ""}</div>
-            <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
-          </div>`;
+          const _fi2b = (this._config.option_show_current_day ? 0 : 1) + i;
+          const _fe2b = this.forecast1 && this.forecast1[_fi2b];
+          const _cMap2b: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+          const _wb2b = _fe2b?.wind_bearing;
+          let _wbDeg2b: number | null = null;
+          if (_wb2b !== undefined && _wb2b !== null) { const _n2b = Number(_wb2b); _wbDeg2b = !isNaN(_n2b) ? _n2b : (_cMap2b[String(_wb2b).toUpperCase().trim()] ?? null); }
+          const _fdate2b = forecastDate ? forecastDate.toLocaleDateString(this.locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+          const _cond2b = this._config.option_tooltips && tooltipEntity && this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : '';
+          const _rows2b = this._buildTooltipRows({ date: _fdate2b, condition: _cond2b, maxT: _fe2b?.temperature !== undefined ? Number(_fe2b.temperature) : null, minT: _fe2b?.templow !== undefined ? Number(_fe2b.templow) : null, precip: _fe2b?.precipitation !== undefined ? Number(_fe2b.precipitation) : null, windSpeed: _fe2b?.wind_speed !== undefined ? Math.round(Number(_fe2b.wind_speed)) : null, windBearDeg: _wbDeg2b, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
+          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;">${unsafeHTML(_rows2b)}<span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span></div>`;
       }
 
       htmlDays.push(html`
@@ -1258,6 +1272,46 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
 
+
+  /**
+   * Builds unified tooltip row HTML used by both forecast and chart tooltips.
+   * Returns an HTML string ready for insertion into a fcasttooltipblock.
+   */
+  private _buildTooltipRows(opts: {
+    date?: string;
+    condition?: string;
+    maxT?: number | null;
+    minT?: number | null;
+    precip?: number | null;
+    windSpeed?: number | null;
+    windBearDeg?: number | null;
+    uomPrecip?: string;
+    uomWind?: string;
+  }): string {
+    const { date, condition, maxT, minT, precip, windSpeed, windBearDeg, uomPrecip = '', uomWind = '' } = opts;
+    let rows = '';
+
+    if (date) {
+      rows += `<div class="fcasttooltiptext" style="color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.25);padding-bottom:3px;margin-bottom:4px;">${date}</div>`;
+    }
+    if (condition) {
+      rows += `<div class="fcasttooltiptext" style="color:#fff;margin-bottom:2px;">${condition}</div>`;
+    }
+    if (maxT !== undefined && maxT !== null) {
+      rows += `<div class="fcasttooltiptext" style="color:#fff;margin-top:2px;"><b style="color:#ef5350;">↑ ${Math.round(maxT)}°</b>&nbsp;&nbsp;<b style="color:#90caf9;">↓ ${minT !== undefined && minT !== null ? Math.round(minT) + '°' : '---'}</b></div>`;
+    }
+    if (precip !== undefined && precip !== null && precip > 0) {
+      rows += `<div class="fcasttooltiptext" style="color:#fff;">💧 ${precip.toFixed(1)} ${uomPrecip}</div>`;
+    }
+    if (windSpeed !== undefined && windSpeed !== null) {
+      const arrow = windBearDeg !== null && windBearDeg !== undefined
+        ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(windBearDeg+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>`
+        : '';
+      rows += `<div class="fcasttooltiptext" style="color:#fff;">${arrow}${windSpeed} ${uomWind}</div>`;
+    }
+    return rows;
+  }
+
   private _renderChartSection(): TemplateResult {
     if (this._config.show_section_charts === false) return html``;
     const showTemp   = this._config.option_show_temperature_chart === true;
@@ -1268,14 +1322,21 @@ export class PlatinumWeatherCard extends LitElement {
     const days     = Math.min(this._config.daily_forecast_days || 5, this.forecast1.length);
     const startIdx = this._config.option_show_current_day ? 0 : 1;
 
-    const data: { maxT: number; minT: number; precip: number }[] = [];
+    const compassMapC: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+    const data: { maxT: number; minT: number; precip: number; windSpeed: number | null; windBear: number | null; datetime: string }[] = [];
     for (let i = 0; i < days; i++) {
       const f = this.forecast1[startIdx + i];
       if (!f) break;
+      const wbRawC = f.wind_bearing;
+      let wbDegC: number | null = null;
+      if (wbRawC !== undefined && wbRawC !== null) { const nc = Number(wbRawC); wbDegC = !isNaN(nc) ? nc : (compassMapC[String(wbRawC).toUpperCase().trim()] ?? null); }
       data.push({
-        maxT:   Number(f.temperature   ?? 0),
-        minT:   Number(f.templow       ?? f.temperature ?? 0),
-        precip: Number(f.precipitation ?? 0),
+        maxT:      Number(f.temperature   ?? 0),
+        minT:      Number(f.templow       ?? f.temperature ?? 0),
+        precip:    Number(f.precipitation ?? 0),
+        windSpeed: f.wind_speed !== undefined ? Math.round(Number(f.wind_speed)) : null,
+        windBear:  wbDegC,
+        datetime:  String(f.datetime ?? ''),
       });
     }
     if (data.length === 0) return html``;
@@ -1332,8 +1393,8 @@ export class PlatinumWeatherCard extends LitElement {
       if (showTemp) {
         const maxTop = tempYs[i].maxY - BH / 2;
         const minTop = tempYs[i].minY - BH / 2;
-        colHtml += `<div style="position:absolute;top:${maxTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(255,152,0,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(255,165,0,1);white-space:nowrap;">${Math.round(d.maxT)}°</div>`;
-        colHtml += `<div style="position:absolute;top:${minTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:rgba(120,180,230,1);white-space:nowrap;">${Math.round(d.minT)}°</div>`;
+        colHtml += `<div style="position:absolute;top:${maxTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(255,152,0,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:#fff;white-space:nowrap;">${Math.round(d.maxT)}°</div>`;
+        colHtml += `<div style="position:absolute;top:${minTop}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(90,150,210,0.9);border-radius:2.5px;background:rgba(10,14,24,0.85);padding:1px 4px;font-size:8px;color:#fff;white-space:nowrap;">${Math.round(d.minT)}°</div>`;
       }
       if (showPrecip) {
         const pMax  = Math.max(...data.map(x => x.precip), 0.1);
@@ -1345,14 +1406,34 @@ export class PlatinumWeatherCard extends LitElement {
           // Bar behind everything (z-index 0), rising from bottom of temp area
           colHtml = `<div style="position:absolute;top:${bTop}px;left:0;right:0;height:${bH}px;background:rgba(151,230,255,0.50);border-radius:2px 2px 0 0;z-index:0;"></div>` + colHtml;
           // Label centered ON the baseline
-          colHtml += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:rgba(151,230,255,1);white-space:nowrap;">${label}</div>`;
+          colHtml += `<div style="position:absolute;top:${tempH - 6}px;left:50%;transform:translateX(-50%);border:0.8px solid rgba(115,198,239,0.85);border-radius:2.5px;background:rgba(10,14,24,0.9);padding:1px 4px;font-size:8px;color:#fff;white-space:nowrap;">${label}</div>`;
         } else {
           // 0mm: subtle dash at baseline
           colHtml += `<div style="position:absolute;top:${tempH - 1}px;left:0;right:0;height:2px;background:rgba(151,230,255,0.15);border-radius:1px;"></div>`;
         }
       }
       const colDivH = totalH;
-      return `<div class="day-horiz" style="position:relative;height:${colDivH}px;overflow:visible;">${colHtml}</div>`;
+      // Hover tooltip (same CSS mechanism as forecast section)
+      const locale = this._config.option_locale || 'bg';
+      const ttDate = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+      const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
+      const ttWindStr = d.windSpeed !== null ? `${d.windSpeed} ${this.getUOM('wind_speed')}` : '';
+      // Get condition text from entity_summary_1 — same mechanism as forecast tooltip
+      const _summaryStart = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
+      let _chartCond = '';
+      if (this._config.entity_summary_1?.match('^weather.')) {
+        const _chartForecast = this.forecast1 && this.forecast1[startIdx + i];
+        _chartCond = _chartForecast ? String(_chartForecast.detailed_description ?? _chartForecast.condition ?? '') : '';
+      } else if (_summaryStart && this._config.entity_summary_1) {
+        const _summaryEntity = this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(_summaryStart) + i));
+        _chartCond = this.hass.states[_summaryEntity] ? this.hass.states[_summaryEntity].state : '';
+      }
+      const ttRows3 = this._buildTooltipRows({ date: ttDate, condition: _chartCond, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
+      const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;">`
+        + ttRows3
+        + `<span style="position:absolute;top:100%;left:${(100/data.length/2)+i*(100/data.length)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>`
+        + `</div>`;
+      return `<div class="day-horiz fcasttooltip" style="position:relative;height:${colDivH}px;overflow:visible;">${tooltipHtml}${colHtml}</div>`;
     }).join('');
 
     return html`<div class="daily-forecast-horiz-section section"
@@ -3587,7 +3668,7 @@ export class PlatinumWeatherCard extends LitElement {
       }
       .fcasttooltip .fcasttooltipblock {
         visibility: hidden;
-        background-color: #4B9BEF;
+        background-color: rgba(10, 20, 40, 0.96);
         color: #FFFFFF;
         text-align: center;
         border-radius: 6px;
@@ -3606,6 +3687,7 @@ export class PlatinumWeatherCard extends LitElement {
       .fcasttooltiptext {
         padding-left: 8px;
         padding-right: 8px;
+        color: #ffffff;
       }
     `;
   }
