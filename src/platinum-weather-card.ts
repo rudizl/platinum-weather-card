@@ -1292,22 +1292,22 @@ export class PlatinumWeatherCard extends LitElement {
     let rows = '';
 
     if (date) {
-      rows += `<div class="fcasttooltiptext" style="font-weight:600;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:3px;margin-bottom:3px;">${date}</div>`;
+      rows += `<div class="fcasttooltiptext" style="color:#fff;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.25);padding-bottom:3px;margin-bottom:4px;">${date}</div>`;
     }
     if (condition) {
-      rows += `<div class="fcasttooltiptext">${condition}</div>`;
+      rows += `<div class="fcasttooltiptext" style="color:#fff;margin-bottom:2px;">${condition}</div>`;
     }
     if (maxT !== undefined && maxT !== null) {
-      rows += `<div class="fcasttooltiptext" style="margin-top:2px;"><b style="color:rgba(255,165,0,1);">↑ ${Math.round(maxT)}°</b>&nbsp;&nbsp;<b style="color:rgba(120,180,230,1);">↓ ${minT !== undefined && minT !== null ? Math.round(minT) + '°' : '---'}</b></div>`;
+      rows += `<div class="fcasttooltiptext" style="color:#fff;margin-top:2px;"><b style="color:#ef5350;">↑ ${Math.round(maxT)}°</b>&nbsp;&nbsp;<b style="color:#42a5f5;">↓ ${minT !== undefined && minT !== null ? Math.round(minT) + '°' : '---'}</b></div>`;
     }
     if (precip !== undefined && precip !== null && precip > 0) {
-      rows += `<div class="fcasttooltiptext">💧 ${precip.toFixed(1)} ${uomPrecip}</div>`;
+      rows += `<div class="fcasttooltiptext" style="color:#fff;">💧 ${precip.toFixed(1)} ${uomPrecip}</div>`;
     }
     if (windSpeed !== undefined && windSpeed !== null) {
       const arrow = windBearDeg !== null && windBearDeg !== undefined
         ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(windBearDeg+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>`
         : '';
-      rows += `<div class="fcasttooltiptext">${arrow}${windSpeed} ${uomWind}</div>`;
+      rows += `<div class="fcasttooltiptext" style="color:#fff;">${arrow}${windSpeed} ${uomWind}</div>`;
     }
     return rows;
   }
@@ -1418,7 +1418,9 @@ export class PlatinumWeatherCard extends LitElement {
       const ttDate = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
       const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
       const ttWindStr = d.windSpeed !== null ? `${d.windSpeed} ${this.getUOM('wind_speed')}` : '';
-      const ttRows3 = this._buildTooltipRows({ date: ttDate, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
+      const _chartForecast = this.forecast1 && this.forecast1[startIdx + i];
+      const _chartCond = _chartForecast?.condition ? String(_chartForecast.condition) : '';
+      const ttRows3 = this._buildTooltipRows({ date: ttDate, condition: _chartCond, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
       const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;white-space:nowrap;">`
         + ttRows3
         + `<span style="position:absolute;top:100%;left:${(100/data.length/2)+i*(100/data.length)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>`
@@ -3677,6 +3679,7 @@ export class PlatinumWeatherCard extends LitElement {
       .fcasttooltiptext {
         padding-left: 8px;
         padding-right: 8px;
+        color: #ffffff;
       }
     `;
   }
