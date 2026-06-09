@@ -1419,13 +1419,13 @@ export class PlatinumWeatherCard extends LitElement {
       const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
       const ttWindStr = d.windSpeed !== null ? `${d.windSpeed} ${this.getUOM('wind_speed')}` : '';
       // Get condition text from entity_summary_1 — same mechanism as forecast tooltip
-      const _summaryStart = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!\d*\d)/g) : false;
+      const _summaryStart = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
       let _chartCond = '';
       if (this._config.entity_summary_1?.match('^weather.')) {
         const _chartForecast = this.forecast1 && this.forecast1[startIdx + i];
         _chartCond = _chartForecast ? String(_chartForecast.detailed_description ?? _chartForecast.condition ?? '') : '';
       } else if (_summaryStart && this._config.entity_summary_1) {
-        const _summaryEntity = this._config.entity_summary_1.replace(/(\d+)(?!\d*\d)/g, String(Number(_summaryStart) + startIdx + i));
+        const _summaryEntity = this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(_summaryStart) + i));
         _chartCond = this.hass.states[_summaryEntity] ? this.hass.states[_summaryEntity].state : '';
       }
       const ttRows3 = this._buildTooltipRows({ date: ttDate, condition: _chartCond, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
