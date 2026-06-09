@@ -931,37 +931,29 @@ export class PlatinumWeatherCard extends LitElement {
           tooltipData = this._getForecastPropFromWeather(this.forecast1, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.forecast1, forecastDate, 'condition');
         }
       //const tooltipData = this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'detailed_description') ?? this._getForecastPropFromWeather(this.hass.states[tooltipEntity].attributes.forecast, forecastDate, 'condition');
-        { const fi = (this._config.option_show_current_day ? 0 : 1) + i;
-          const fe = this.forecast1 && this.forecast1[fi];
-          const ttMaxT = fe?.temperature !== undefined ? Math.round(Number(fe.temperature)) + '°' : '';
-          const ttMinT = fe?.templow !== undefined ? Math.round(Number(fe.templow)) + '°' : '';
-          const ttPrecip = fe?.precipitation !== undefined ? Number(fe.precipitation).toFixed(1) + ' ' + this.getUOM('precipitation') : '';
-          const ttWind = fe?.wind_speed !== undefined ? Math.round(Number(fe.wind_speed)) + ' ' + this.getUOM('wind_speed') : '';
-          const compassMap: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
-          const wbRaw = fe?.wind_bearing;
-          let wbDeg: number | null = null;
-          if (wbRaw !== undefined && wbRaw !== null) { const n = Number(wbRaw); wbDeg = !isNaN(n) ? n : (compassMap[String(wbRaw).toUpperCase().trim()] ?? null); }
-          const wbArrow = wbDeg !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(wbDeg+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
-          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : "---"}</div>${ttMaxT || ttMinT ? html`<div class="fcasttooltiptext" style="margin-top:3px;">↑${ttMaxT} ↓${ttMinT}</div>` : html``}${ttPrecip ? html`<div class="fcasttooltiptext">💧 ${ttPrecip}</div>` : html``}${ttWind ? html`<div class="fcasttooltiptext">${unsafeHTML(wbArrow)}${ttWind}</div>` : html``}
-            <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
-          </div>`; }
+          const _fi = (this._config.option_show_current_day ? 0 : 1) + i;
+          const _fe = this.forecast1 && this.forecast1[_fi];
+          const _cMapW: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+          const _wbRawW = _fe?.wind_bearing;
+          let _wbDegW: number | null = null;
+          if (_wbRawW !== undefined && _wbRawW !== null) { const _nW = Number(_wbRawW); _wbDegW = !isNaN(_nW) ? _nW : (_cMapW[String(_wbRawW).toUpperCase().trim()] ?? null); }
+          const _fdate = forecastDate ? forecastDate.toLocaleDateString(this.locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+          const _cond = this.hass.states[tooltipEntity] && tooltipData !== undefined ? stringComputeStateDisplay(this.hass.localize, tooltipData) : '';
+          const _rows = this._buildTooltipRows({ date: _fdate, condition: _cond, maxT: _fe?.temperature !== undefined ? Number(_fe.temperature) : null, minT: _fe?.templow !== undefined ? Number(_fe.templow) : null, precip: _fe?.precipitation !== undefined ? Number(_fe.precipitation) : null, windSpeed: _fe?.wind_speed !== undefined ? Math.round(Number(_fe.wind_speed)) : null, windBearDeg: _wbDegW, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
+          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;">${unsafeHTML(_rows)}<span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span></div>`;
       } else {
         start = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
         const tooltipEntity = start && this._config.entity_summary_1 ? this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
-        { const fi2 = (this._config.option_show_current_day ? 0 : 1) + i;
-          const fe2 = this.forecast1 && this.forecast1[fi2];
-          const ttMaxT2 = fe2?.temperature !== undefined ? Math.round(Number(fe2.temperature)) + '°' : '';
-          const ttMinT2 = fe2?.templow !== undefined ? Math.round(Number(fe2.templow)) + '°' : '';
-          const ttPrecip2 = fe2?.precipitation !== undefined ? Number(fe2.precipitation).toFixed(1) + ' ' + this.getUOM('precipitation') : '';
-          const ttWind2 = fe2?.wind_speed !== undefined ? Math.round(Number(fe2.wind_speed)) + ' ' + this.getUOM('wind_speed') : '';
-          const compassMap2: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
-          const wbRaw2 = fe2?.wind_bearing;
-          let wbDeg2: number | null = null;
-          if (wbRaw2 !== undefined && wbRaw2 !== null) { const n2 = Number(wbRaw2); wbDeg2 = !isNaN(n2) ? n2 : (compassMap2[String(wbRaw2).toUpperCase().trim()] ?? null); }
-          const wbArrow2 = wbDeg2 !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(wbDeg2+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
-          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;"><div class="fcasttooltiptext">${this._config.option_tooltips && tooltipEntity ? this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : "---" : ""}</div>${ttMaxT2 || ttMinT2 ? html`<div class="fcasttooltiptext" style="margin-top:3px;">↑${ttMaxT2} ↓${ttMinT2}</div>` : html``}${ttPrecip2 ? html`<div class="fcasttooltiptext">💧 ${ttPrecip2}</div>` : html``}${ttWind2 ? html`<div class="fcasttooltiptext">${unsafeHTML(wbArrow2)}${ttWind2}</div>` : html``}
-            <span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>
-          </div>`; }
+          const _fi2b = (this._config.option_show_current_day ? 0 : 1) + i;
+          const _fe2b = this.forecast1 && this.forecast1[_fi2b];
+          const _cMap2b: {[k:string]:number} = {N:0,NNE:22,NE:45,ENE:67,E:90,ESE:112,SE:135,SSE:157,S:180,SSW:202,SW:225,WSW:247,W:270,WNW:292,NW:315,NNW:337};
+          const _wb2b = _fe2b?.wind_bearing;
+          let _wbDeg2b: number | null = null;
+          if (_wb2b !== undefined && _wb2b !== null) { const _n2b = Number(_wb2b); _wbDeg2b = !isNaN(_n2b) ? _n2b : (_cMap2b[String(_wb2b).toUpperCase().trim()] ?? null); }
+          const _fdate2b = forecastDate ? forecastDate.toLocaleDateString(this.locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
+          const _cond2b = this._config.option_tooltips && tooltipEntity && this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : '';
+          const _rows2b = this._buildTooltipRows({ date: _fdate2b, condition: _cond2b, maxT: _fe2b?.temperature !== undefined ? Number(_fe2b.temperature) : null, minT: _fe2b?.templow !== undefined ? Number(_fe2b.templow) : null, precip: _fe2b?.precipitation !== undefined ? Number(_fe2b.precipitation) : null, windSpeed: _fe2b?.wind_speed !== undefined ? Math.round(Number(_fe2b.wind_speed)) : null, windBearDeg: _wbDeg2b, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
+          tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;">${unsafeHTML(_rows2b)}<span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span></div>`;
       }
 
       htmlDays.push(html`
@@ -1280,6 +1272,46 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
 
+
+  /**
+   * Builds unified tooltip row HTML used by both forecast and chart tooltips.
+   * Returns an HTML string ready for insertion into a fcasttooltipblock.
+   */
+  private _buildTooltipRows(opts: {
+    date?: string;
+    condition?: string;
+    maxT?: number | null;
+    minT?: number | null;
+    precip?: number | null;
+    windSpeed?: number | null;
+    windBearDeg?: number | null;
+    uomPrecip?: string;
+    uomWind?: string;
+  }): string {
+    const { date, condition, maxT, minT, precip, windSpeed, windBearDeg, uomPrecip = '', uomWind = '' } = opts;
+    let rows = '';
+
+    if (date) {
+      rows += `<div class="fcasttooltiptext" style="font-weight:600;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:3px;margin-bottom:3px;">${date}</div>`;
+    }
+    if (condition) {
+      rows += `<div class="fcasttooltiptext">${condition}</div>`;
+    }
+    if (maxT !== undefined && maxT !== null) {
+      rows += `<div class="fcasttooltiptext" style="margin-top:2px;"><b style="color:rgba(255,165,0,1);">↑ ${Math.round(maxT)}°</b>&nbsp;&nbsp;<b style="color:rgba(120,180,230,1);">↓ ${minT !== undefined && minT !== null ? Math.round(minT) + '°' : '---'}</b></div>`;
+    }
+    if (precip !== undefined && precip !== null && precip > 0) {
+      rows += `<div class="fcasttooltiptext">💧 ${precip.toFixed(1)} ${uomPrecip}</div>`;
+    }
+    if (windSpeed !== undefined && windSpeed !== null) {
+      const arrow = windBearDeg !== null && windBearDeg !== undefined
+        ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(windBearDeg+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>`
+        : '';
+      rows += `<div class="fcasttooltiptext">${arrow}${windSpeed} ${uomWind}</div>`;
+    }
+    return rows;
+  }
+
   private _renderChartSection(): TemplateResult {
     if (this._config.show_section_charts === false) return html``;
     const showTemp   = this._config.option_show_temperature_chart === true;
@@ -1386,11 +1418,9 @@ export class PlatinumWeatherCard extends LitElement {
       const ttDate = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
       const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
       const ttWindStr = d.windSpeed !== null ? `${d.windSpeed} ${this.getUOM('wind_speed')}` : '';
+      const ttRows3 = this._buildTooltipRows({ date: ttDate, maxT: showTemp ? d.maxT : null, minT: showTemp ? d.minT : null, precip: d.precip, windSpeed: d.windSpeed, windBearDeg: d.windBear, uomPrecip: this.getUOM('precipitation'), uomWind: this.getUOM('wind_speed') });
       const tooltipHtml = `<div class="fcasttooltipblock" style="width:${data.length * 100}%;left:-${i * 100}%;white-space:nowrap;">`
-        + (ttDate ? `<div class="fcasttooltiptext" style="font-weight:500;">${ttDate}</div>` : '')
-        + (showTemp ? `<div class="fcasttooltiptext">↑${Math.round(d.maxT)}° ↓${Math.round(d.minT)}°</div>` : '')
-        + (d.precip > 0 ? `<div class="fcasttooltiptext">💧 ${d.precip.toFixed(1)} ${this.getUOM('precipitation')}</div>` : '')
-        + (ttWindStr ? `<div class="fcasttooltiptext">${ttWbArrow}${ttWindStr}</div>` : '')
+        + ttRows3
         + `<span style="position:absolute;top:100%;left:${(100/data.length/2)+i*(100/data.length)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span>`
         + `</div>`;
       return `<div class="day-horiz fcasttooltip" style="position:relative;height:${colDivH}px;overflow:visible;">${tooltipHtml}${colHtml}</div>`;
