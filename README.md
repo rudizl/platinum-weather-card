@@ -321,7 +321,7 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
-| `type` | String | — | Must be `custom:platinum-weather-card` |
+| `type` | String | — | Must be `custom:platinum-weather-card-plus-charts` |
 | `section_order` | List | overview, extended, slots, daily_forecast, charts | Section display order |
 | `show_section_overview` | Boolean | `true` | Show/hide overview section |
 | `show_section_extended` | Boolean | `true` | Show/hide extended section |

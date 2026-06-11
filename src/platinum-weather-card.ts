@@ -37,13 +37,13 @@ console.info(
 // This puts your card into the UI card picker dialog
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
-  type: 'platinum-weather-card',
+  type: 'platinum-weather-card-plus-charts',
   name: 'Platinum Weather Card',
   description: 'An fully customisable weather card with a GUI configuration',
 });
 
 
-@customElement('platinum-weather-card')
+@customElement('platinum-weather-card-plus-charts')
 export class PlatinumWeatherCard extends LitElement {
   //tjl from bramkragten
   static get properties() {
@@ -56,7 +56,7 @@ export class PlatinumWeatherCard extends LitElement {
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor');
-    return document.createElement('platinum-weather-card-editor');
+    return document.createElement('platinum-weather-card-plus-charts-editor');
   }
 
   public static getStubConfig(): Record<string, unknown> {
@@ -132,7 +132,7 @@ export class PlatinumWeatherCard extends LitElement {
       const value = config[field as keyof WeatherCardConfig];
       if (value && typeof value === 'string' && !entityIdPattern.test(value)) {
         throw new Error(
-          `platinum-weather-card: "${field}" has invalid entity ID format: "${value}". ` +
+          `platinum-weather-card-plus-charts: "${field}" has invalid entity ID format: "${value}". ` +
           `Expected format: domain.object_id (e.g. sensor.temperature).`
         );
       }
@@ -147,7 +147,7 @@ export class PlatinumWeatherCard extends LitElement {
       for (const section of config.section_order) {
         if (!validSections.includes(section)) {
           throw new Error(
-            `platinum-weather-card: invalid section "${section}" in section_order. ` +
+            `platinum-weather-card-plus-charts: invalid section "${section}" in section_order. ` +
             `Valid values: ${validSections.join(', ')}.`
           );
         }
@@ -159,7 +159,7 @@ export class PlatinumWeatherCard extends LitElement {
       const days = Number(config.daily_forecast_days);
       if (!Number.isInteger(days) || days < 1 || days > 7) {
         throw new Error(
-          `platinum-weather-card: daily_forecast_days must be an integer between 1 and 7, got "${config.daily_forecast_days}".`
+          `platinum-weather-card-plus-charts: daily_forecast_days must be an integer between 1 and 7, got "${config.daily_forecast_days}".`
         );
       }
     }
