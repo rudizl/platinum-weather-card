@@ -2389,6 +2389,7 @@ const Tn=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
           <option value="bg">🇧🇬 Български</option>
           <option value="da">🇩🇰 Dansk</option>
           <option value="de">🇩🇪 Deutsch</option>
+          <option value="en">🇬🇧 English</option>
           <option value="es">🇪🇸 Español</option>
           <option value="fr">🇫🇷 Français</option>
           <option value="he">🇮🇱 עברית</option>
