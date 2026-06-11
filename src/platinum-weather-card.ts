@@ -38,7 +38,7 @@ console.info(
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
   type: 'platinum-weather-card-plus-charts',
-  name: 'Platinum Weather Card',
+  name: 'Platinum Weather Card Plus Charts',
   description: 'An fully customisable weather card with a GUI configuration',
 });
 

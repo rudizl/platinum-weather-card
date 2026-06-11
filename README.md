@@ -1,8 +1,8 @@
-# Platinum Weather Card
+# Platinum Weather Card Plus Charts
 
-A highly configurable weather card for Home Assistant with a graphical editor, now with an integrated temperature/precipitation chart section — a mashup of [Platinum Weather Card](https://github.com/tommyjlong/platinum-weather-card) and [Weather Chart Card](https://github.com/Makin-Things/weather-chart-card). Based on the original by [@makin-things](https://www.github.com/makin-things), extended by [@tommyjlong](https://github.com/tommyjlong), maintained and further developed here by [@rudizl](https://github.com/rudizl).
+A mashup of [Platinum Weather Card](https://github.com/tommyjlong/platinum-weather-card) and [Weather Chart Card](https://github.com/mlamberts78/weather-chart-card) — two of the best weather cards for Home Assistant, neither of which has seen active development for a while. I used to run Weather Chart Card on my main dashboard and Platinum on a dedicated weather view. At some point it felt pointless to maintain two separate cards with overlapping functionality, so I merged them as far as makes sense.
 
-Both source cards had gone largely unmaintained, yet they remain arguably the best options available for people running personal weather stations with Home Assistant. Rather than maintaining two separate cards with overlapping functionality, this fork merges the best of both.
+Based on the original Platinum Weather Card by [@makin-things](https://www.github.com/makin-things), extended by [@tommyjlong](https://github.com/tommyjlong). Weather Chart Card by [@mlamberts78](https://github.com/mlamberts78). Maintained and further developed here by [@rudizl](https://github.com/rudizl).
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 [![GitHub Release][releases-shield]][releases]
