@@ -460,5 +460,5 @@ Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressu
 The chart uses the same `weather_entity` and `daily_forecast_days` settings as the Daily Forecast section. No additional entities are required.
 
 [license-shield]: https://img.shields.io/github/license/rudizl/platinum-weather-card-plus-charts.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/rudizl/platinum-weather-card-plus-charts.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/v/release/rudizl/platinum-weather-card-plus-charts?include_prereleases&style=for-the-badge
 [releases]: https://github.com/rudizl/platinum-weather-card-plus-charts/releases
