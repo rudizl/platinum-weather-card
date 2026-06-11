@@ -133,14 +133,14 @@ Install via HACS as a custom repository:
 
 **Card overview**
 
-![Card overview](docs/images/card-overview.png)
+![Card overview](images/platinum-weather-card.png)
 
 </td>
 <td align="center" width="50%">
 
 **Slot configuration in editor**
 
-![Editor slots](docs/images/editor-slots.png)
+![Editor slots](images/slots-section-highlighted.png)
 
 </td>
 </tr>
@@ -149,14 +149,14 @@ Install via HACS as a custom repository:
 
 **Include Today in Forecast — ON**
 
-![Include today on](docs/images/editor-include-today-on.png)
+![Include today on](images/daily-forecast-section-horizontal.png)
 
 </td>
 <td align="center">
 
 **Include Today in Forecast — OFF**
 
-![Include today off](docs/images/editor-include-today-off.png)
+![Include today off](images/daily-forecast-section-horizontal.png)
 
 </td>
 </tr>
