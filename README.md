@@ -14,7 +14,7 @@ Both source cards had gone largely unmaintained, yet they remain arguably the be
 Install via HACS as a custom repository:
 
 1. In HACS → Frontend → ⋮ → Custom Repositories
-2. Add `https://github.com/rudizl/platinum-weather-card` → type **Lovelace**
+2. Add `https://github.com/rudizl/platinum-weather-card-plus-charts` → type **Lovelace**
 3. Install **Platinum Weather Card**
 4. Hard-refresh your browser
 
@@ -459,6 +459,6 @@ Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressu
 
 The chart uses the same `weather_entity` and `daily_forecast_days` settings as the Daily Forecast section. No additional entities are required.
 
-[license-shield]: https://img.shields.io/github/license/makin-things/platinum-weather-card.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/rudizl/platinum-weather-card.svg?style=for-the-badge
-[releases]: https://github.com/rudizl/platinum-weather-card/releases
+[license-shield]: https://img.shields.io/github/license/rudizl/platinum-weather-card-plus-charts.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/rudizl/platinum-weather-card-plus-charts.svg?style=for-the-badge
+[releases]: https://github.com/rudizl/platinum-weather-card-plus-charts/releases
