@@ -1,6 +1,7 @@
 {
   "name": "Platinum Weather Card Plus Charts",
-  "hacs": "1.2.0",
+  "filename": "platinum-weather-card.js",
+  "hacs": "1.6.0",
   "render_readme": true,
   "hide_default_branch": true
 }
