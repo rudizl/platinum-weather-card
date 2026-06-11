@@ -1,50 +1,68 @@
 # Platinum Weather Card
 
-A highly configurable weather card for Home Assistant with a graphical editor. Based on the original by [@makin-things](https://www.github.com/makin-things), extended by [@tommyjlong](https://github.com/tommyjlong), maintained here by [@rudizl](https://github.com/rudizl).
+A highly configurable weather card for Home Assistant with a graphical editor, now with an integrated temperature/precipitation chart section — a mashup of [Platinum Weather Card](https://github.com/tommyjlong/platinum-weather-card) and [Weather Chart Card](https://github.com/Makin-Things/weather-chart-card). Based on the original by [@makin-things](https://www.github.com/makin-things), extended by [@tommyjlong](https://github.com/tommyjlong), maintained and further developed here by [@rudizl](https://github.com/rudizl).
+
+Both source cards had gone largely unmaintained, yet they remain arguably the best options available for people running personal weather stations with Home Assistant. Rather than maintaining two separate cards with overlapping functionality, this fork merges the best of both.
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge)](https://github.com/custom-components/hacs)
 [![GitHub Release][releases-shield]][releases]
 [![License][license-shield]](LICENSE.md)
 ![Maintenance](https://img.shields.io/badge/MAINTAINED-YES-green?style=for-the-badge)
 
+## Installation
+
+Install via HACS as a custom repository:
+
+1. In HACS → Frontend → ⋮ → Custom Repositories
+2. Add `https://github.com/rudizl/platinum-weather-card` → type **Lovelace**
+3. Install **Platinum Weather Card**
+4. Hard-refresh your browser
+
+---
+
 <details>
-<summary><strong>Changelog — Stable releases</strong></summary>
+<summary><strong>Changelog — v2.0.0 preview</strong></summary>
 
-**v1.3.0**
-- Fix all card editor dropdowns not showing saved values — all slot selects (Left/Right 1–8), overview layout, forecast type, daily forecast layout, time format, pressure decimals and forecast days now correctly reflect the current configuration when opening the editor
-- Fix rainy/pouring icon associations — pouring now shows a more intense icon than rainy
-- Add `moon` slot — displays moon phase from a HA Moon integration sensor (`entity_moon`), with dynamic phase-specific icon (`mdi:moon-*`) and translated phase names for all 11 supported locales (bg, ru, ua, de, fr, it, nl, pl, da, es, he); default slot r4 changed from `fire_danger` to `moon`
-- Add `option_forecast_decimals` — show 1 decimal place in forecast temperatures
-- Add `option_show_forecast_pop` — allow hiding precipitation probability in the forecast section
-- Add `currentWindSpeedUnit` — reads wind speed unit directly from weather entity attributes
-- Add `localeTextObservedMax`/`localeTextObservedMin` translations for all supported languages
-- Add Spanish (`es`) locale
-- HA profile integration — time and date format now read from HA Settings → Profile when set to `system`
-- Single-file build — eliminates browser caching issues after HACS updates
-- Added Actions documentation with examples for `tap_action`, `hold_action` and `double_tap_action`
+**v2.0.0-preview.50** *(current)*
 
-**v1.2.4**
-- Definitive fix for broken editor dropdowns — replaced all `ha-select`/`ha-list-item` with native `<select>` elements styled to match the HA editor
+**New: Charts Section** (merged from Weather Chart Card)
+- Temperature lines (max/min) rendered as continuous polylines below the daily forecast
+- Precipitation bars with millimetre labels, scaled to the day with highest rainfall
+- Configurable independently: toggle temperature chart and precipitation chart separately
+- `section_order` support — Charts appears as its own section, reorderable in the editor
+- `show_section_charts`, `option_show_temperature_chart`, `option_show_precipitation_chart` config keys
 
-**v1.2.3**
-- Fix editor dropdowns still not working — `mwc-list-item` removed in HA 2024.x, replaced with `ha-list-item` (136 occurrences)
+**New: Hover Tooltips**
+- CSS `:hover` tooltips on both **forecast columns** and **chart columns** — identical content in both places
+- Shows: date (bold), weather description (from `entity_summary_1` sensor), **↑ max°** (red), **↓ min°** (blue), 💧 precipitation, wind direction arrow + speed
+- Dark background (`rgba(10,20,40,0.96)`), white text — readable on any dashboard theme
+- Wind unit read directly from `weather.*` entity attributes (never falls back to HA system `m/s` for entities that report in `km/h`)
+- Units localized to HA app language (`km/h` → `км/ч`, `mm` → `мм` for Bulgarian, etc.)
+- Tooltip width spans the full section width, matching forecast section behaviour
 
-**v1.2.2**
-- Fix all dropdowns in the card editor not working in newer HA versions (`@selected` → `@value-changed`)
+**New: Icon Packs**
+- `meteocons-fill` / `meteocons-line` — [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius (MIT, loaded from jsDelivr CDN)
+- `wcc-2` — [amCharts Weather Icons](https://www.amcharts.com/free-animated-svg-weather-icons/) via `rudizl/weather-chart-card` (CC BY 4.0)
+- `custom` — any icon set via `icon_pack_path` with `{condition}` placeholder
+- Selectable from the editor's **Global Options** → **Icon Pack** dropdown
 
-**v1.2.1**
-- Add `double_tap_action` support
-- Add `Gust` localization for all supported languages (bg: Пориви)
-- Accept `hourly` and `twice_daily` as valid `forecast_type` values (previously only `daily` was accepted)
-- Fix broken layout in slots section
-- Fix malformed HTML in beaufort wind display
-- Fix unsafe array access in `slotPossibleTomorrow`
-- Fix null guard in forecast property lookup
+**Editor overhaul**
+- Lock/unlock icons for section visibility toggles (replacing `ha-switch`)
+- MDI section icons throughout (`mdi:eye-outline`, `mdi:text-box-outline`, `mdi:view-grid-outline`, `mdi:calendar-week`, `mdi:chart-line`, `mdi:cog`)
+- Global Options moved to the top of the editor
+- Dropdown option translations (EN + BG: daily/hourly/twice_daily, horizontal/vertical, 12h/24h/system)
+- i18n framework with 112 translated strings — EN and BG complete
+
+**Other**
+- `option_show_current_day` — include today in the forecast/chart strip instead of starting from tomorrow
+- Config validation in `setConfig` — required fields, entity ID format, `section_order` values, `daily_forecast_days` range
+- Wind forecast data in chart (bearing + speed available to tooltip)
+- HA 2026.5/2026.6 compatibility: `ha-textfield` → `ha-input`, WebAwesome switch tokens, `ha-switch` removal
 
 </details>
 
 <details>
-<summary><strong>Changelog — Beta releases</strong></summary>
+<summary><strong>Changelog — Stable releases</strong></summary>
 
 **v1.3.1-beta.13**
 - Hide `unknown`/`unavailable` state in the extended forecast section — was showing raw `unknown` text below the separator line when the entity was unavailable
@@ -78,7 +96,34 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 - Update editor loading guard to detect both `ha-input` and `ha-textfield`
 - Remove dead `mwc-select` CSS rule (unused since v1.2.4)
 
+**v1.3.0**
+- Fix all card editor dropdowns not showing saved values
+- Fix rainy/pouring icon associations
+- Add `moon` slot with dynamic phase icons and translations (11 locales)
+- Add `option_forecast_decimals`, `option_show_forecast_pop`
+- Add `currentWindSpeedUnit` — reads wind unit from weather entity attributes
+- Add Spanish (`es`) locale
+- HA profile integration for time/date format
+- Single-file build
+
+**v1.2.4**
+- Definitive fix for broken editor dropdowns — replaced all `ha-select`/`ha-list-item` with native `<select>` elements
+
+**v1.2.3**
+- Fix editor dropdowns — `mwc-list-item` removed in HA 2024.x, replaced with `ha-list-item`
+
+**v1.2.2**
+- Fix all dropdowns in the card editor not working in newer HA versions
+
+**v1.2.1**
+- Add `double_tap_action` support
+- Add `Gust` localization for all supported languages
+- Accept `hourly` and `twice_daily` as valid `forecast_type` values
+- Fix broken layout in slots section, malformed HTML in beaufort wind display
+
 </details>
+
+---
 
 ## Screenshots
 
@@ -115,65 +160,7 @@ A highly configurable weather card for Home Assistant with a graphical editor. B
 
 </td>
 </tr>
-<tr>
-<td align="center">
-
-**Forecast temperature decimals — ON**
-
-![Forecast decimals on](docs/images/editor-forecast-decimals-on.png)
-
-</td>
-<td align="center">
-
-**Forecast temperature decimals — OFF**
-
-![Forecast decimals off](docs/images/editor-forecast-decimals-off.png)
-
-</td>
-</tr>
-<tr>
-<td align="center" colspan="2">
-
-**Custom slot with label** — `custom1_label: 'Place'` displays a text prefix before the entity value
-
-![Custom slot label](docs/images/editor-custom-slot-label.png)
-
-</td>
-</tr>
 </table>
-
-
-Issues and PRs are welcome! For general discussion, the Home Assistant Community thread is [here](https://community.home-assistant.io/t/platinum-weather-card-support/449166).
-
----
-
-# Installation
-
-Install via HACS as a custom repository:
-
-1. Go to HACS → Frontend → three dots (⋮) → **Custom repositories**
-2. Add `https://github.com/rudizl/platinum-weather-card` as **Dashboard**
-3. Search for "Platinum Weather Card" and install the one from `rudizl`
-
-After installing, add as many instances of the card to your dashboard as needed.
-
----
-
-# Getting Started
-
-You must have a weather integration configured before adding the card — it only visualises data from existing entities. When you first create a card it will appear empty until you configure it via the GUI editor.
-
-![Unconfigured card](./images/unconfigured-card.png)
-
----
-
-# Concepts
-
-The card is divided into sections that can each be enabled, disabled, and reordered independently. Each section has its own configuration page for entity selection and display options.
-
-![Platinum Weather card](./images/all-sections-highlighted.png)
-
-There is no reason all your weather data needs to be on a single card — you can create multiple instances with different configurations.
 
 ---
 
@@ -182,16 +169,17 @@ There is no reason all your weather data needs to be on a single card — you ca
 - Overview
 - Extended
 - Slots
-- Daily Forecasts
+- Daily Forecast
+- **Charts** *(new in v2.0.0-preview)*
 
-Use the switch on the main config dialog to hide a section entirely, and the up/down buttons to reorder them. The **Global Options** section contains settings that affect multiple sections.
+Use the lock icon on each section header to hide it entirely, and the up/down buttons to reorder them. The **Global Options** section contains settings that affect multiple sections.
 
 ## Overview Section
 
 Four layout options are available:
 
 | Layout | Preview |
-|--------|---------|
+|--------|---------| 
 | **Complete** | ![](./images/overview-section-complete.png) |
 | **Observations** | ![](./images/overview-section-observations.png) |
 | **Forecast** | ![](./images/overview-section-forecast.png) |
@@ -214,7 +202,6 @@ Four layout options are available:
 
 Shows today's detailed forecast text.
 
-
 | Option | Type | Description |
 | ------ | ---- | ----------- |
 | Entity Extended Forecast | Entity | Entity providing the detailed forecast |
@@ -226,7 +213,6 @@ Shows today's detailed forecast text.
 ## Slots Section
 
 Up to 8 rows of data in 2 columns. The required entities update dynamically based on which slots are selected.
-
 
 | Slot Value | Description | Example |
 | ---------- | ----------- | ------- |
@@ -257,10 +243,9 @@ Up to 8 rows of data in 2 columns. The required entities update dynamically base
 | `empty` | Blank slot (preserves space) | |
 | `remove` | Remove slot entirely | |
 
-
 ## Icon Packs
 
-The card supports multiple icon packs, selectable from the editor's **Icon Pack** dropdown.
+The card supports multiple icon packs, selectable from the editor's **Global Options → Icon Pack** dropdown.
 
 | Value | Description | Requirement |
 |---|---|---|
@@ -283,19 +268,18 @@ For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{
 
 > **Note:** The card's **default built-in icons** are also based on amCharts weather icons, extended by [@makin-things](https://github.com/Makin-Things/weather-icons).
 
-Both icon sets are MIT-licensed. The only requirement is that copyright notices are preserved in the source files — these are embedded in the icon SVGs themselves and are not affected by using the icons in a Lovelace card.
-
 ## Daily Forecast Section
 
-
 Two layout options: **Horizontal** (default, up to 5 days) and **Vertical** (up to 7 days).
+
+Hovering over any forecast day column shows a tooltip with date, weather description, max/min temperatures, precipitation, and wind speed/direction. The tooltip content is identical to the Charts section tooltip.
 
 | Option | Type | Description |
 | ------ | ---- | ----------- |
 | Weather Entity with Forecasts | String | Main weather entity for forecast data |
 | Forecast Type | String | `daily`, `hourly`, or `twice_daily` |
 | Entity Forecast Icon 1 | String | Entity for forecast condition icon |
-| Entity Forecast Summary 1 | String | Entity for forecast summary text |
+| Entity Forecast Summary 1 | String | Entity for forecast summary text (also used in hover tooltips) |
 | Entity Forecast Min 1 | String | Forecast minimum temperature |
 | Entity Forecast Max 1 | String | Forecast maximum temperature |
 | Entity Forecast Chance of Rain 1 | String | Precipitation probability |
@@ -303,15 +287,29 @@ Two layout options: **Horizontal** (default, up to 5 days) and **Vertical** (up 
 | Entity Extended Forecast 1 | String | Detailed forecast text (vertical only) |
 | Entity Fire Danger 1 | String | Fire danger forecast (vertical only) |
 
-## Global Options
+## Charts Section *(new in v2.0.0-preview)*
 
+An integrated chart rendered directly below the daily forecast, showing the same days as the forecast strip.
 
 | Option | Type | Description |
 | ------ | ---- | ----------- |
+| Show Temperature Chart | Boolean | Show max/min temperature polylines |
+| Show Precipitation Chart | Boolean | Show precipitation bars with mm labels |
+
+The chart uses the same weather entity forecast subscription as the daily forecast section. No additional entities are required.
+
+Hovering over any chart column shows the same tooltip as hovering over the corresponding forecast column.
+
+## Global Options
+
+| Option | Type | Description |
+| ------ | ---- | ----------- |
+| Icon Pack | String | `default`, `meteocons-fill`, `meteocons-line`, `wcc-2`, or `custom` |
+| Icon Pack Path | String | Path template for `custom` icon pack (e.g. `/local/icons/{condition}.svg`) |
 | Show Static Icons | Boolean | Disable animated icons |
 | Time Format | String | `system` (follows HA Settings → Profile), `12hour`, or `24hour` |
-| Locale | String | Locale for timestamp and moon phase formatting. Supported: `bg`, `ru`, `ua`, `de`, `fr`, `it`, `nl`, `pl`, `da`, `es`, `he` (leave empty to use browser locale) |
-| Include Today in Forecast | Boolean | Start the daily forecast strip from today instead of tomorrow |
+| Locale | String | Locale for timestamp and moon phase formatting. Supported: `bg`, `ru`, `ua`, `de`, `fr`, `it`, `nl`, `pl`, `da`, `es`, `he` |
+| Include Today in Forecast | Boolean | Start the daily forecast and chart strips from today instead of tomorrow |
 
 ---
 
@@ -324,15 +322,18 @@ Almost all settings can be configured in the GUI editor. The YAML reference belo
 | Variable | Type | Default | Description |
 | -------- | ---- | ------- | ----------- |
 | `type` | String | — | Must be `custom:platinum-weather-card` |
-| `section_order` | List | overview, extended, slots, daily_forecast | Section display order |
+| `section_order` | List | overview, extended, slots, daily_forecast, charts | Section display order |
 | `show_section_overview` | Boolean | `true` | Show/hide overview section |
 | `show_section_extended` | Boolean | `true` | Show/hide extended section |
 | `show_section_slots` | Boolean | `true` | Show/hide slots section |
 | `show_section_daily_forecast` | Boolean | `true` | Show/hide daily forecast section |
+| `show_section_charts` | Boolean | `true` | Show/hide charts section |
 | `tap_action` | Action | none | Action on tap |
 | `hold_action` | Action | none | Action on hold |
 | `double_tap_action` | Action | none | Action on double-tap |
 | `option_static_icons` | Boolean | `false` | Use non-animated icons |
+| `icon_pack` | String | `default` | Icon pack: `default`, `meteocons-fill`, `meteocons-line`, `wcc-2`, `custom` |
+| `icon_pack_path` | String | — | Path template for custom icon pack |
 
 ## Actions
 
@@ -356,6 +357,7 @@ double_tap_action:
   target:
     entity_id: light.living_room
 ```
+
 | `option_time_format` | String | `system` | `system` (follows HA Settings → Profile), `12hour` or `24hour` |
 | `option_locale` | String | none | Locale for timestamp and moon phase: `bg`, `ru`, `ua`, `de`, `fr`, `it`, `nl`, `pl`, `da`, `es`, `he` |
 | `text_update_time_prefix` | String | none | Prefix for the update time display |
@@ -431,34 +433,6 @@ double_tap_action:
 
 Default slot values: l1=`forecast_max`, l2=`forecast_min`, l3=`wind`, l4=`pressure`, l5=`sun_next`, l6–l8=`remove`, r1=`popforecast`, r2=`humidity`, r3=`uv_summary`, r4=`moon`, r5=`sun_following`, r6–r8=`remove`.
 
-
-## Icon Packs
-
-The card supports multiple icon packs, selectable from the editor's **Icon Pack** dropdown.
-
-| Value | Description | Requirement |
-|---|---|---|
-| `default` | Built-in animated SVG icons (bundled with the card) | None |
-| `meteocons-fill` | [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius — filled style | Internet (jsDelivr CDN) |
-| `meteocons-line` | [Meteocons](https://github.com/basmilius/weather-icons) by Bas Milius — line style | Internet (jsDelivr CDN) |
-| `wcc-2` | [ammap Weather Icons](https://www.ammap.com/) — included in `rudizl/weather-chart-card` | Install `rudizl/weather-chart-card` via HACS |
-| `custom` | Any icon set — set `icon_pack_path` with `{condition}` placeholder | User-provided |
-
-> **Note:** `wcc-1` has been removed — it was byte-for-byte identical to the Meteocons Fill pack. Use `meteocons-fill` instead.
-
-For `custom`, set `icon_pack_path` to a path template such as `/local/my-icons/{condition}.svg`. The `{condition}` placeholder is replaced with the HA weather condition name (e.g. `clear-day`, `partlycloudy`, `rain`).
-
-### Third-party icon licenses
-
-| Icon pack | Author | License |
-|---|---|---|
-| [basmilius/weather-icons](https://github.com/basmilius/weather-icons) (Meteocons) | [Bas Milius](https://bas.dev) | [MIT](https://github.com/basmilius/weather-icons/blob/master/LICENSE) |
-| [amCharts Weather Icons](https://www.amcharts.com/free-animated-svg-weather-icons/) (via `rudizl/weather-chart-card`, `wcc-2`) | amCharts / ammap.com | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — free including commercial use, attribution required |
-
-> **Note:** The card's **default built-in icons** are also based on amCharts weather icons, extended by [@makin-things](https://github.com/Makin-Things/weather-icons).
-
-Both icon sets are MIT-licensed. The only requirement is that copyright notices are preserved in the source files — these are embedded in the icon SVGs themselves and are not affected by using the icons in a Lovelace card.
-
 ## Daily Forecast Section
 
 | Variable | Type | Default | Description |
@@ -467,12 +441,23 @@ Both icon sets are MIT-licensed. The only requirement is that copyright notices 
 | `forecast_type` | String | `daily` | `daily`, `hourly`, or `twice_daily` |
 | `daily_forecast_layout` | String | `horizontal` | `horizontal` or `vertical` |
 | `daily_forecast_days` | Number | `5` | Days to show: 1–5 (horizontal), 1–7 (vertical) |
-| `option_tooltips` | Boolean | `false` | Tooltips on horizontal forecast |
-| `option_show_current_day` | Boolean | `false` | Include today in forecast strip (starts from today instead of tomorrow) |
+| `option_tooltips` | Boolean | `false` | Enable hover tooltips on horizontal forecast columns |
+| `option_show_current_day` | Boolean | `false` | Include today in forecast strip |
+| `entity_summary_1` | String | none | Weather summary sensor for day 1 tooltip (auto-incremented for each day) |
 | `daily_extended_forecast_days` | Number | `7` | Extended forecast days (vertical only, 0–7) |
 | `option_daily_color_fire_danger` | Boolean | `true` | Colour fire danger (vertical only) |
 | `old_daily_format` | Boolean | `false` | Stack max/min vertically instead of side by side |
 | `tempformat` | String | — | `highlow` = show max before min |
+
+## Charts Section
+
+| Variable | Type | Default | Description |
+| -------- | ---- | ------- | ----------- |
+| `show_section_charts` | Boolean | `true` | Show/hide the charts section |
+| `option_show_temperature_chart` | Boolean | `true` | Show max/min temperature lines |
+| `option_show_precipitation_chart` | Boolean | `true` | Show precipitation bars |
+
+The chart uses the same `weather_entity` and `daily_forecast_days` settings as the Daily Forecast section. No additional entities are required.
 
 [license-shield]: https://img.shields.io/github/license/makin-things/platinum-weather-card.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/rudizl/platinum-weather-card.svg?style=for-the-badge
