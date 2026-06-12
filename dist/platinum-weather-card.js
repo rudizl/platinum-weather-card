@@ -582,6 +582,7 @@ function Mt(t,e,i){let o,s=t;return"object"==typeof t?(s=t.slot,o=t):o={flatten:
     `}_showWarning(t){return U`<hui-warning>${t}</hui-warning>`}_showError(t){const e=document.createElement("hui-error-card");return e.setConfig({type:"error",error:t,origConfig:this._config}),U`${e}`}get styles(){const t=this._config.option_tooltips?"visible":"hidden",e=this._config.temp_font_weight||"300",i=this._config.temp_font_size||"4em",o=this._config.forecast_text_font_size||"21px",s=this._config.forecast_text_alignment||"center";return ht`
       ha-card {
         cursor: pointer;
+        overflow: hidden;
       }
 
       .card {
@@ -788,11 +789,10 @@ function Mt(t,e,i){let o,s=t;return"object"==typeof t?(s=t.slot,o=t):o={flatten:
       }
       .day-horiz {
         flex: 1;
-        float: left;
+        min-width: 0;
         text-align: center;
         color: var(--primary-text-color);
         border-right: 0.5px solid rgba(217,217,217,0.25);
-        margin-right: -0.5px;
         box-sizing: border-box;
       }
       .daily-forecast-vert-section {

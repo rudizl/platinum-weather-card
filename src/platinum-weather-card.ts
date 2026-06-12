@@ -3330,6 +3330,7 @@ export class PlatinumWeatherCard extends LitElement {
     return css`
       ha-card {
         cursor: pointer;
+        overflow: hidden;
       }
 
       .card {
@@ -3536,11 +3537,10 @@ export class PlatinumWeatherCard extends LitElement {
       }
       .day-horiz {
         flex: 1;
-        float: left;
+        min-width: 0;
         text-align: center;
         color: var(--primary-text-color);
         border-right: 0.5px solid rgba(217,217,217,0.25);
-        margin-right: -0.5px;
         box-sizing: border-box;
       }
       .daily-forecast-vert-section {
