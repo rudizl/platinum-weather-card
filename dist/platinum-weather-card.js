@@ -1996,12 +1996,6 @@ const ns=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
       ${B}
       ${W}
       ${j}`}get _show_warning(){var t;return(null===(t=this._config)||void 0===t?void 0:t.show_warning)||!1}get _show_error(){var t;return(null===(t=this._config)||void 0===t?void 0:t.show_error)||!1}async firstUpdated(){var t;this._config&&this.hass&&this._config.card_config_version!==this._config_version&&this._configCleanup(),customElements.get("ha-switch")&&(customElements.get("ha-input")||customElements.get("ha-textfield"))&&customElements.get("ha-entity-picker")||null===(t=customElements.get("hui-entities-card"))||void 0===t||t.getConfigElement()}_sectionOverviewEditor(){return U`
-      <ha-input label=${this._t("card_title_1")} .value=${this._text_card_title} .configValue=${"text_card_title"}
-        @input=${this._valueChanged}>
-      </ha-input>
-      <ha-input label=${this._t("card_title_2")} .value=${this._text_card_title_2} .configValue=${"text_card_title_2"}
-        @input=${this._valueChanged}>
-      </ha-input>
       <ha-entity-picker .hass=${this.hass} .configValue=${"entity_update_time"} .value=${this._entity_update_time} .includeDomains=${["sensor"]}
         name="entity_update_time" label=${this._t("entity_update_time")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
@@ -2381,6 +2375,12 @@ const ns=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         </div>
       </div>
     `}_optionGlobalOptionsEditor(){var t;return U`
+      <ha-input label=${this._t("card_title_1")} .value=${this._text_card_title} .configValue=${"text_card_title"}
+        @input=${this._valueChanged}>
+      </ha-input>
+      <ha-input label=${this._t("card_title_2")} .value=${this._text_card_title_2} .configValue=${"text_card_title_2"}
+        @input=${this._valueChanged}>
+      </ha-input>
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
@@ -2435,30 +2435,30 @@ const ns=ht`.mdc-floating-label{-moz-osx-font-smoothing:grayscale;-webkit-font-s
         </div>`:U``}
       </div>
       <div class="help-text" style="padding: 8px 0 4px; font-weight: 500;">${this._t("actions")}</div>
-      <ha-selector
-        .hass=${this.hass}
+      <hui-action-editor
         .label=${this._t("tap_action")}
-        .selector=${{ui_action:{}}}
-        .value=${this._tap_action}
+        .hass=${this.hass}
+        .config=${this._tap_action}
         .configValue=${"tap_action"}
+        .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
         @value-changed=${this._valueChangedPicker}>
-      </ha-selector>
-      <ha-selector
-        .hass=${this.hass}
+      </hui-action-editor>
+      <hui-action-editor
         .label=${this._t("hold_action")}
-        .selector=${{ui_action:{}}}
-        .value=${this._hold_action}
-        .configValue=${"hold_action"}
-        @value-changed=${this._valueChangedPicker}>
-      </ha-selector>
-      <ha-selector
         .hass=${this.hass}
-        .label=${this._t("double_tap_action")}
-        .selector=${{ui_action:{}}}
-        .value=${this._double_tap_action}
-        .configValue=${"double_tap_action"}
+        .config=${this._hold_action}
+        .configValue=${"hold_action"}
+        .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
         @value-changed=${this._valueChangedPicker}>
-      </ha-selector>
+      </hui-action-editor>
+      <hui-action-editor
+        .label=${this._t("double_tap_action")}
+        .hass=${this.hass}
+        .config=${this._double_tap_action}
+        .configValue=${"double_tap_action"}
+        .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
+        @value-changed=${this._valueChangedPicker}>
+      </hui-action-editor>
     `}_renderSubElementEditor(){const t=[U`
         <div class="header">
           <div class="back-title">

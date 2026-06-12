@@ -1038,12 +1038,6 @@ get _forecast_type(): string {
   private _sectionOverviewEditor(): TemplateResult {
     //tjl added weather as an included domain for Apparent Temp
     return html`
-      <ha-input label=${this._t("card_title_1")} .value=${this._text_card_title} .configValue=${'text_card_title'}
-        @input=${this._valueChanged}>
-      </ha-input>
-      <ha-input label=${this._t("card_title_2")} .value=${this._text_card_title_2} .configValue=${'text_card_title_2'}
-        @input=${this._valueChanged}>
-      </ha-input>
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_update_time'} .value=${this._entity_update_time} .includeDomains=${['sensor']}
         name="entity_update_time" label=${this._t("entity_update_time")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
@@ -1510,6 +1504,12 @@ get _forecast_type(): string {
 
   private _optionGlobalOptionsEditor(): TemplateResult {
     return html`
+      <ha-input label=${this._t("card_title_1")} .value=${this._text_card_title} .configValue=${'text_card_title'}
+        @input=${this._valueChanged}>
+      </ha-input>
+      <ha-input label=${this._t("card_title_2")} .value=${this._text_card_title_2} .configValue=${'text_card_title_2'}
+        @input=${this._valueChanged}>
+      </ha-input>
       <div class="side-by-side">
         <div>
           <div class="toggle-row">
@@ -1564,30 +1564,30 @@ get _forecast_type(): string {
         </div>` : html``}
       </div>
       <div class="help-text" style="padding: 8px 0 4px; font-weight: 500;">${this._t("actions")}</div>
-      <ha-selector
-        .hass=${this.hass}
+      <hui-action-editor
         .label=${this._t("tap_action")}
-        .selector=${{ ui_action: {} }}
-        .value=${this._tap_action}
+        .hass=${this.hass}
+        .config=${this._tap_action}
         .configValue=${'tap_action'}
+        .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
         @value-changed=${this._valueChangedPicker}>
-      </ha-selector>
-      <ha-selector
-        .hass=${this.hass}
+      </hui-action-editor>
+      <hui-action-editor
         .label=${this._t("hold_action")}
-        .selector=${{ ui_action: {} }}
-        .value=${this._hold_action}
-        .configValue=${'hold_action'}
-        @value-changed=${this._valueChangedPicker}>
-      </ha-selector>
-      <ha-selector
         .hass=${this.hass}
-        .label=${this._t("double_tap_action")}
-        .selector=${{ ui_action: {} }}
-        .value=${this._double_tap_action}
-        .configValue=${'double_tap_action'}
+        .config=${this._hold_action}
+        .configValue=${'hold_action'}
+        .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
         @value-changed=${this._valueChangedPicker}>
-      </ha-selector>
+      </hui-action-editor>
+      <hui-action-editor
+        .label=${this._t("double_tap_action")}
+        .hass=${this.hass}
+        .config=${this._double_tap_action}
+        .configValue=${'double_tap_action'}
+        .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
+        @value-changed=${this._valueChangedPicker}>
+      </hui-action-editor>
     `;
   }
 
