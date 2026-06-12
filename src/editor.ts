@@ -566,6 +566,18 @@ get _forecast_type(): string {
     return this._config?.daily_extended_name_attr || '';
   }
 
+  get _tap_action(): Record<string, unknown> | undefined {
+    return this._config?.tap_action;
+  }
+
+  get _hold_action(): Record<string, unknown> | undefined {
+    return this._config?.hold_action;
+  }
+
+  get _double_tap_action(): Record<string, unknown> | undefined {
+    return this._config?.double_tap_action;
+  }
+
   get _summary_1_use_attr(): boolean {
     return this._config?.summary_1_use_attr === true;
   }
@@ -1898,13 +1910,8 @@ get _forecast_type(): string {
 
   private _valueChangedAction(configKey: string, ev): void {
     const value = ev.detail.value;
-    if (value !== undefined && value !== null) {
-      this._config = { ...this._config, [configKey]: value };
-    } else {
-      const cfg = { ...this._config };
-      delete cfg[configKey];
-      this._config = cfg;
-    }
+    if (value === undefined || value === null) return; // ignore init/reset fires
+    this._config = { ...this._config, [configKey]: value };
     fireEvent(this, 'config-changed', { config: this.sortObjectByKeys(this._config) });
   }
 
