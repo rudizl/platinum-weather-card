@@ -15,7 +15,7 @@ Install via HACS as a custom repository:
 
 1. In HACS → Frontend → ⋮ → Custom Repositories
 2. Add `https://github.com/rudizl/platinum-weather-card-plus-charts` → type **Lovelace**
-3. Install **Platinum Weather Card**
+3. Install **Platinum Weather Card Plus Charts**
 4. Hard-refresh your browser
 
 ---
