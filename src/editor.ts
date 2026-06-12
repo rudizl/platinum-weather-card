@@ -1568,25 +1568,22 @@ get _forecast_type(): string {
         .label=${this._t("tap_action")}
         .hass=${this.hass}
         .config=${this._tap_action}
-        .configValue=${'tap_action'}
         .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
-        @value-changed=${this._valueChangedPicker}>
+        @value-changed=${(ev) => this._valueChangedAction('tap_action', ev)}>
       </hui-action-editor>
       <hui-action-editor
         .label=${this._t("hold_action")}
         .hass=${this.hass}
         .config=${this._hold_action}
-        .configValue=${'hold_action'}
         .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
-        @value-changed=${this._valueChangedPicker}>
+        @value-changed=${(ev) => this._valueChangedAction('hold_action', ev)}>
       </hui-action-editor>
       <hui-action-editor
         .label=${this._t("double_tap_action")}
         .hass=${this.hass}
         .config=${this._double_tap_action}
-        .configValue=${'double_tap_action'}
         .actions=${["more-info","toggle","navigate","url","call-service","assist","none"]}
-        @value-changed=${this._valueChangedPicker}>
+        @value-changed=${(ev) => this._valueChangedAction('double_tap_action', ev)}>
       </hui-action-editor>
     `;
   }
@@ -1895,6 +1892,18 @@ get _forecast_type(): string {
         this._config = { ...this._config };
         delete this._config[target.configValue];
       }
+    }
+    fireEvent(this, 'config-changed', { config: this.sortObjectByKeys(this._config) });
+  }
+
+  private _valueChangedAction(configKey: string, ev): void {
+    const value = ev.detail.value;
+    if (value !== undefined && value !== null) {
+      this._config = { ...this._config, [configKey]: value };
+    } else {
+      const cfg = { ...this._config };
+      delete cfg[configKey];
+      this._config = cfg;
     }
     fireEvent(this, 'config-changed', { config: this.sortObjectByKeys(this._config) });
   }
