@@ -131,11 +131,36 @@ Install via HACS as a custom repository:
 <tr>
 <td align="center" width="50%">
 
-**Card overview**
+**Card with Charts section**
 
 ![Card overview](images/platinum-weather-card.png)
 
 </td>
+<td align="center" width="50%">
+
+**Forecast hover tooltip**
+
+![Forecast tooltip](images/tooltip-forecast.png)
+
+</td>
+</tr>
+<tr>
+<td align="center" width="50%">
+
+**Editor — section list**
+
+![Editor sections](images/editor-sections.png)
+
+</td>
+<td align="center" width="50%">
+
+**Editor — Global Options (locale & icon pack)**
+
+![Editor global options](images/global-options.png)
+
+</td>
+</tr>
+<tr>
 <td align="center" width="50%">
 
 **Slot configuration in editor**
@@ -143,20 +168,11 @@ Install via HACS as a custom repository:
 ![Editor slots](images/slots-section-highlighted.png)
 
 </td>
-</tr>
-<tr>
-<td align="center">
+<td align="center" width="50%">
 
-**Include Today in Forecast — ON**
+**Icon pack selection**
 
-![Include today on](images/daily-forecast-section-horizontal.png)
-
-</td>
-<td align="center">
-
-**Include Today in Forecast — OFF**
-
-![Include today off](images/daily-forecast-section-horizontal.png)
+![Editor icon pack](images/editor-icon-pack.png)
 
 </td>
 </tr>
