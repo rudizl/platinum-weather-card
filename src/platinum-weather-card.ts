@@ -951,7 +951,11 @@ export class PlatinumWeatherCard extends LitElement {
           let _wbDeg2b: number | null = null;
           if (_wb2b !== undefined && _wb2b !== null) { const _n2b = Number(_wb2b); _wbDeg2b = !isNaN(_n2b) ? _n2b : (_cMap2b[String(_wb2b).toUpperCase().trim()] ?? null); }
           const _fdate2b = forecastDate ? forecastDate.toLocaleDateString(this.locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
-          const _cond2b = this._config.option_tooltips && tooltipEntity && this.hass.states[tooltipEntity] ? this.hass.states[tooltipEntity].state : '';
+          const _cond2b = this._config.option_tooltips && tooltipEntity && this.hass.states[tooltipEntity]
+            ? (this._config.summary_1_use_attr && this._config.summary_1_name_attr
+                ? (this.hass.states[tooltipEntity].attributes[this._config.summary_1_name_attr] ?? '')
+                : this.hass.states[tooltipEntity].state)
+            : '';
           const _wEntF2 = this._config.entity ? this.hass.states[this._config.entity] : null;
           const _rows2b = this._buildTooltipRows({ date: _fdate2b, condition: _cond2b, maxT: _fe2b?.temperature !== undefined ? Number(_fe2b.temperature) : null, minT: _fe2b?.templow !== undefined ? Number(_fe2b.templow) : null, precip: _fe2b?.precipitation !== undefined ? Number(_fe2b.precipitation) : null, windSpeed: _fe2b?.wind_speed !== undefined ? Math.round(Number(_fe2b.wind_speed)) : null, windBearDeg: _wbDeg2b, uomPrecip: (_wEntF2?.attributes?.precipitation_unit as string) || this.getUOM('precipitation'), uomWind: this._getWindUnit() });
           tooltip = html`<div class="fcasttooltipblock" id="fcast-summary-${i}" style="width:${days * 100}%;left:-${i * 100}%;">${unsafeHTML(_rows2b)}<span style="content:'';position:absolute;top:100%;left:${(100 / days / 2) + i * (100 / days)}%;margin-left:-7.5px;border-width:7.5px;border-style:solid;border-color:#FFA100 transparent transparent transparent;"></span></div>`;
@@ -1062,8 +1066,13 @@ export class PlatinumWeatherCard extends LitElement {
       } else {
         start = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
         const summaryEntity = start && this._config.entity_summary_1 ? this._config.entity_summary_1.replace(/(\d+)(?!.*\d)/g, String(Number(start) + i)) : undefined;
+        const _sumState = summaryEntity && this.hass.states[summaryEntity]
+          ? (this._config.summary_1_use_attr && this._config.summary_1_name_attr
+              ? this.hass.states[summaryEntity].attributes[this._config.summary_1_name_attr]
+              : this.hass.states[summaryEntity].state)
+          : "---";
         var summary = start ? html`
-          <div class="f-summary-vert">${summaryEntity && this.hass.states[summaryEntity] ? this.hass.states[summaryEntity].state : "---"}</div>` : ``;
+          <div class="f-summary-vert">${_sumState ?? "---"}</div>` : ``;
       }
 
       if (this._config.entity_forecast_max_1?.match('^weather.')) {

@@ -566,6 +566,14 @@ get _forecast_type(): string {
     return this._config?.daily_extended_name_attr || '';
   }
 
+  get _summary_1_use_attr(): boolean {
+    return this._config?.summary_1_use_attr === true;
+  }
+
+  get _summary_1_name_attr(): string {
+    return this._config?.summary_1_name_attr || '';
+  }
+
   get _option_today_temperature_decimals(): boolean {
     return this._config?.option_today_temperature_decimals === true; // default off
   }
@@ -1362,6 +1370,21 @@ get _forecast_type(): string {
         name="entity_summary_1" label=${this._t("entity_summary_1")} allow-custom-entity
         @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
+      ${this._entity_summary_1 !== '' && !this._entity_summary_1.match('^weather.') ? html`
+        <div class="side-by-side">
+          <div>
+            <div class="toggle-row">
+              <ha-icon-button class=${this._summary_1_use_attr ? "eye-toggle active" : "eye-toggle"} .path=${this._summary_1_use_attr ? mdiLockOpenVariant : mdiLock} .value=${'summary_1_use_attr'} .checked=${this._summary_1_use_attr} @click=${this._toggleVisibility}></ha-icon-button>
+              <span class="toggle-label">${this._t("use_attribute")}</span>
+            </div>
+          </div>
+          ${this._summary_1_use_attr ? html`
+            <ha-selector .hass=${this.hass} .entityId=${this._entity_summary_1} .configValue=${'summary_1_name_attr'} .value=${this._summary_1_name_attr}
+              .selector=${{ attribute: { entity_id: this._entity_summary_1 } }} .required=${false}
+              name="summary_1_name_attr" label=${this._t("attribute")} allow-custom-value
+              @value-changed=${this._valueChangedPicker}>
+            </ha-selector>` : html``}
+        </div>` : html``}
       <ha-entity-picker .hass=${this.hass} .configValue=${'entity_forecast_min_1'} .value=${this._entity_forecast_min_1} .includeDomains=${['sensor', 'weather']}
         name="entity_forecast_min_1" label=${this._t("entity_forecast_min_1")} allow-custom-entity @value-changed=${this._valueChangedPicker}>
       </ha-entity-picker>
