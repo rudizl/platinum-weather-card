@@ -2654,7 +2654,9 @@ export class PlatinumWeatherCard extends LitElement {
     var nextDate = new Date();
     nextDate.setDate(nextDate.getDate() + 1);
     if ((this._config.entity_sun) && (this.hass.states[this._config.entity_sun] !== undefined)) {
-      if (this.hass.states[this._config.entity_sun].state === "above_horizon") {
+      const _sunElevation = this.hass.states[this._config.entity_sun].attributes?.elevation;
+      const _sunAbove = _sunElevation !== undefined ? _sunElevation > 0 : this.hass.states[this._config.entity_sun].state === 'above_horizon';
+      if (_sunAbove) {
         nextSunRise = nextDate.toLocaleDateString(this.locale, { weekday: 'short' }) + " " + nextSunRise;
         return {
           'next': html`
@@ -2907,8 +2909,16 @@ export class PlatinumWeatherCard extends LitElement {
   }
 
   get dayOrNight(): string {
-    const transformDayNight = { "below_horizon": "night", "above_horizon": "day", };
-    return this._config.entity_sun && this.hass.states[this._config.entity_sun] !== undefined ? transformDayNight[this.hass.states[this._config.entity_sun].state] : 'day';
+    if (this._config.entity_sun && this.hass.states[this._config.entity_sun] !== undefined) {
+      const sun = this.hass.states[this._config.entity_sun];
+      // Use numeric elevation attribute — language-independent (state string is translated in non-English HA)
+      if (sun.attributes?.elevation !== undefined) {
+        return sun.attributes.elevation > 0 ? 'day' : 'night';
+      }
+      // Fallback: English state strings only
+      return sun.state === 'above_horizon' ? 'day' : 'night';
+    }
+    return 'day';
   }
 
   get iconClear(): string {
