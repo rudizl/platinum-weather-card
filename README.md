@@ -21,9 +21,9 @@ Install via HACS as a custom repository:
 ---
 
 <details>
-<summary><strong>Changelog — v2.0.0 preview</strong></summary>
+<summary><strong>Changelog</strong></summary>
 
-**v2.0.0-preview.50** *(current)*
+**v2.0.0**
 
 **New: Charts Section** (merged from Weather Chart Card)
 - Temperature lines (max/min) rendered as continuous polylines below the daily forecast
@@ -50,6 +50,7 @@ Install via HACS as a custom repository:
 - Lock/unlock icons for section visibility toggles (replacing `ha-switch`)
 - MDI section icons throughout (`mdi:eye-outline`, `mdi:text-box-outline`, `mdi:view-grid-outline`, `mdi:calendar-week`, `mdi:chart-line`, `mdi:cog`)
 - Global Options moved to the top of the editor
+- Locale dropdown — select from all supported languages (BG, DA, DE, EN, ES, FR, HE, IT, NL, PL, RU, UA)
 - Dropdown option translations (EN + BG: daily/hourly/twice_daily, horizontal/vertical, 12h/24h/system)
 - i18n framework with 112 translated strings — EN and BG complete
 
@@ -59,10 +60,9 @@ Install via HACS as a custom repository:
 - Wind forecast data in chart (bearing + speed available to tooltip)
 - HA 2026.5/2026.6 compatibility: `ha-textfield` → `ha-input`, WebAwesome switch tokens, `ha-switch` removal
 
-</details>
+---
 
-<details>
-<summary><strong>Changelog — Stable releases</strong></summary>
+**Older releases**
 
 **v1.3.1-beta.13**
 - Hide `unknown`/`unavailable` state in the extended forecast section — was showing raw `unknown` text below the separator line when the entity was unavailable
@@ -186,7 +186,7 @@ Install via HACS as a custom repository:
 - Extended
 - Slots
 - Daily Forecast
-- **Charts** *(new in v2.0.0-preview)*
+- **Charts**
 
 Use the lock icon on each section header to hide it entirely, and the up/down buttons to reorder them. The **Global Options** section contains settings that affect multiple sections.
 
@@ -303,7 +303,7 @@ Hovering over any forecast day column shows a tooltip with date, weather descrip
 | Entity Extended Forecast 1 | String | Detailed forecast text (vertical only) |
 | Entity Fire Danger 1 | String | Fire danger forecast (vertical only) |
 
-## Charts Section *(new in v2.0.0-preview)*
+## Charts Section
 
 An integrated chart rendered directly below the daily forecast, showing the same days as the forecast strip.
 
