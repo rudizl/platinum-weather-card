@@ -1,4 +1,4 @@
-name: 'Build'
+name: 'CI'
 
 on:
   push:
@@ -9,18 +9,28 @@ on:
       - master
 
 jobs:
-  build:
-    name: Build Master
+  hacs:
+    name: HACS Validation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - name: HACS Action
+        uses: hacs/action@main
+        with:
+          category: plugin
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install dependencies
+        run: npm install
       - name: Build
-        run: |
-          rm -rf /home/runner/work/platinum-weather-card/platinum-weather-card/node_modules
-          npm install
-          npm run lint && npm run rollup -c rollup.config.js
-          ls -R /home/runner/work/platinum-weather-card/platinum-weather-card/dist
-      # - name: HACS validation
-      #   uses: 'hacs/action@main'
-      #   with:
-      #     category: 'plugin'
+        run: npm run build
+      - name: Verify dist
+        run: ls -lh dist/platinum-weather-card.js
