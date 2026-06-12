@@ -3,10 +3,7 @@
 import { LitElement, html, TemplateResult, css, PropertyValues, CSSResult, unsafeCSS } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { HomeAssistant, LovelaceCardEditor, getLovelace, debounce, hasAction, ActionHandlerEvent, handleAction } from 'custom-card-helpers';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { getLocale } from './helpers';
-import { entityComputeStateDisplay, stringComputeStateDisplay } from './compute_state_display';
+import { stringComputeStateDisplay } from './compute_state_display';
 
 //tjl add ifDefined in support of tap action
 import { ifDefined } from "lit/directives/if-defined";
@@ -224,11 +221,12 @@ export class PlatinumWeatherCard extends LitElement {
     //  Change "entity" (?:string) to new weather_entity type (string only)
     //  Note: forecast_type required to be set.
     //  Note: forecast_type daily supported by this card but not hourly nor twice_daily 
+    if (!this.hass || !this._config) return;
     this._subscribed = subscribeForecast(
-      this.hass!,
-    //this._config!.entity,
-      this._config!.weather_entity,
-      this._config!.forecast_type as "daily" | "hourly" | "twice_daily",
+      this.hass,
+    //this._config.entity,
+      this._config.weather_entity,
+      this._config.forecast_type as "daily" | "hourly" | "twice_daily",
       (event) => {
         this._forecastEvent = event;
       }
@@ -1377,8 +1375,6 @@ export class PlatinumWeatherCard extends LitElement {
     if (data.length === 0) return html``;
 
     const tempH   = showTemp   ? 75 : 52;
-    const precipH = 0; // bars now live INSIDE the temp area — no separate section
-    const gap     = 0;
     const totalH  = tempH + (showPrecip ? 16 : 0); // 16px label strip below if precip enabled
     const BH = 13;
     const MIN_SEP = BH + 5;
@@ -1451,8 +1447,7 @@ export class PlatinumWeatherCard extends LitElement {
       // Hover tooltip (same CSS mechanism as forecast section)
       const locale = this._config.option_locale || 'bg';
       const ttDate = d.datetime ? new Date(d.datetime).toLocaleDateString(locale, { weekday: 'long', month: 'short', day: 'numeric' }) : '';
-      const ttWbArrow = d.windBear !== null ? `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" style="transform:rotate(${(d.windBear!+180)%360}deg);display:inline-block;vertical-align:middle;margin-right:2px;"><polygon points="5,0 8.5,9 5,6.5 1.5,9" fill="currentColor"/></svg>` : '';
-      // ttWindStr removed — wind unit now via _getWindUnit() in _buildTooltipRows
+      // wind arrow built in _buildTooltipRows via _getWindUnit()
       // Get condition text from entity_summary_1 — same mechanism as forecast tooltip
       const _summaryStart = this._config.entity_summary_1 ? this._config.entity_summary_1.match(/(\d+)(?!.*\d)/g) : false;
       let _chartCond = '';
@@ -1546,8 +1541,8 @@ export class PlatinumWeatherCard extends LitElement {
       <ha-card class="card"
         @action=${this._handleAction}
         .actionHandler=${actionHandler({
-          hasHold: hasAction(this._config!.hold_action),
-          hasDoubleClick: hasAction(this._config!.double_tap_action),
+          hasHold: hasAction(this._config?.hold_action),
+          hasDoubleClick: hasAction(this._config?.double_tap_action),
         })}
         tabindex=${ifDefined(
           hasAction(this._config.tap_action) ? "0" : undefined
