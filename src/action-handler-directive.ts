@@ -32,6 +32,10 @@ class ActionHandler extends HTMLElement implements ActionHandler {
 
   private dblClickTimeout?: number;
 
+  private startX = 0;
+
+  private startY = 0;
+
   constructor() {
     super();
     this.ripple = document.createElement('mwc-ripple');
@@ -50,17 +54,44 @@ class ActionHandler extends HTMLElement implements ActionHandler {
     this.appendChild(this.ripple);
     this.ripple.primary = true;
 
-    ['touchcancel', 'mouseout', 'mouseup', 'touchmove', 'mousewheel', 'wheel', 'scroll'].forEach((ev) => {
-      document.addEventListener(
-        ev,
-        () => {
+    // Only touchcancel should reset the timer — scroll/mouseout/wheel were
+    // incorrectly cancelling taps on mobile (page scroll fires before touchend)
+    document.addEventListener('touchcancel', () => {
+      clearTimeout(this.timer);
+      this.stopAnimation();
+      this.timer = undefined;
+    }, { passive: true });
+
+    // On desktop only: cancel hold if mouse leaves the element
+    if (!isTouch) {
+      document.addEventListener('mouseout', () => {
+        clearTimeout(this.timer);
+        this.stopAnimation();
+        this.timer = undefined;
+      }, { passive: true });
+    }
+
+    // touchmove: only cancel if movement exceeds threshold (avoids cancelling taps on micro-movements)
+    document.addEventListener('touchmove', (ev: TouchEvent) => {
+      if (this.timer !== undefined && ev.touches.length > 0) {
+        const dx = ev.touches[0].pageX - this.startX;
+        const dy = ev.touches[0].pageY - this.startY;
+        if (Math.sqrt(dx * dx + dy * dy) > 10) {
           clearTimeout(this.timer);
           this.stopAnimation();
           this.timer = undefined;
-        },
-        { passive: true },
-      );
-    });
+        }
+      }
+    }, { passive: true });
+
+    // mouseup: only cancel on non-touch devices (on touch, touchend handles it)
+    document.addEventListener('mouseup', () => {
+      if (!isTouch) {
+        clearTimeout(this.timer);
+        this.stopAnimation();
+        this.timer = undefined;
+      }
+    }, { passive: true });
   }
 
   public bind(element: ActionHandlerElement, options): void {
@@ -94,6 +125,8 @@ class ActionHandler extends HTMLElement implements ActionHandler {
         y = (ev as MouseEvent).pageY;
       }
 
+      this.startX = x;
+      this.startY = y;
       this.timer = window.setTimeout(() => {
         this.startAnimation(x, y);
         this.held = true;
@@ -101,15 +134,20 @@ class ActionHandler extends HTMLElement implements ActionHandler {
     };
 
     const end = (ev: Event): void => {
-      // Prevent mouse event if touch event
       ev.preventDefault();
-      if (['touchend', 'touchcancel'].includes(ev.type) && this.timer === undefined) {
+      if (ev.type === 'touchcancel') {
+        clearTimeout(this.timer);
+        this.stopAnimation();
+        this.timer = undefined;
+        this.held = false;
         return;
       }
+      const wasHeld = this.held;
       clearTimeout(this.timer);
       this.stopAnimation();
       this.timer = undefined;
-      if (this.held) {
+      this.held = false;
+      if (wasHeld) {
         fireEvent(element, 'action', { action: 'hold' });
       } else if (options.hasDoubleClick) {
         if ((ev.type === 'click' && (ev as MouseEvent).detail < 2) || !this.dblClickTimeout) {

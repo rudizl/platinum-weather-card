@@ -240,6 +240,9 @@ export class PlatinumWeatherCard extends LitElement {
     if (this.hasUpdated && this._config && this.hass) {
       this._subscribeForecastEvents();
     }
+    this.addEventListener('pointerdown', this._onPointerDown.bind(this));
+    this.addEventListener('pointercancel', this._onPointerCancel.bind(this));
+    this.addEventListener('click', this._onCardClick.bind(this));
   }
 
 
@@ -247,6 +250,7 @@ export class PlatinumWeatherCard extends LitElement {
   disconnectedCallback() {
     super.disconnectedCallback();
     this._unsubscribeForecastEvents();
+    clearTimeout(this._pHoldTimer); clearTimeout(this._clickTimer);
   }
 
 
@@ -1539,11 +1543,6 @@ export class PlatinumWeatherCard extends LitElement {
         ${this.styles}
       </style>
       <ha-card class="card"
-        @action=${this._handleAction}
-        .actionHandler=${actionHandler({
-          hasHold: hasAction(this._config?.hold_action),
-          hasDoubleClick: hasAction(this._config?.double_tap_action),
-        })}
         tabindex=${ifDefined(
           hasAction(this._config.tap_action) ? "0" : undefined
         )}
@@ -1555,9 +1554,53 @@ export class PlatinumWeatherCard extends LitElement {
     return html`${htmlCode}`;
   }
 
-  private _handleAction(ev: ActionHandlerEvent): void {
-    if (this.hass && this._config && ev.detail.action) {
-      handleAction(this, this.hass, this._config, ev.detail.action);
+  // ── Action handling ──────────────────────────────────────────────────────
+  // click  → tap / double-tap (browser fires only on real tap, not on scroll)
+  // pointerdown + 500ms → hold (timer fires before pointercancel on mobile)
+
+  private _pHoldFired = false;
+  private _pHoldTimer?: number;
+  private _clickCount = 0;
+  private _clickTimer?: number;
+
+  private _onPointerDown(e: PointerEvent): void {
+    // Only primary pointer (ignore multi-touch)
+    if (!e.isPrimary) return;
+    this._pHoldFired = false;
+    clearTimeout(this._pHoldTimer);
+    if (this.hass && this._config && hasAction(this._config?.hold_action)) {
+      this._pHoldTimer = window.setTimeout(() => {
+        this._pHoldFired = true;
+        if (this.hass && this._config) handleAction(this, this.hass, this._config, 'hold');
+      }, 500);
+    }
+  }
+
+  private _onPointerCancel(): void {
+    clearTimeout(this._pHoldTimer);
+    this._pHoldFired = false;
+  }
+
+  private _onCardClick(): void {
+    // Suppress click that follows a hold
+    if (this._pHoldFired) { this._pHoldFired = false; return; }
+    if (!this.hass || !this._config) return;
+
+    if (hasAction(this._config?.double_tap_action)) {
+      this._clickCount++;
+      if (this._clickCount === 1) {
+        this._clickTimer = window.setTimeout(() => {
+          this._clickCount = 0;
+          if (this.hass && this._config && hasAction(this._config?.tap_action))
+            handleAction(this, this.hass, this._config, 'tap');
+        }, 250);
+      } else {
+        clearTimeout(this._clickTimer);
+        this._clickCount = 0;
+        handleAction(this, this.hass, this._config, 'double_tap');
+      }
+    } else {
+      if (hasAction(this._config?.tap_action)) handleAction(this, this.hass, this._config, 'tap');
     }
   }
 
