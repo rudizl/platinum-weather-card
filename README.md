@@ -62,6 +62,32 @@ Install via HACS as a custom repository:
 
 ---
 
+**v2.0.4**
+
+**Fix: tap/hold/double-tap actions on mobile**
+- Replaced the custom `action-handler-directive` with a `click` + `pointerdown` hybrid that works reliably in HA Companion App (Android WebView / sections view scroll container)
+- `click` → tap / double-tap; `pointerdown` + 500ms → hold
+
+**Fix: horizontal scroll caused by forecast section**
+- `ha-card`: `overflow: hidden`; `.day-horiz`: removed `float: left`, added `min-width: 0`
+
+**Fix: day/night icons broken with non-English HA**
+- Use `sun.sun` elevation attribute (numeric, language-independent) instead of translated state string
+
+**Fix: remove `resize-observer-polyfill` import**
+- Use native `ResizeObserver` (supported in all HA-compatible browsers)
+
+**Editor: Actions in Global Options**
+- Tap / Hold / Double-tap actions configurable from the visual editor
+- Card Title 1 / 2 moved from Overview section to Global Options
+- Translations for all 12 supported languages
+
+**Editor: Use Attribute for entity_summary_1**
+- Toggle + attribute picker for non-weather sensor entities
+- Config keys: `summary_1_use_attr` + `summary_1_name_attr`
+
+---
+
 **Older releases**
 
 **v1.3.1-beta.13**
